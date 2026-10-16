@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anggie's Digital Edge | Demo Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@500;700&family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+  :root{
+    --bg:#100510; --card:#360D3D; --magenta:#800080; --pink:#B3298D;
+    --gold:#d4a347; --blue:#1979DD; --text:#f4eef6; --muted:#b9a9c0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Red Hat Display',system-ui,sans-serif;color:var(--text);
+    background:linear-gradient(160deg,#100510 0%,#360D3D 55%,#0b0004 100%) fixed;min-height:100vh}
+  .wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  header img{height:84px;width:auto}
+  h1,h2{font-family:'Merienda',cursive;margin:0;
+    background:linear-gradient(#f5d36b,#d4a347);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1{font-size:clamp(1.6rem,4.5vw,2.4rem);margin-top:18px}
+  .lead{color:var(--muted);max-width:620px;line-height:1.6;margin:10px 0 0}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 16px}
+  nav button,.chip{font:inherit;cursor:pointer;border-radius:999px;padding:9px 18px;
+    background:transparent;color:var(--text);border:1px solid rgba(212,163,71,.35)}
+  nav button.on{background:var(--magenta);border-color:var(--gold);font-weight:700}
+  .chip{padding:5px 13px;font-size:.85rem;color:var(--muted)}
+  .chip.on{background:rgba(212,163,71,.18);color:var(--gold);border-color:var(--gold)}
+  .card{background:rgba(54,13,61,.6);border:1px solid rgba(212,163,71,.25);border-radius:16px;padding:18px}
+  .tagline{margin:6px 0 14px;color:var(--muted)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:560px}
+  th{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);text-align:left;padding:8px 10px}
+  td{padding:12px 10px;border-top:1px solid rgba(255,255,255,.08);vertical-align:top}
+  td small{display:block;color:var(--muted);margin-top:3px}
+  .pill{display:inline-block;padding:3px 11px;border-radius:999px;font-size:.8rem;font-weight:700}
+  .done{background:rgba(62,207,142,.15);color:#5fe3a8}
+  .in_progress{background:rgba(25,121,221,.2);color:#6db4ff}
+  .waiting{background:rgba(155,143,163,.2);color:#cfc3d6}
+  .cat{color:var(--pink);font-weight:700;font-size:.8rem;text-transform:uppercase}
+  .btn{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:10px;padding:10px 18px;
+    background:var(--gold);color:#100510;text-decoration:none;display:inline-block}
+  .btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+  .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:1.1rem}
+  form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:6px}
+  input,select{font:inherit;padding:10px;border-radius:10px;color:var(--text);
+    background:#100510;border:1px solid rgba(212,163,71,.35);width:100%}
+  .full{grid-column:1/-1}
+  #msg{color:#ffb3d9;min-height:1.2em;margin:8px 0 0}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .hide{display:none}
+  .space{margin-top:18px}
+  footer{margin-top:32px;color:var(--muted);font-size:.9rem;line-height:1.6;text-align:center}
+  footer a{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="logo.png" alt="Anggie's Digital Edge">
+    <div id="authbar"></div>
+  </header>
+
+  <h1>See where everything stands</h1>
+  <p class="lead">This is a demo portal. Pick a tab to see how it could work for you. No more chasing updates by email, just one calm place where you can see it all.</p>
+
+  <nav id="tabs"></nav>
+
+  <section class="card">
+    <h2 id="ptitle"></h2>
+    <p class="tagline" id="ptag"></p>
+    <div class="chips" id="chips"></div>
+    <div class="scroll"><table>
+      <thead><tr><th>Type</th><th>Item</th><th id="ownerH"></th><th>Status</th><th id="dueH"></th><th></th></tr></thead>
+      <tbody id="body"></tbody>
+    </table></div>
+    <p id="msg"></p>
+  </section>
+
+  <section class="card space hide" id="loginCard">
+    <h2>Owner login</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required autocomplete="username">
+      <input type="password" id="pw" placeholder="Password" required autocomplete="current-password">
+      <button class="btn" type="submit">Log in</button>
+    </form>
+  </section>
+
+  <section class="card space hide" id="addCard">
+    <h2>Add a new item</h2>
+    <form id="addForm">
+      <select id="fCat"></select>
+      <input id="fTitle" placeholder="Title" required>
+      <input id="fOwner" placeholder="Owner or platform">
+      <select id="fStatus">
+        <option value="waiting">Waiting</option>
+        <option value="in_progress">In progress</option>
+        <option value="done">Done</option>
+      </select>
+      <input id="fDue" type="date">
+      <input id="fNotes" class="full" placeholder="Notes (optional)">
+      <button class="btn full" type="submit">Add item</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>Demo data only. Every name and number here is made up.</p>
+    <p><a class="btn" href="mailto:hi.anggiesdigitaledge@gmail.com">Talk to Anggie about your portal</a></p>
+    <p>Built by Anggie's Digital Edge &middot; <a href="mailto:hi.anggiesdigitaledge@gmail.com">hi.anggiesdigitaledge@gmail.com</a></p>
+  </footer>
+</div>
+
+<script>
+  // ===== FILL THESE TWO IN (anon key only, never the service_role key) =====
+  const SUPABASE_URL = 'https://wfojyxpgagvtgpgjebfp.supabase.co'
+  const SUPABASE_ANON_KEY = 'http://sb_publishable_z1qa2esm7q6i9k7wy3gnyq__rg4j0pv/'
+  // ========================================================================
+
+  const PROFILES = {
+    agency:     {name:'Agency',     title:'Client Portal',        tag:'Every project and every post, with its status, in one place.', owner:'Owner / platform', due:'Due',        cats:['project','content']},
+    cohort:     {name:'Cohort',     title:'Program Tracker',      tag:'See how each learner and each module is moving along.',       owner:'Coach',            due:'Next step',  cats:['module','member']},
+    operations: {name:'Operations', title:'Operations Hub',       tag:'Leads to follow up and tasks to finish, nothing falls through.', owner:'Source / owner', due:'Follow up',  cats:['lead','task']},
+    affiliate:  {name:'Affiliate',  title:'Partner Dashboard',    tag:'Know who is referring you and what is waiting to be paid.',    owner:'Referrals',        due:'Next payout',cats:['partner']}
+  }
+  const LABEL = {in_progress:'In progress', waiting:'Waiting', done:'Done'}
+
+  const $ = id => document.getElementById(id)
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+
+  let db = null, user = null, current = 'agency', cat = 'all', rows = []
+
+  function profileFromHash(){
+    const h = location.hash.replace('#','')
+    return PROFILES[h] ? h : 'agency'
+  }
+
+  function drawTabs(){
+    $('tabs').innerHTML = Object.keys(PROFILES).map(k =>
+      `<button class="${k===current?'on':''}" data-k="${k}">${PROFILES[k].name}</button>`).join('')
+    $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => { location.hash = b.dataset.k })
+  }
+
+  function drawAuth(){
+    $('authbar').innerHTML = user
+      ? `<button class="btn ghost" id="outBtn">Log out</button>`
+      : `<button class="btn ghost" id="inBtn">Owner login</button>`
+    if(user){ $('outBtn').onclick = () => db.auth.signOut() }
+    else { $('inBtn').onclick = () => $('loginCard').classList.toggle('hide') }
+    $('loginCard').classList.toggle('hide', !!user ? true : $('loginCard').classList.contains('hide'))
+    $('addCard').classList.toggle('hide', !user)
+    render()
+  }
+
+  function render(){
+    const p = PROFILES[current]
+    $('ptitle').textContent = p.title
+    $('ptag').textContent = p.tag
+    $('ownerH').textContent = p.owner
+    $('dueH').textContent = p.due
+    $('chips').innerHTML = ['all',...p.cats].map(c =>
+      `<button class="chip ${c===cat?'on':''}" data-c="${c}">${c==='all'?'All':c}</button>`).join('')
+    $('chips').querySelectorAll('button').forEach(b => b.onclick = () => { cat = b.dataset.c; render() })
+    $('fCat').innerHTML = p.cats.map(c => `<option value="${c}">${c}</option>`).join('')
+
+    const shown = rows.filter(r => cat==='all' || r.category===cat)
+    $('body').innerHTML = shown.length ? shown.map(r => `
+      <tr>
+        <td class="cat">${esc(r.category)}</td>
+        <td>${esc(r.title)}${r.notes?`<small>${esc(r.notes)}</small>`:''}</td>
+        <td>${esc(r.owner)}</td>
+        <td><span class="pill ${esc(r.status)}">${esc(LABEL[r.status]||r.status)}</span></td>
+        <td>${r.due_date ? new Date(r.due_date+'T00:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}) : ''}</td>
+        <td>${user?`<button class="del" title="Delete" data-id="${esc(r.id)}">&times;</button>`:''}</td>
+      </tr>`).join('') : `<tr><td colspan="6">Nothing here yet.</td></tr>`
+    $('body').querySelectorAll('.del').forEach(b => b.onclick = () => removeRow(b.dataset.id))
+  }
+
+  async function load(){
+    $('msg').textContent = ''
+    const {data, error} = await db.from('portal_items').select('*')
+      .eq('profile', current).order('due_date', {ascending:true})
+    if(error){ $('msg').textContent = 'Could not load the data: ' + error.message; return }
+    rows = data
+    render()
+  }
+
+  async function removeRow(id){
+    const {error} = await db.from('portal_items').delete().eq('id', id)
+    if(error){ $('msg').textContent = 'Could not delete: ' + error.message; return }
+    load()
+  }
+
+  $('addForm').onsubmit = async e => {
+    e.preventDefault()
+    const {error} = await db.from('portal_items').insert({
+      profile: current, category: $('fCat').value, title: $('fTitle').value.trim(),
+      owner: $('fOwner').value.trim() || null, status: $('fStatus').value,
+      due_date: $('fDue').value || null, notes: $('fNotes').value.trim() || null
+    })
+    if(error){ $('msg').textContent = 'Could not add: ' + error.message; return }
+    $('addForm').reset()
+    load()
+  }
+
+  $('loginForm').onsubmit = async e => {
+    e.preventDefault()
+    const {error} = await db.auth.signInWithPassword({email:$('email').value, password:$('pw').value})
+    $('msg').textContent = error ? 'Login failed: ' + error.message : ''
+  }
+
+  window.addEventListener('hashchange', () => { current = profileFromHash(); cat = 'all'; drawTabs(); load() })
+
+  async function start(){
+    current = profileFromHash()
+    drawTabs()
+    if(SUPABASE_URL.startsWith('PUT') || SUPABASE_ANON_KEY.startsWith('PUT')){
+      $('msg').textContent = 'Almost there: add your Supabase URL and anon key at the top of the script.'
+      drawAuth(); return
+    }
+    db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    const {data} = await db.auth.getSession()
+    user = data.session ? data.session.user : null
+    db.auth.onAuthStateChange((_ev, session) => { user = session ? session.user : null; drawAuth() })
+    drawAuth()
+    load()
+  }
+  start()
+</script>
+</body>
+</html>
