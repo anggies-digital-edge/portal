@@ -62,9 +62,19 @@
 <div class="wrap">
 
   <header>
-    <img src="LOGO.png" alt="Anggie's Digital Edge">
+    <img src="logo.png" alt="Anggie's Digital Edge">
     <div id="authbar"></div>
   </header>
+
+  <section class="card space hide" id="loginCard">
+    <h2>Owner login</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required autocomplete="username">
+      <input type="password" id="pw" placeholder="Password" required autocomplete="current-password">
+      <button class="btn" type="submit">Log in</button>
+    </form>
+    <p id="loginMsg" style="color:#ffb3d9;margin:10px 0 0"></p>
+  </section>
 
   <h1>See where everything stands</h1>
   <p class="lead">This is a demo portal. Pick a tab to see how it could work for you. No more chasing updates by email, just one calm place where you can see it all.</p>
@@ -80,15 +90,6 @@
       <tbody id="body"></tbody>
     </table></div>
     <p id="msg"></p>
-  </section>
-
-  <section class="card space hide" id="loginCard">
-    <h2>Owner login</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required autocomplete="username">
-      <input type="password" id="pw" placeholder="Password" required autocomplete="current-password">
-      <button class="btn" type="submit">Log in</button>
-    </form>
   </section>
 
   <section class="card space hide" id="addCard">
@@ -150,7 +151,7 @@
       ? `<button class="btn ghost" id="outBtn">Log out</button>`
       : `<button class="btn ghost" id="inBtn">Owner login</button>`
     if(user){ $('outBtn').onclick = () => db.auth.signOut() }
-    else { $('inBtn').onclick = () => $('loginCard').classList.toggle('hide') }
+    else { $('inBtn').onclick = () => { $('loginCard').classList.remove('hide'); $('loginCard').scrollIntoView({behavior:'smooth', block:'center'}); $('email').focus() } }
     $('loginCard').classList.toggle('hide', !!user ? true : $('loginCard').classList.contains('hide'))
     $('addCard').classList.toggle('hide', !user)
     render()
@@ -210,7 +211,8 @@
   $('loginForm').onsubmit = async e => {
     e.preventDefault()
     const {error} = await db.auth.signInWithPassword({email:$('email').value, password:$('pw').value})
-    $('msg').textContent = error ? 'Login failed: ' + error.message : ''
+    $('loginMsg').textContent = error ? 'Login failed: ' + error.message : ''
+    if(!error){ $('loginForm').reset() }
   }
 
   window.addEventListener('hashchange', () => { current = profileFromHash(); cat = 'all'; drawTabs(); load() })
