@@ -12,36 +12,54 @@
   :root{
     --bg:#100510; --card:#360D3D; --magenta:#800080; --pink:#B3298D;
     --gold:#d4a347; --blue:#1979DD; --text:#f4eef6; --muted:#b9a9c0;
-    --green:#5fe3a8; --red:#ff7aa8;
+    --green:#5fe3a8; --red:#ff7aa8; --em:#ff8fd6;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:'Red Hat Display',system-ui,sans-serif;color:var(--text);
     background:linear-gradient(160deg,#100510 0%,#360D3D 55%,#0b0004 100%) fixed;min-height:100vh}
-  .wrap{max-width:980px;margin:0 auto;padding:20px 16px 56px}
+  .wrap{max-width:1280px;margin:0 auto;padding:20px 16px 90px}
+  @media(min-width:1100px){.wrap{padding-left:28px;padding-right:28px}}
   header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   header img{height:84px;width:auto}
   .wordmark{font-family:'Merienda',cursive;color:var(--gold);font-size:1.3rem}
-  h1,h2,h3{font-family:'Merienda',cursive;margin:0;
+  h1,h2,h3,h4{font-family:'Merienda',cursive;margin:0;
     background:linear-gradient(#f5d36b,#d4a347);-webkit-background-clip:text;background-clip:text;color:transparent}
-  h1{font-size:clamp(1.6rem,4.5vw,2.4rem);margin-top:18px}
+  h1{font-size:clamp(1.6rem,4.5vw,2.4rem);margin-top:18px;line-height:1.25}
   h2{font-size:1.35rem}
   h3{font-size:1.05rem}
-  .lead{color:var(--muted);max-width:640px;line-height:1.65;margin:10px 0 0}
-  nav{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 12px}
-  nav button,.chip,.seg button{font:inherit;cursor:pointer;border-radius:999px;padding:9px 18px;
+  h4{font-size:.98rem;margin:14px 0 4px}
+  .lead{color:var(--muted);max-width:880px;line-height:1.65;margin:10px 0 0;font-size:1.04rem}
+  .em{color:var(--em);font-weight:700}
+  h1 .em{-webkit-text-fill-color:var(--em);color:var(--em)}
+  .hide{display:none !important}
+
+  nav{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 12px}
+  .tab{font:inherit;cursor:pointer;text-align:left;color:var(--text);background:rgba(16,5,16,.45);
+    border:1px solid rgba(212,163,71,.3);border-radius:14px;padding:11px 14px}
+  .tab b{display:block;font-size:1rem}
+  .tab small{display:block;color:var(--muted);font-size:.78rem;line-height:1.35;margin-top:2px}
+  .tab.on{background:var(--magenta);border-color:var(--gold)}
+  .tab.on small{color:#f1dcae}
+
+  .chip,.seg button{font:inherit;cursor:pointer;border-radius:999px;padding:9px 18px;
     background:transparent;color:var(--text);border:1px solid rgba(212,163,71,.35)}
-  nav button.on,.seg button.on{background:var(--magenta);border-color:var(--gold);font-weight:700}
+  .seg button.on{background:var(--magenta);border-color:var(--gold);font-weight:700}
   .chip{padding:5px 13px;font-size:.85rem;color:var(--muted)}
   .chip.on{background:rgba(212,163,71,.18);color:var(--gold);border-color:var(--gold)}
-  .seg{display:inline-flex;gap:6px}
+  .seg{display:inline-flex;gap:6px;flex-wrap:wrap}
   .seg button{padding:7px 16px;font-size:.9rem}
   .card{background:rgba(54,13,61,.6);border:1px solid rgba(212,163,71,.25);border-radius:16px;padding:18px}
   .space{margin-top:18px}
-  .tagline{margin:6px 0 14px;color:var(--muted);line-height:1.5}
-  .bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 14px}
+  .tagline{margin:6px 0 4px;color:var(--muted);line-height:1.5}
+  .bestfor{margin:0 0 14px;color:#e6d6ea;font-size:.92rem;line-height:1.5}
+  .bestfor b{color:var(--gold)}
+  .bar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin:6px 0 10px}
   .demo{background:rgba(212,163,71,.12);border:1px dashed rgba(212,163,71,.5);color:#f1dcae;
     border-radius:12px;padding:10px 14px;font-size:.92rem;line-height:1.5;margin:0 0 14px}
   .demo button{font:inherit;background:none;border:0;color:var(--gold);text-decoration:underline;cursor:pointer;padding:0 0 0 6px}
+  .guide{background:rgba(25,121,221,.12);border:1px solid rgba(109,180,255,.45);border-radius:12px;padding:12px 16px;margin:0 0 14px;font-size:.93rem;line-height:1.5}
+  .guide ol{margin:6px 0 8px 18px;padding:0}
+  .guide .gt{color:#9ccbff;font-weight:700}
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}
   .stat{font:inherit;text-align:left;cursor:pointer;color:var(--text);background:rgba(16,5,16,.55);
     border:1px solid rgba(212,163,71,.25);border-radius:12px;padding:12px 14px}
@@ -50,14 +68,36 @@
   .stat.on{border-color:var(--gold);background:rgba(128,0,128,.35)}
   .stat.bad b{color:var(--red)}
   .stat.warm b{color:var(--gold)}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+
+  .inbox{background:rgba(212,163,71,.1);border:1px solid rgba(212,163,71,.55);border-radius:14px;padding:12px 14px;margin:0 0 14px}
+  .inbox ul{list-style:none;margin:8px 0 0;padding:0}
+  .inbox li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.08);font-size:.93rem}
+  .inbox li:first-child{border-top:0}
+  .inbox .ok{color:var(--muted);margin:6px 0 0}
+
+  .tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .tools input[type=search]{width:210px;padding:7px 14px;border-radius:999px;font-size:.9rem}
+  .modesrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+  .gb{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.88rem}
+  .gb select{width:auto;padding:6px 10px;font-size:.88rem}
+
+  .grp{margin-top:6px}
+  .ghead{display:flex;align-items:center;gap:10px;margin:16px 0 2px}
+  .ghead .count{color:var(--muted);font-size:.85rem}
   .item{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px 4px;border-top:1px solid rgba(255,255,255,.09)}
   .item.you{background:rgba(212,163,71,.07);border-radius:12px;padding:14px 12px;margin:4px 0}
-  .item .cat{color:var(--pink);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
-  .item .title{font-weight:700;font-size:1.02rem;margin:2px 0 4px;line-height:1.35}
+  .cat{color:var(--pink);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+  .tag{display:inline-block;margin-left:8px;padding:1px 9px;border-radius:999px;background:rgba(25,121,221,.2);color:#9ccbff;font-size:.72rem;font-weight:700;letter-spacing:0;text-transform:none}
+  .titlebtn{font:inherit;font-weight:700;font-size:1.02rem;margin:2px 0 4px;line-height:1.35;color:var(--text);
+    background:none;border:0;padding:0;cursor:pointer;text-align:left;display:block}
+  .titlebtn:hover{color:var(--gold);text-decoration:underline}
   .item .meta{color:var(--muted);font-size:.88rem;line-height:1.5}
   .item .next{margin-top:6px;font-size:.92rem;line-height:1.5}
-  .item .next b{color:var(--gold)}
+  .next b{color:var(--gold)}
+  .prog{display:flex;align-items:center;gap:8px;margin-top:8px;max-width:260px;font-size:.78rem;color:var(--muted)}
+  .prog span{flex:1;height:7px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,#B3298D,#d4a347);border-radius:99px}
   .quote{margin-top:8px;padding:8px 12px;border-left:3px solid var(--pink);background:rgba(179,41,141,.12);
     border-radius:0 10px 10px 0;font-size:.9rem;line-height:1.5}
   .side{display:flex;flex-direction:column;align-items:flex-end;gap:7px;min-width:150px;text-align:right}
@@ -75,9 +115,54 @@
     background:var(--gold);color:#100510;text-decoration:none;display:inline-block}
   .btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold)}
   .btn.small{padding:6px 12px;font-size:.85rem}
+  .btn[disabled]{opacity:.5;cursor:default}
   .btn.link{margin-top:8px}
   .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:.85rem;text-decoration:underline}
+
+  .board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;align-items:flex-start}
+  .col{flex:0 0 250px;background:rgba(16,5,16,.45);border:1px solid rgba(212,163,71,.2);border-radius:14px;padding:10px}
+  .col .ghead{margin:2px 0 4px}
+  .bcard{background:rgba(54,13,61,.85);border:1px solid rgba(212,163,71,.22);border-radius:12px;padding:11px;margin-top:8px}
+  .bcard.you{border-color:var(--gold);background:rgba(128,0,128,.4)}
+  .bcard .titlebtn{font-size:.95rem}
+  .bcard .meta{color:var(--muted);font-size:.82rem;line-height:1.45}
+  .bcard .acts{justify-content:flex-start;margin-top:8px}
+  .colempty{color:var(--muted);font-size:.85rem;padding:10px 2px}
+
+  .calbar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+  .cal .dow{color:var(--muted);font-size:.75rem;text-align:center;padding:4px 0}
+  .cal .day{min-height:84px;background:rgba(16,5,16,.45);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:4px;display:flex;flex-direction:column;gap:3px}
+  .cal .day.blank{background:transparent;border-color:transparent}
+  .cal .day.today{border-color:var(--gold)}
+  .cal .n{font-size:.72rem;color:var(--muted)}
+  .cal-it{font:inherit;font-size:.7rem;line-height:1.25;text-align:left;border:0;border-radius:6px;padding:3px 5px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;width:100%}
+
+  .svgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .svc{background:rgba(16,5,16,.45);border:1px solid rgba(212,163,71,.22);border-radius:14px;padding:14px 16px}
+  .svc.wide{grid-column:1/-1}
+  .svc h3{margin-bottom:8px}
+  .svc p{margin:6px 0;line-height:1.55}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:.93rem}
+  .row:first-of-type{border-top:0}
+  .row .titlebtn{font-size:.95rem;margin:0}
+  .welcome{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+  .welcome select{width:auto}
+  .bigprog{display:flex;align-items:center;gap:12px;margin-top:10px}
+  .bigprog span{flex:1;height:12px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+  .bigprog i{display:block;height:100%;background:linear-gradient(90deg,#B3298D,#d4a347);border-radius:99px;transition:width .4s}
+  .bigprog b{font-family:'Merienda',cursive;color:var(--gold)}
+  .stepper{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+  .step{padding:6px 12px;border-radius:999px;font-size:.82rem;border:1px solid rgba(255,255,255,.18);color:var(--muted)}
+  .step.done{border-color:rgba(62,207,142,.5);color:var(--green)}
+  .step.on{background:var(--magenta);border-color:var(--gold);color:#fff;font-weight:700}
+  .minis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+  .mini{background:rgba(54,13,61,.6);border-radius:10px;padding:10px 12px}
+  .mini b{display:block;font-family:'Merienda',cursive;font-size:1.3rem;color:var(--gold)}
+  .mini span{color:var(--muted);font-size:.8rem}
+  .linkbox{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#100510;border:1px solid rgba(212,163,71,.35);border-radius:10px;padding:8px 10px;font-size:.88rem;word-break:break-all}
+
   form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:8px}
   input,select,textarea{font:inherit;padding:10px;border-radius:10px;color:var(--text);
     background:#100510;border:1px solid rgba(212,163,71,.35);width:100%}
@@ -85,7 +170,6 @@
   textarea{min-height:90px;resize:vertical}
   .full{grid-column:1/-1}
   #msg{color:#ffb3d9;min-height:1.2em;margin:8px 0 0}
-  .hide{display:none}
   .empty{color:var(--muted);padding:18px 4px}
   .log{list-style:none;margin:10px 0 0;padding:0}
   .log li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:.92rem;line-height:1.45}
@@ -93,11 +177,65 @@
   footer{margin-top:32px;color:var(--muted);font-size:.9rem;line-height:1.7;text-align:center}
   footer a{color:var(--gold)}
   footer a.btn{color:#100510}
+  .edge{color:var(--gold);font-family:'Merienda',cursive}
+  .ownerlink{font-size:.78rem;opacity:.7}
+
   dialog{background:#2a0a30;color:var(--text);border:1px solid var(--gold);border-radius:16px;padding:20px;max-width:440px;width:92%}
   dialog::backdrop{background:rgba(0,0,0,.65)}
+  #detDlg{max-width:620px;max-height:90vh}
+  .dtop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .dmeta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0;font-size:.88rem;color:var(--muted)}
+  .xbtn{font:inherit;background:none;border:1px solid rgba(212,163,71,.4);color:var(--gold);border-radius:999px;padding:4px 12px;cursor:pointer}
+  .files{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .filechip{font:inherit;font-size:.82rem;background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:5px 10px;cursor:pointer}
+
+  .mock{background:#fff;color:#241a28;border-radius:14px;overflow:hidden;margin:10px 0}
+  .mhead{display:flex;gap:10px;align-items:center;padding:12px 14px}
+  .mhead small{display:block;color:#7b6c82;font-size:.78rem}
+  .av{width:36px;height:36px;border-radius:50%;background:var(--magenta);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .mimg{min-height:170px;background:linear-gradient(135deg,#f6c98f,#e98fb8 55%,#7bb6d1);display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;color:#3b1744;font-weight:700;font-size:.95rem}
+  .mcap{padding:12px 14px 16px;font-size:.95rem;line-height:1.55}
+  .mcap p{margin:0 0 8px}
+  .esub{padding:12px 14px;border-bottom:1px solid #eadfef;font-weight:700}
+  .esub small{display:block;color:#7b6c82;font-weight:400;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em}
+  .docbox{background:rgba(16,5,16,.55);border:1px solid rgba(212,163,71,.25);border-radius:14px;padding:6px 16px 14px;margin:10px 0;line-height:1.6;font-size:.95rem}
+  .docbox h5{font-family:'Merienda',cursive;color:var(--gold);font-size:.98rem;margin:14px 0 4px;font-weight:500}
+  .docbox ul{margin:4px 0 4px 18px;padding:0}
+  .docbox p{margin:6px 0}
+  .kv{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:.93rem}
+  .kv:first-child{border-top:0}
+  .kv span{color:var(--muted)}
+  .kv b{text-align:right;font-weight:500}
+  .dlog{list-style:none;margin:6px 0 0;padding:0;font-size:.9rem}
+  .dlog li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px solid rgba(255,255,255,.08)}
+  .dlog time{color:var(--muted);font-size:.8rem;white-space:nowrap}
+  .dacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+
+  .fab{position:fixed;right:16px;bottom:16px;z-index:50;font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:999px;
+    background:var(--gold);color:#100510;padding:13px 20px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+  .chat{position:fixed;right:16px;bottom:74px;z-index:50;width:min(360px,calc(100vw - 32px));max-height:70vh;display:flex;flex-direction:column;
+    background:#2a0a30;border:1px solid var(--gold);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.6);overflow:hidden}
+  .chat header{padding:12px 14px;background:var(--magenta);display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .chat header b{font-size:.98rem}
+  .chat header small{display:block;font-weight:400;color:#f1dcae;font-size:.75rem}
+  #chatBody{padding:12px;overflow-y:auto;flex:1;min-height:150px;display:flex;flex-direction:column;gap:8px}
+  .bub{max-width:85%;padding:8px 12px;border-radius:14px;font-size:.92rem;line-height:1.45}
+  .bub.them{background:rgba(255,255,255,.1);align-self:flex-start}
+  .bub.me{background:var(--gold);color:#100510;align-self:flex-end}
+  .bub.note{align-self:center;background:none;color:var(--muted);font-size:.8rem}
+  #chatForm{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.12);margin:0}
+  #chatForm input{flex:1}
+  .chatfoot{padding:0 12px 10px;font-size:.78rem;color:var(--muted);text-align:center}
+  .chatfoot a{color:var(--gold)}
+
   #toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#2a0a30;border:1px solid var(--gold);
-    color:var(--text);padding:11px 18px;border-radius:12px;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90%;text-align:center;z-index:9}
+    color:var(--text);padding:11px 18px;border-radius:12px;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90%;text-align:center;z-index:99}
   #toast.show{opacity:1}
+  @media(max-width:760px){
+    nav{grid-template-columns:repeat(2,1fr)}
+    .svgrid{grid-template-columns:1fr}
+    .minis{grid-template-columns:1fr 1fr 1fr}
+  }
   @media(max-width:620px){
     .item{grid-template-columns:1fr}
     .side{align-items:flex-start;text-align:left;min-width:0}
@@ -105,6 +243,9 @@
     .stats{gap:8px}
     .stat{padding:10px}
     .stat b{font-size:1.4rem}
+    .tools input[type=search]{width:100%}
+    .col{flex-basis:78vw}
+    .cal .day{min-height:64px}
   }
 </style>
 </head>
@@ -126,9 +267,9 @@
     <p id="loginMsg" style="color:#ffb3d9;margin:10px 0 0"></p>
   </section>
 
-  <h1>See where everything stands</h1>
-  <p class="lead">You should never have to wonder what is happening with your project, or whose turn it is next. This demo shows how one calm page can answer that for you.</p>
-  <p class="lead">Pick a tab, switch between the team view and the client view, and try the buttons. Nothing you click here is saved.</p>
+  <h1>Every step of your project, in <span class="em">plain sight</span></h1>
+  <p class="lead">You trusted someone with your business, so you <span class="em">deserve to see the work as it happens</span>. This demo shows how I keep every project, lesson, lead, and follow-up visible, with a <span class="em">clear owner</span> and a <span class="em">clear next step</span>.</p>
+  <p class="lead">I know waiting for updates can feel uneasy. Not sure which tab fits you? Pick the one closest to your business, open any item to see the real work behind it, and try the buttons. <span class="em">Nothing is saved</span>, so click freely.</p>
 
   <nav id="tabs"></nav>
 
@@ -136,19 +277,39 @@
     <div class="bar">
       <div>
         <h2 id="ptitle"></h2>
-        <p class="tagline" id="ptag" style="margin-bottom:0"></p>
+        <p class="tagline" id="ptag"></p>
+        <p class="bestfor" id="pbest"></p>
       </div>
       <div class="seg" id="viewSeg">
-        <button data-v="team">Team view</button>
-        <button data-v="client">Client view</button>
+        <button data-v="team"></button>
+        <button data-v="client"></button>
       </div>
     </div>
 
     <p class="demo" id="demoNote"></p>
+    <div id="guide"></div>
 
+    <div id="inbox"></div>
     <div class="stats" id="stats"></div>
-    <div class="chips" id="chips"></div>
+
+    <div class="tools" id="tools">
+      <div class="chips" id="chips"></div>
+      <input type="search" id="qBox" placeholder="Search this portal" aria-label="Search this portal">
+    </div>
+    <div class="modesrow" id="modesRow">
+      <div class="seg" id="modeSeg">
+        <button data-m="grouped">Grouped</button>
+        <button data-m="board">Board</button>
+        <button data-m="calendar">Calendar</button>
+        <button data-m="list">List</button>
+      </div>
+      <label class="gb" id="gbWrap">Group by
+        <select id="gbSel"></select>
+      </label>
+    </div>
+
     <div id="list"></div>
+    <div id="side"></div>
     <p id="msg"></p>
   </section>
 
@@ -162,22 +323,50 @@
     <form id="addForm">
       <select id="fCat"></select>
       <input id="fTitle" placeholder="Title" required>
-      <input id="fOwner" placeholder="Owner or platform">
+      <input id="fOwner" placeholder="Owner (team member)">
+      <input id="fPlat" placeholder="Platform or type (for example Instagram)">
       <select id="fStage"></select>
       <input id="fNext" placeholder="Next step">
       <input id="fDue" type="date">
-      <input id="fLink" class="full" placeholder="Link to the draft or document (optional)">
+      <input id="fLink" class="full" placeholder="Link to a real draft or document (optional)">
       <input id="fNotes" class="full" placeholder="Notes (optional)">
+      <select id="fKind">
+        <option value="">Preview type (optional)</option>
+        <option value="post">Social post</option>
+        <option value="email">Email</option>
+        <option value="doc">Document</option>
+        <option value="profile">Profile or details</option>
+      </select>
+      <textarea id="fBody" class="full" placeholder="Preview content (optional). For a post, start a line with IMAGE: to describe the picture."></textarea>
       <button class="btn full" type="submit">Add item</button>
     </form>
   </section>
 
   <footer>
     <p>Demo data only. Every name and number here is made up.</p>
-    <p><a class="btn" href="mailto:hi.anggiesdigitaledge@gmail.com">Talk to Anggie about your portal</a></p>
-    <p>Built by Anggie's Digital Edge &middot; <a href="mailto:hi.anggiesdigitaledge@gmail.com">hi.anggiesdigitaledge@gmail.com</a></p>
+    <p><button class="btn" data-chat="">Talk to Anggie about your portal</button></p>
+    <p>Prefer email? <a href="mailto:hi.anggiesdigitaledge@gmail.com?subject=I%20would%20like%20a%20portal%20like%20this">hi.anggiesdigitaledge@gmail.com</a></p>
+    <p>Built with the <span class="edge">EDGE Method</span>: Evaluate, Develop, Guide, Execute.</p>
+    <p>Anggie's Digital Edge &middot; <a href="#" class="ownerlink" id="ownerLink">Owner login</a></p>
   </footer>
 </div>
+
+<button class="fab" id="chatFab" data-chat="">Message us</button>
+
+<section class="chat hide" id="chatPanel" aria-label="Sample chat">
+  <header>
+    <div><b id="chatTitle">Message us</b><small>Sample chat. Nothing is saved.</small></div>
+    <button class="xbtn" data-chatclose>Close</button>
+  </header>
+  <div id="chatBody"></div>
+  <form id="chatForm">
+    <input id="chatIn" placeholder="Type a message" autocomplete="off">
+    <button class="btn small" type="submit">Send</button>
+  </form>
+  <div class="chatfoot">Want a real conversation? <a href="mailto:hi.anggiesdigitaledge@gmail.com?subject=I%20would%20like%20to%20book%20a%20call">Book a call by email</a></div>
+</section>
+
+<dialog id="detDlg"></dialog>
 
 <dialog id="chgDlg">
   <h3>Request changes</h3>
@@ -197,49 +386,106 @@
   const CFG = window.PORTAL_CONFIG || {}
   const SUPABASE_URL = CFG.SUPABASE_URL || ''
   const SUPABASE_ANON_KEY = CFG.SUPABASE_ANON_KEY || ''
+  const BRAND = 'Brave Steps Coaching'
+  const MAIL = 'hi.anggiesdigitaledge@gmail.com'
 
   const STAGES = {
-    project: ['Not started','In progress','Client review','Changes requested','Delivered'],
-    content: ['Draft','Team review','Client review','Changes requested','Approved','Scheduled','Published'],
-    module:  ['Upcoming','Live','Completed'],
-    member:  ['Onboarding','Active','At risk','Completed'],
-    lead:    ['New inquiry','Contacted','Quoted','Follow-up','Won','Lost'],
-    task:    ['To do','In progress','Waiting on','Done'],
-    partner: ['Invited','Active','Payout due','Paid']
+    project:  ['Not started','In progress','Client review','Changes requested','Delivered'],
+    content:  ['Draft','Team review','Client review','Changes requested','Approved','Scheduled','Published'],
+    module:   ['Upcoming','Live','Completed'],
+    material: ['Draft','Published'],
+    coaching: ['Requested','Booked','Completed'],
+    member:   ['Onboarding','Active','At risk','Completed'],
+    lead:     ['New inquiry','Contacted','Quoted','Follow-up','Won','Lost'],
+    task:     ['To do','In progress','Waiting on','Done'],
+    partner:  ['Invited','Active','Payout due','Paid'],
+    asset:    ['Draft','Ready']
   }
-  const FINISHED = ['Delivered','Published','Completed','Won','Lost','Done','Paid']
+  const ORDER = ['Upcoming','Not started','Draft','To do','New inquiry','Requested','Invited','Onboarding','Live','Active','Contacted',
+    'In progress','Team review','Quoted','Waiting on','Follow-up','Client review','Changes requested','At risk','Payout due',
+    'Approved','Scheduled','Booked','Delivered','Published','Ready','Completed','Done','Won','Paid','Lost']
+  const FINISHED = ['Delivered','Published','Ready','Completed','Won','Lost','Done','Paid']
   const THEIR_TURN = ['Client review','Waiting on','Invited','Contacted','Quoted','Onboarding']
+  const COMING = ['Scheduled','Booked','Upcoming','Not started']
+  const BUCKETS = ['Needs your action','In progress','Coming up','Done']
+  const DUEORDER = ['Overdue','This week','Next week','Later','No date','Done']
+
+  const CATLABEL = {project:'Projects',content:'Content',module:'Weekly modules',material:'Learning library',coaching:'Coaching calls',
+    member:'Learners',lead:'Leads',task:'Tasks',partner:'Partners',asset:'Promo kit'}
+  const FILES = {project:['Project brief.pdf','Draft copy.docx'],content:['Caption.txt','Design.png'],module:['Slides.pdf'],
+    material:['Lesson file.pdf'],coaching:['Session notes.docx'],member:['Progress report.pdf'],lead:['Proposal.pdf'],
+    task:[],partner:['Partner agreement.pdf'],asset:['Download.zip']}
 
   const PROFILES = {
-    agency:     {name:'Agency',     title:'Client Portal',     tag:'Every project and every post, and exactly whose turn it is.', cats:['project','content']},
-    cohort:     {name:'Cohort',     title:'Program Tracker',   tag:'See who is on track, who needs a nudge, and what comes next.',  cats:['module','member']},
-    operations: {name:'Operations', title:'Operations Hub',    tag:'Every lead has a next step. Every task has an owner.',          cats:['lead','task']},
-    affiliate:  {name:'Affiliate',  title:'Partner Dashboard', tag:'Know who is referring you and which payouts are due.',          cats:['partner']}
+    agency: {
+      name:'Client Work', sub:'Projects and posts your clients approve', title:'Client Portal',
+      tag:'Every project and every post, and exactly whose turn it is.',
+      best:'Freelancers, studios, and agencies who deliver work for clients and want approvals without long email threads.',
+      cats:['project','content'], views:['Team view','Client view'], chat:'Message your project team',
+      notes:{
+        team:'This is the team view: the full picture behind the scenes, with owners and next steps. Switch to Client view to see what your clients see.',
+        client:'This is what your client sees. Try it: open an item marked <b>Your turn</b>, then click Approve or Request changes. Nothing is saved.'},
+      guide:['Switch between Team view and Client view above.','Open any item to see the real draft behind it.','In Client view, click Approve or Request changes.']
+    },
+    cohort: {
+      name:'Programs', sub:'Courses, coaching, and group programs', title:'Program Portal',
+      tag:'See who is on track, who needs a nudge, and where every lesson lives.',
+      best:'Coaches and course creators who run group programs and want learners to find everything in one place.',
+      cats:['module','material','coaching','member'], views:['Coach view','Learner view'], chat:'Message your coach',
+      notes:{
+        team:'This is the coach view: every learner, lesson, and coaching call, with owners and next steps. Switch to Learner view to see what your members see.',
+        client:'This is what a learner sees. Pick a learner, mark a worksheet as done, and watch the progress bar move. Nothing is saved.'},
+      guide:['Switch to Learner view to see what your members see.','Pick a learner and mark a worksheet as done.','Click Message your coach to try the chat.']
+    },
+    operations: {
+      name:'Sales & Tasks', sub:'Leads and daily to-dos', title:'Sales and Task Hub',
+      tag:'Every lead has a next step. Every task has an owner.',
+      best:'Small business owners and teams who juggle leads and tasks and want nothing to slip through the cracks.',
+      cats:['lead','task'], views:['Team view','Lead view'], chat:'Message the team',
+      notes:{
+        team:'This is the team view: every lead has a next step and every task has an owner. Switch to Lead view to see what a prospect sees.',
+        client:'This is what a prospect sees after you send a proposal. Try accepting it and watch the lead move to Won. Nothing is saved.'},
+      guide:['Browse leads and tasks as groups, a board, or a calendar.','Switch to Lead view to see what a prospect sees.','Accept a proposal and watch it move to Won.']
+    },
+    affiliate: {
+      name:'Partners', sub:'Referrals and payouts', title:'Partner Portal',
+      tag:'Know who is referring you and which payouts are due.',
+      best:'Businesses with affiliates or referral partners who want referrals, links, and payouts in plain sight.',
+      cats:['partner','asset'], views:['Admin view','Partner view'], chat:'Message your partner manager',
+      notes:{
+        team:'This is the admin view: every partner, payout, and promo item. Switch to Partner view to see what a partner sees.',
+        client:'This is what a partner sees: their link, their results, and their payout button. Try copying the link or requesting a payout. Nothing is saved.'},
+      guide:['Switch to Partner view to see what a partner sees.','Copy a referral link and request a payout.','Open any promo item to see what partners can share.']
+    }
   }
 
   const $ = id => document.getElementById(id)
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
   const safeUrl = u => /^https?:\/\//i.test(String(u||'')) ? String(u) : ''
   const todayStr = () => new Date().toLocaleDateString('en-CA')
+  const pad = n => String(n).padStart(2,'0')
 
   let db = null, user = null
-  let current = 'agency', view = 'team', cat = 'all', focus = 'all'
+  let current = 'agency', view = 'team', cat = 'all', focus = 'all', mode = 'grouped', groupBy = 'status', q = ''
   let rows = [], activity = []
-  let sim = {}, simLog = [], chgId = null
+  let sim = {}, simLog = [], chgId = null, doneSet = new Set(), pick = {}, calOff = 0, guideOff = false
+  let chatMsgs = []
 
+  // ---------- small helpers ----------
   function isActive(r){ return !FINISHED.includes(r.stage) }
   function isLate(r){ return isActive(r) && r.due_date && r.due_date < todayStr() }
   function turnFor(stage){
-    if(FINISHED.includes(stage) || stage === 'Scheduled') return null
+    if(FINISHED.includes(stage) || stage === 'Scheduled' || stage === 'Booked') return null
     return THEIR_TURN.includes(stage) ? 'them' : 'us'
   }
   function stageClass(s){
-    if(['Approved','Scheduled','Published','Delivered','Completed','Won','Done','Paid','Active'].includes(s)) return 'p-green'
-    if(['Client review','Team review','Quoted','Payout due','Follow-up','Live'].includes(s)) return 'p-gold'
+    if(['Approved','Scheduled','Booked','Published','Ready','Delivered','Completed','Won','Done','Paid','Active'].includes(s)) return 'p-green'
+    if(['Client review','Team review','Quoted','Payout due','Follow-up','Live','Requested'].includes(s)) return 'p-gold'
     if(['Changes requested','At risk','Lost'].includes(s)) return 'p-pink'
     if(['In progress','Contacted','New inquiry','Onboarding'].includes(s)) return 'p-blue'
     return 'p-gray'
   }
+  function ordIdx(s){ const i = ORDER.indexOf(s); return i < 0 ? 99 : i }
   function ago(iso){
     const s = (Date.now() - new Date(iso).getTime()) / 1000
     if(s < 60) return 'just now'
@@ -247,89 +493,143 @@
     if(s < 86400) return Math.floor(s/3600) + ' hr ago'
     return Math.floor(s/86400) + ' day' + (Math.floor(s/86400) > 1 ? 's' : '') + ' ago'
   }
-  function fmtDate(d){
-    return new Date(d + 'T00:00:00').toLocaleDateString(undefined, {month:'short', day:'numeric'})
-  }
+  function fmtDate(d){ return new Date(d + 'T00:00:00').toLocaleDateString(undefined, {month:'short', day:'numeric'}) }
   function toast(t){
     const el = $('toast'); el.textContent = t; el.classList.add('show')
-    clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2600)
+    clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2800)
   }
   function viewRows(){ return rows.map(r => Object.assign({}, r, sim[r.id] || {})) }
-  function profileFromHash(){
-    const h = location.hash.replace('#','')
-    return PROFILES[h] ? h : 'agency'
+  function profileFromHash(){ const h = location.hash.replace('#',''); return PROFILES[h] ? h : 'agency' }
+  function byDue(a, b){ return String(a.due_date || '9999').localeCompare(String(b.due_date || '9999')) }
+  function lines(s){ return String(s || '').split('\n').map(x => x.trim()).filter(Boolean) }
+  function kvOf(body){
+    const o = {}
+    lines(body).forEach(l => { const m = l.match(/^([^:]{1,32}):\s*(.+)$/); if(m) o[m[1]] = m[2] })
+    return o
+  }
+  function afterColon(t){ return String(t).split(':').pop().trim() }
+  function copyText(t, msg){
+    try{ if(navigator.clipboard) navigator.clipboard.writeText(t) }catch(e){}
+    toast(msg || 'Copied.')
+  }
+  function turnText(r){
+    if(!isActive(r) || !r.waiting_on) return ''
+    if(r.waiting_on === 'them') return view === 'client' ? 'Your turn' : 'Waiting on them'
+    return 'Our turn'
+  }
+  function bucketOf(r){
+    if(!isActive(r)) return 'Done'
+    if(r.waiting_on === 'them') return 'Needs your action'
+    if(COMING.includes(r.stage)) return 'Coming up'
+    return 'In progress'
+  }
+  function dueBucket(r){
+    if(!isActive(r)) return 'Done'
+    if(!r.due_date) return 'No date'
+    const t = todayStr()
+    if(r.due_date < t) return 'Overdue'
+    const days = Math.round((new Date(r.due_date + 'T00:00:00') - new Date(t + 'T00:00:00')) / 864e5)
+    if(days <= 6) return 'This week'
+    if(days <= 13) return 'Next week'
+    return 'Later'
+  }
+  const clientSide = () => view === 'client' && current === 'agency'
+
+  // ---------- group helpers ----------
+  function groupKey(r){
+    if(groupBy === 'category') return CATLABEL[r.category] || r.category
+    if(groupBy === 'platform') return r.platform || 'Not set'
+    if(groupBy === 'owner') return r.owner || 'Unassigned'
+    if(groupBy === 'due') return dueBucket(r)
+    return clientSide() ? bucketOf(r) : r.stage
+  }
+  function groupClass(label){
+    if(groupBy === 'due') return label === 'Overdue' ? 'p-pink' : label === 'This week' ? 'p-gold' : label === 'Done' ? 'p-green' : 'p-gray'
+    if(groupBy === 'status'){
+      if(clientSide()) return {'Needs your action':'p-gold','In progress':'p-blue','Coming up':'p-gray','Done':'p-green'}[label] || 'p-gray'
+      return stageClass(label)
+    }
+    return 'p-gray'
+  }
+  function groupSort(labels){
+    if(groupBy === 'due') return labels.sort((a,b) => DUEORDER.indexOf(a) - DUEORDER.indexOf(b))
+    if(groupBy === 'status') return clientSide()
+      ? labels.sort((a,b) => BUCKETS.indexOf(a) - BUCKETS.indexOf(b))
+      : labels.sort((a,b) => ordIdx(a) - ordIdx(b))
+    if(groupBy === 'category'){
+      const order = PROFILES[current].cats.map(c => CATLABEL[c])
+      return labels.sort((a,b) => order.indexOf(a) - order.indexOf(b))
+    }
+    return labels.sort((a,b) => a.localeCompare(b))
   }
 
+  // ---------- tabs and auth ----------
   function drawTabs(){
     $('tabs').innerHTML = Object.keys(PROFILES).map(k =>
-      `<button class="${k===current?'on':''}" data-k="${k}">${PROFILES[k].name}</button>`).join('')
-    $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => { location.hash = b.dataset.k })
+      `<button class="tab ${k===current?'on':''}" data-k="${k}"><b>${esc(PROFILES[k].name)}</b><small>${esc(PROFILES[k].sub)}</small></button>`).join('')
   }
-
   function drawAuth(){
-    $('authbar').innerHTML = user
-      ? `<button class="btn ghost" id="outBtn">Log out</button>`
-      : `<button class="btn ghost" id="inBtn">Owner login</button>`
-    if(user){ $('outBtn').onclick = () => db.auth.signOut() }
-    else { $('inBtn').onclick = () => { $('loginCard').classList.remove('hide'); $('loginCard').scrollIntoView({behavior:'smooth', block:'center'}); $('email').focus() } }
+    $('authbar').innerHTML = user ? `<button class="btn ghost" id="outBtn">Log out</button>` : ''
+    if(user) $('outBtn').onclick = () => db.auth.signOut()
+    $('ownerLink').classList.toggle('hide', !!user)
     if(user) $('loginCard').classList.add('hide')
     $('addCard').classList.toggle('hide', !user)
     render()
   }
+  $('ownerLink').onclick = e => {
+    e.preventDefault()
+    $('loginCard').classList.remove('hide')
+    $('loginCard').scrollIntoView({behavior:'smooth', block:'center'})
+    $('email').focus()
+  }
 
+  // ---------- stat tiles ----------
+  function tilesFor(){
+    const act = r => isActive(r)
+    const late = {k:'late', label:'Overdue', fn:isLate, bad:true}
+    if(current === 'cohort') return [
+      {k:'ok', label:'Learners on track', fn:r => r.category==='member' && r.stage==='Active', warm:true},
+      {k:'risk', label:'Need a nudge', fn:r => r.category==='member' && r.stage==='At risk'}, late]
+    if(current === 'operations') return [
+      {k:'open', label:'Open leads', fn:r => r.category==='lead' && act(r), warm:true},
+      {k:'them', label:'Waiting on them', fn:r => act(r) && r.waiting_on==='them'}, late]
+    if(current === 'affiliate') return [
+      {k:'pay', label:'Payouts due', fn:r => r.category==='partner' && r.stage==='Payout due', warm:true},
+      {k:'them', label:'Waiting on partner', fn:r => act(r) && r.waiting_on==='them'}, late]
+    return [
+      {k:'them', label:view==='client' ? 'Waiting on you' : 'Waiting on client', fn:r => act(r) && r.waiting_on==='them', warm:true},
+      {k:'us', label:view==='client' ? 'In our hands' : 'Our turn', fn:r => act(r) && r.waiting_on==='us'}, late]
+  }
+
+  // ---------- main draw ----------
   function render(){
     const p = PROFILES[current]
     $('ptitle').textContent = p.title
     $('ptag').textContent = p.tag
-    $('viewSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === view))
+    $('pbest').innerHTML = `<b>Best for:</b> ${esc(p.best)}`
+    const vb = $('viewSeg').querySelectorAll('button')
+    vb[0].textContent = p.views[0]; vb[1].textContent = p.views[1]
+    vb.forEach(b => b.classList.toggle('on', b.dataset.v === view))
+    $('modeSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.m === mode))
+    $('chatTitle').textContent = p.chat
 
     const all = viewRows()
-    const act = all.filter(isActive)
-    const nLate = act.filter(isLate).length
-    const nThem = act.filter(r => r.waiting_on === 'them').length
-    const nUs   = act.filter(r => r.waiting_on === 'us').length
-    const themLabel = view === 'client' ? 'Waiting on you' : 'Waiting on them'
-    const usLabel = view === 'client' ? 'In our hands' : 'Our turn'
+    const sideMode = view === 'client' && current !== 'agency'
+    ;['stats','tools','modesRow','list','inbox'].forEach(id => $(id).classList.toggle('hide', sideMode))
+    $('side').classList.toggle('hide', !sideMode)
 
-    $('demoNote').innerHTML = view === 'client'
-      ? `This is what your client sees. Try it: find an item marked <b>Your turn</b> and click Approve or Request changes. Nothing is saved. <button id="resetSim">Reset the demo</button>`
-      : `This is the team view: the full picture behind the scenes, with owners and next steps. Switch to Client view to see what your clients see. <button id="resetSim">Reset the demo</button>`
-    $('resetSim').onclick = () => { sim = {}; simLog = []; render(); toast('Demo reset') }
+    $('demoNote').innerHTML = p.notes[view] + ` <button data-reset>Reset the demo</button>`
+    $('guide').innerHTML = guideOff ? '' : `<div class="guide"><span class="gt">Start here</span><ol>${p.guide.map(s => `<li>${esc(s)}</li>`).join('')}</ol><button class="btn ghost small" data-guide>Got it</button></div>`
 
-    $('stats').innerHTML = `
-      <button class="stat ${focus==='them'?'on':''} warm" data-f="them"><b>${nThem}</b><span>${themLabel}</span></button>
-      <button class="stat ${focus==='us'?'on':''}" data-f="us"><b>${nUs}</b><span>${usLabel}</span></button>
-      <button class="stat ${focus==='late'?'on':''} ${nLate?'bad':''}" data-f="late"><b>${nLate}</b><span>Overdue</span></button>`
-    $('stats').querySelectorAll('button').forEach(b => b.onclick = () => { focus = (focus === b.dataset.f ? 'all' : b.dataset.f); render() })
-
-    $('chips').innerHTML = ['all', ...p.cats].map(c =>
-      `<button class="chip ${c===cat?'on':''}" data-c="${c}">${c==='all'?'All':c}</button>`).join('')
-    $('chips').querySelectorAll('button').forEach(b => b.onclick = () => { cat = b.dataset.c; render() })
-
-    let shown = all.filter(r => cat === 'all' || r.category === cat)
-    if(focus === 'them') shown = shown.filter(r => isActive(r) && r.waiting_on === 'them')
-    if(focus === 'us')   shown = shown.filter(r => isActive(r) && r.waiting_on === 'us')
-    if(focus === 'late') shown = shown.filter(isLate)
-    shown.sort((a,b) => {
-      if(view === 'client'){
-        const ta = a.waiting_on === 'them' && isActive(a) ? 0 : 1
-        const tb = b.waiting_on === 'them' && isActive(b) ? 0 : 1
-        if(ta !== tb) return ta - tb
-      }
-      const fa = isActive(a) ? 0 : 1, fb = isActive(b) ? 0 : 1
-      if(fa !== fb) return fa - fb
-      return String(a.due_date || '9999').localeCompare(String(b.due_date || '9999'))
-    })
-
-    $('list').innerHTML = shown.length ? shown.map(card).join('') : `<p class="empty">Nothing here. Try another filter.</p>`
-    $('list').querySelectorAll('[data-approve]').forEach(b => b.onclick = () => approve(b.dataset.approve))
-    $('list').querySelectorAll('[data-change]').forEach(b => b.onclick = () => openChange(b.dataset.change))
-    $('list').querySelectorAll('[data-del]').forEach(b => b.onclick = () => removeRow(b.dataset.del))
-    $('list').querySelectorAll('select.stage').forEach(s => s.onchange = () => changeStage(s.dataset.id, s.value))
+    if(sideMode){
+      $('side').innerHTML = current === 'cohort' ? learnerView(all) : current === 'operations' ? leadView(all) : partnerView(all)
+    } else {
+      drawWorkspace(all, p)
+    }
 
     // add form lists
     const prevCat = $('fCat').value
-    $('fCat').innerHTML = p.cats.map(c => `<option value="${c}">${c}</option>`).join('')
+    $('fCat').innerHTML = p.cats.map(c => `<option value="${c}">${esc(CATLABEL[c])}</option>`).join('')
     if(p.cats.includes(prevCat)) $('fCat').value = prevCat
     drawStageOptions()
 
@@ -340,25 +640,82 @@
       : `<li><span style="color:var(--muted)">Nothing has happened yet.</span></li>`
   }
 
+  function drawWorkspace(all, p){
+    const tiles = tilesFor()
+    $('stats').innerHTML = tiles.map(t => {
+      const n = all.filter(t.fn).length
+      return `<button class="stat ${focus===t.k?'on':''} ${t.warm?'warm':''} ${t.bad&&n?'bad':''}" data-f="${t.k}"><b>${n}</b><span>${esc(t.label)}</span></button>`
+    }).join('')
+
+    // "Needs your action" inbox (client view of Client Work)
+    if(clientSide()){
+      const themRows = all.filter(r => isActive(r) && r.waiting_on === 'them')
+      $('inbox').innerHTML = themRows.length
+        ? `<div class="inbox"><h3>Needs your action (${themRows.length})</h3><ul>${
+            themRows.slice().sort(byDue).map(r => `<li><span><b>${esc(r.title)}</b><br><span style="color:var(--muted)">${esc(r.next_step || r.stage)}${r.due_date ? ' &middot; due ' + esc(fmtDate(r.due_date)) : ''}</span></span>
+              <button class="btn small" data-open="${esc(r.id)}">Open</button></li>`).join('')
+          }</ul></div>`
+        : `<div class="inbox"><h3>Needs your action (0)</h3><p class="ok">You are all caught up. Thank you for staying on top of it.</p></div>`
+    } else { $('inbox').innerHTML = '' }
+
+    $('chips').innerHTML = ['all', ...p.cats].map(c =>
+      `<button class="chip ${c===cat?'on':''}" data-c="${c}">${c==='all'?'All':esc(CATLABEL[c])}</button>`).join('')
+
+    $('gbWrap').classList.toggle('hide', mode !== 'grouped')
+    const gbOpts = [['status', clientSide() ? 'Status (simple)' : 'Status'],['category','Category'],['platform','Platform or type'],['owner','Owner'],['due','Due date']]
+    $('gbSel').innerHTML = gbOpts.map(o => `<option value="${o[0]}" ${o[0]===groupBy?'selected':''}>${o[1]}</option>`).join('')
+
+    let shown = all.filter(r => cat === 'all' || r.category === cat)
+    const tile = tiles.find(t => t.k === focus)
+    if(tile) shown = shown.filter(tile.fn)
+    const needle = q.trim().toLowerCase()
+    if(needle) shown = shown.filter(r => [r.title, r.notes, r.owner, r.platform, r.next_step, r.stage, r.category].join(' ').toLowerCase().includes(needle))
+
+    if(mode === 'calendar') $('list').innerHTML = calHtml(shown)
+    else if(mode === 'board') $('list').innerHTML = boardHtml(shown)
+    else if(!shown.length) $('list').innerHTML = `<p class="empty">Nothing here. Try another filter.</p>`
+    else if(mode === 'list'){
+      shown.sort((a,b) => {
+        if(clientSide()){
+          const ta = a.waiting_on === 'them' && isActive(a) ? 0 : 1
+          const tb = b.waiting_on === 'them' && isActive(b) ? 0 : 1
+          if(ta !== tb) return ta - tb
+        }
+        const fa = isActive(a) ? 0 : 1, fb = isActive(b) ? 0 : 1
+        if(fa !== fb) return fa - fb
+        return byDue(a, b)
+      })
+      $('list').innerHTML = shown.map(card).join('')
+    } else {
+      const groups = {}
+      shown.forEach(r => { const k = groupKey(r); (groups[k] = groups[k] || []).push(r) })
+      $('list').innerHTML = groupSort(Object.keys(groups)).map(k => `
+        <section class="grp">
+          <div class="ghead"><span class="pill ${groupClass(k)}">${esc(k)}</span><span class="count">${groups[k].length} item${groups[k].length>1?'s':''}</span></div>
+          ${groups[k].sort(byDue).map(card).join('')}
+        </section>`).join('')
+    }
+  }
+
   function drawStageOptions(){
     const list = STAGES[$('fCat').value] || []
     $('fStage').innerHTML = list.map(s => `<option>${esc(s)}</option>`).join('')
   }
 
+  function progHtml(r){
+    return typeof r.progress === 'number' ? `<div class="prog"><span><i style="width:${Math.min(100,r.progress)}%"></i></span>${Math.min(100,r.progress)}%</div>` : ''
+  }
+
+  // ---------- list card ----------
   function card(r){
     const late = isLate(r)
-    const yourTurn = view === 'client' && isActive(r) && r.waiting_on === 'them'
-    const needsReview = r.stage === 'Client review'
-    const link = safeUrl(r.link)
-    const turnText = !isActive(r) || !r.waiting_on ? ''
-      : (r.waiting_on === 'them'
-          ? (view === 'client' ? 'Your turn' : 'Waiting on them')
-          : (view === 'client' ? 'Our turn' : 'Our turn'))
+    const yourTurn = clientSide() && isActive(r) && r.waiting_on === 'them'
+    const tt = turnText(r)
     const stageEl = (user && view === 'team')
       ? `<select class="stage" data-id="${esc(r.id)}">${(STAGES[r.category]||[r.stage]).map(s => `<option ${s===r.stage?'selected':''}>${esc(s)}</option>`).join('')}</select>`
       : `<span class="pill ${stageClass(r.stage)}">${esc(r.stage)}</span>`
     const acts = []
-    if(needsReview){
+    if(r.stage === 'Client review'){
       acts.push(`<button class="btn small" data-approve="${esc(r.id)}">Approve</button>`)
       acts.push(`<button class="btn ghost small" data-change="${esc(r.id)}">Request changes</button>`)
     }
@@ -366,31 +723,323 @@
     return `
     <article class="item ${yourTurn?'you':''}">
       <div>
-        <span class="cat">${esc(r.category)}</span>
-        <div class="title">${esc(r.title)}</div>
+        <span class="cat">${esc(CATLABEL[r.category] || r.category)}${r.platform ? `<span class="tag">${esc(r.platform)}</span>` : ''}</span>
+        <button class="titlebtn" data-open="${esc(r.id)}">${esc(r.title)}</button>
         ${r.notes ? `<div class="meta">${esc(r.notes)}</div>` : ''}
         ${view === 'team' && r.owner ? `<div class="meta">Owner: ${esc(r.owner)}</div>` : ''}
         ${r.next_step ? `<div class="next"><b>Next:</b> ${esc(r.next_step)}</div>` : ''}
-        ${r.client_comment && r.stage === 'Changes requested' ? `<div class="quote">${esc(view==='client'?'You asked':'Client asked')}: ${esc(r.client_comment)}</div>` : ''}
-        ${link ? `<a class="btn ghost small link" href="${esc(link)}" target="_blank" rel="noopener">${r.category==='content' ? 'View draft' : 'View'}</a>` : ''}
+        ${progHtml(r)}
+        ${r.client_comment && r.stage === 'Changes requested' ? `<div class="quote">${esc(clientSide()?'You asked':'Client asked')}: ${esc(r.client_comment)}</div>` : ''}
+        <button class="btn ghost small link" data-open="${esc(r.id)}">${r.category==='content' ? 'View draft' : 'View details'}</button>
       </div>
       <div class="side">
         ${stageEl}
-        ${turnText ? `<span class="turn ${r.waiting_on==='them'?'them':''}">${turnText}</span>` : ''}
+        ${tt ? `<span class="turn ${r.waiting_on==='them'?'them':''}">${tt}</span>` : ''}
         ${r.due_date ? `<span class="due ${late?'late':''}">${late?'Overdue: ':'Due '}${esc(fmtDate(r.due_date))}</span>` : ''}
         <div class="acts">${acts.join('')}</div>
       </div>
     </article>`
   }
 
+  // ---------- board ----------
+  function boardHtml(shown){
+    let cols
+    if(clientSide()) cols = BUCKETS.slice()
+    else if(cat !== 'all' && STAGES[cat]) cols = STAGES[cat].slice()
+    else cols = [...new Set(shown.map(r => r.stage))].sort((a,b) => ordIdx(a) - ordIdx(b))
+    if(!cols.length) return `<p class="empty">Nothing here. Try another filter.</p>`
+    return `<div class="board">` + cols.map(s => {
+      const items = shown.filter(r => (clientSide() ? bucketOf(r) : r.stage) === s).sort(byDue)
+      const cls = clientSide() ? {'Needs your action':'p-gold','In progress':'p-blue','Coming up':'p-gray','Done':'p-green'}[s] : stageClass(s)
+      return `<div class="col">
+        <div class="ghead"><span class="pill ${cls}">${esc(s)}</span><span class="count">${items.length}</span></div>
+        ${items.length ? items.map(bcard).join('') : `<div class="colempty">Nothing here yet.</div>`}
+      </div>`
+    }).join('') + `</div>`
+  }
+  function bcard(r){
+    const late = isLate(r)
+    const yourTurn = clientSide() && isActive(r) && r.waiting_on === 'them'
+    const tt = turnText(r)
+    const acts = r.stage === 'Client review'
+      ? `<div class="acts"><button class="btn small" data-approve="${esc(r.id)}">Approve</button><button class="btn ghost small" data-change="${esc(r.id)}">Changes</button></div>` : ''
+    return `<div class="bcard ${yourTurn?'you':''}">
+      <span class="cat">${esc(CATLABEL[r.category] || r.category)}${r.platform ? `<span class="tag">${esc(r.platform)}</span>` : ''}</span>
+      <button class="titlebtn" data-open="${esc(r.id)}">${esc(r.title)}</button>
+      ${view === 'team' && r.owner ? `<div class="meta">${esc(r.owner)}</div>` : ''}
+      ${tt ? `<div class="meta"><span class="turn ${r.waiting_on==='them'?'them':''}">${tt}</span></div>` : ''}
+      ${r.due_date ? `<div class="meta due ${late?'late':''}">${late?'Overdue: ':'Due '}${esc(fmtDate(r.due_date))}</div>` : ''}
+      ${acts}
+    </div>`
+  }
+
+  // ---------- calendar ----------
+  function calHtml(shown){
+    const now = new Date()
+    const base = new Date(now.getFullYear(), now.getMonth() + calOff, 1)
+    const y = base.getFullYear(), m = base.getMonth()
+    const days = new Date(y, m + 1, 0).getDate()
+    const byDate = {}
+    shown.forEach(r => { if(r.due_date) (byDate[r.due_date] = byDate[r.due_date] || []).push(r) })
+    const undated = shown.filter(r => !r.due_date).length
+    let cells = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => `<div class="dow">${d}</div>`).join('')
+    for(let i = 0; i < base.getDay(); i++) cells += `<div class="day blank"></div>`
+    for(let d = 1; d <= days; d++){
+      const ds = `${y}-${pad(m+1)}-${pad(d)}`
+      const items = (byDate[ds] || []).map(r => `<button class="cal-it ${stageClass(r.stage)}" data-open="${esc(r.id)}" title="${esc(r.title)}">${esc(r.title)}</button>`).join('')
+      cells += `<div class="day ${ds===todayStr()?'today':''}"><span class="n">${d}</span>${items}</div>`
+    }
+    return `<div class="calbar">
+        <b>${base.toLocaleDateString(undefined,{month:'long', year:'numeric'})}</b>
+        <span class="acts"><button class="btn ghost small" data-cal="-1">Previous</button><button class="btn ghost small" data-cal="0">Today</button><button class="btn ghost small" data-cal="1">Next</button></span>
+      </div>
+      <div class="cal">${cells}</div>
+      ${undated ? `<p class="empty">${undated} item${undated>1?'s have':' has'} no date, so ${undated>1?'they do':'it does'} not show here.</p>` : ''}`
+  }
+
+  // ---------- previews ----------
+  function previewHtml(r){
+    const ls = lines(r.preview_body)
+    if(!ls.length) return r.notes ? `<div class="docbox"><p>${esc(r.notes)}</p></div>` : ''
+    const kind = r.preview_kind || 'doc'
+    if(kind === 'post'){
+      const img = ls.find(l => /^IMAGE:/i.test(l))
+      const rest = ls.filter(l => l !== img)
+      const brand = r.category === 'asset' ? 'Your page' : BRAND
+      return `<div class="mock">
+        <div class="mhead"><span class="av">${esc(brand[0])}</span><div><b>${esc(brand)}</b><small>${esc(r.platform || 'Social')} &middot; ${r.category==='asset'?'ready to share':'draft preview'}</small></div></div>
+        ${img ? `<div class="mimg">${esc(img.replace(/^IMAGE:\s*/i,''))}</div>` : ''}
+        <div class="mcap">${rest.map(l => `<p>${esc(l)}</p>`).join('')}</div>
+      </div>`
+    }
+    if(kind === 'email'){
+      const sub = ls.find(l => /^SUBJECT:/i.test(l))
+      const rest = ls.filter(l => l !== sub)
+      return `<div class="mock">
+        ${sub ? `<div class="esub"><small>Subject</small>${esc(sub.replace(/^SUBJECT:\s*/i,''))}</div>` : ''}
+        <div class="mcap">${rest.map(l => `<p>${esc(l)}</p>`).join('')}</div>
+      </div>`
+    }
+    if(kind === 'profile'){
+      return `<div class="docbox">${ls.map(l => {
+        const m = l.match(/^([^:]{1,32}):\s*(.+)$/)
+        return m ? `<div class="kv"><span>${esc(m[1])}</span><b>${esc(m[2])}</b></div>` : `<p>${esc(l)}</p>`
+      }).join('')}</div>`
+    }
+    let out = '', inList = false
+    ls.forEach(l => {
+      if(l.startsWith('- ')){ if(!inList){ out += '<ul>'; inList = true } out += `<li>${esc(l.slice(2))}</li>`; return }
+      if(inList){ out += '</ul>'; inList = false }
+      out += l.startsWith('# ') ? `<h5>${esc(l.slice(2))}</h5>` : `<p>${esc(l)}</p>`
+    })
+    if(inList) out += '</ul>'
+    return `<div class="docbox">${out}</div>`
+  }
+
+  function openDetail(id){
+    const r = viewRows().find(x => x.id === id); if(!r) return
+    const tt = turnText(r)
+    const link = safeUrl(r.link)
+    const hist = [...simLog, ...activity].filter(a => a.item_title === r.title).slice(0, 6)
+    const files = FILES[r.category] || []
+    $('detDlg').innerHTML = `
+      <div class="dtop">
+        <div><span class="pill ${stageClass(r.stage)}">${esc(r.stage)}</span>
+          <h3 style="font-size:1.25rem;margin-top:8px">${esc(r.title)}</h3></div>
+        <button class="xbtn" data-close>Close</button>
+      </div>
+      <div class="dmeta">
+        <span>${esc(CATLABEL[r.category] || r.category)}</span>
+        ${r.platform ? `<span class="tag" style="margin:0">${esc(r.platform)}</span>` : ''}
+        ${view === 'team' && r.owner ? `<span>Owner: ${esc(r.owner)}</span>` : ''}
+        ${tt ? `<span class="turn ${r.waiting_on==='them'?'them':''}">${tt}</span>` : ''}
+        ${r.due_date ? `<span class="${isLate(r)?'due late':''}">${isLate(r)?'Overdue: ':'Due '}${esc(fmtDate(r.due_date))}</span>` : ''}
+      </div>
+      ${r.next_step ? `<div class="next"><b>Next:</b> ${esc(r.next_step)}</div>` : ''}
+      ${progHtml(r)}
+      ${r.client_comment && r.stage === 'Changes requested' ? `<div class="quote">${esc(clientSide()?'You asked':'Client asked')}: ${esc(r.client_comment)}</div>` : ''}
+      ${previewHtml(r)}
+      ${files.length ? `<h4>Files</h4><div class="files">${files.map(f => `<button class="filechip" data-toast="Sample file. In your portal this opens the real file.">${esc(f)}</button>`).join('')}</div>` : ''}
+      ${hist.length ? `<h4>History</h4><ul class="dlog">${hist.map(a => `<li><span>${esc(a.action)}</span><time>${esc(ago(a.created_at))}</time></li>`).join('')}</ul>` : ''}
+      <div class="dacts">
+        ${r.stage === 'Client review' ? `<button class="btn" data-approve="${esc(r.id)}">Approve</button><button class="btn ghost" data-change="${esc(r.id)}">Request changes</button>` : ''}
+        <button class="btn ghost" data-ask="${esc(r.id)}">Ask a question</button>
+        ${link ? `<a class="btn ghost" href="${esc(link)}" target="_blank" rel="noopener">Open the original</a>` : ''}
+      </div>`
+    if(!$('detDlg').open) $('detDlg').showModal()
+  }
+  function closeDetail(){ if($('detDlg').open) $('detDlg').close() }
+
+  // ---------- Programs: learner view ----------
+  function pickOf(key, list){
+    return list.find(r => r.id === pick[key]) || list[0]
+  }
+  function picker(key, list, nameFn){
+    const cur = pickOf(key, list)
+    return `<select data-pick="${key}" aria-label="Choose a sample">${list.map(r => `<option value="${esc(r.id)}" ${cur && r.id===cur.id?'selected':''}>${esc(nameFn(r))}</option>`).join('')}</select>`
+  }
+  function learnerView(all){
+    const members = all.filter(r => r.category === 'member')
+    if(!members.length) return `<p class="empty">No learners yet.</p>`
+    const L = pickOf('cohort', members)
+    const first = afterColon(L.title)
+    const done = [...doneSet].filter(k => k.startsWith(L.id + ':')).length
+    const prog = Math.min(100, (L.progress || 0) + done * 8)
+    const mats = all.filter(r => r.category === 'material')
+    const todos = mats.filter(m => m.platform === 'Worksheet' && m.stage === 'Published' && m.due_date && m.due_date >= todayStr()).sort(byDue)
+    const live = all.find(r => r.category === 'module' && r.stage === 'Live') || all.find(r => r.category === 'module' && r.stage === 'Upcoming')
+    const call = all.find(r => r.category === 'coaching' && r.title.includes(first))
+    const mods = all.filter(r => r.category === 'module').sort(byDue)
+    const types = ['Video','Recording','Guide','Worksheet']
+    const lib = types.map(t => {
+      const items = mats.filter(m => m.platform === t)
+      if(!items.length) return ''
+      return `<h4>${t}s</h4>` + items.map(m => m.stage === 'Published'
+        ? `<div class="row"><button class="titlebtn" data-open="${esc(m.id)}">${esc(m.title)}</button><button class="btn ghost small" data-open="${esc(m.id)}">Open</button></div>`
+        : `<div class="row"><span style="color:var(--muted)">${esc(m.title)}</span><span class="pill p-gray">Coming soon</span></div>`).join('')
+    }).join('')
+    return `
+      <div class="welcome">
+        <div><h2>Welcome back, ${esc(first)}</h2>
+          <p class="tagline" style="margin:4px 0 0">Here is everything you need for the program, in one place.</p></div>
+        <label class="gb">Viewing as ${picker('cohort', members, r => afterColon(r.title))}</label>
+      </div>
+      <div class="svc wide">
+        <h3>Your progress</h3>
+        <div class="bigprog"><span><i style="width:${prog}%"></i></span><b>${prog}%</b></div>
+        ${L.next_step ? `<p class="next"><b>Your next step:</b> ${esc(L.next_step)}</p>` : ''}
+        ${L.notes ? `<p style="color:var(--muted)">A note from your coach: ${esc(L.notes)}</p>` : ''}
+      </div>
+      <div class="svgrid space">
+        <div class="svc">
+          <h3>Up next</h3>
+          ${live ? `<p><b>${esc(live.title)}</b></p><p style="color:var(--muted)">${esc(live.next_step || live.stage)}${live.due_date ? ' &middot; ' + esc(fmtDate(live.due_date)) : ''}</p>
+            <button class="btn small" data-toast="Added to your calendar (demo).">Add to my calendar</button>
+            <button class="btn ghost small" data-open="${esc(live.id)}">See the plan</button>` : `<p style="color:var(--muted)">Nothing scheduled yet.</p>`}
+        </div>
+        <div class="svc">
+          <h3>Your to do</h3>
+          ${todos.length ? todos.map(m => {
+            const key = L.id + ':' + m.id
+            return `<div class="row"><span><button class="titlebtn" data-open="${esc(m.id)}">${esc(m.title)}</button><span style="color:var(--muted);font-size:.82rem">Due ${esc(fmtDate(m.due_date))}</span></span>
+              ${doneSet.has(key) ? `<span class="pill p-green">Done</span>`
+                : `<span class="acts"><button class="btn small" data-done="${esc(key)}">Mark as done</button><button class="btn ghost small" data-toast="Sent to your coach for feedback (demo). Nothing is saved.">Ask for feedback</button></span>`}</div>`
+          }).join('') : `<p style="color:var(--muted)">You are all caught up. Nice work.</p>`}
+        </div>
+        <div class="svc wide">
+          <h3>Learning library</h3>
+          ${lib}
+        </div>
+        <div class="svc">
+          <h3>Your coaching call</h3>
+          ${call ? `<p><b>${esc(call.stage)}</b>${call.due_date ? ' &middot; ' + esc(fmtDate(call.due_date)) : ''}</p><p style="color:var(--muted)">${esc(call.next_step || '')}</p>
+            <button class="btn ghost small" data-open="${esc(call.id)}">See details</button>`
+            : `<p style="color:var(--muted)">You have not booked a 1:1 call yet.</p><button class="btn small" data-book="${esc(first)}">Book a 1:1 call</button>`}
+        </div>
+        <div class="svc">
+          <h3>Your coach</h3>
+          <p style="color:var(--muted)">Stuck on something? Send a quick message and your coach will reply here.</p>
+          <button class="btn small" data-chat="Program question from ${esc(first)}">Message your coach</button>
+        </div>
+        <div class="svc wide">
+          <h3>The weeks ahead</h3>
+          ${mods.map(m => `<div class="row"><button class="titlebtn" data-open="${esc(m.id)}">${esc(m.title)}</button><span class="pill ${stageClass(m.stage)}">${esc(m.stage)}</span></div>`).join('')}
+        </div>
+      </div>`
+  }
+
+  // ---------- Sales & Tasks: lead view ----------
+  function leadView(all){
+    const leads = all.filter(r => r.category === 'lead')
+    if(!leads.length) return `<p class="empty">No leads yet.</p>`
+    const L = pickOf('operations', leads)
+    const name = L.title.replace(/^Sample Lead:\s*/, '')
+    const steps = ['New inquiry','Contacted','Quoted','Follow-up','Won']
+    const idx = steps.indexOf(L.stage)
+    const quoted = ['Quoted','Follow-up'].includes(L.stage)
+    return `
+      <div class="welcome">
+        <div><h2>Hi, ${esc(name)}</h2>
+          <p class="tagline" style="margin:4px 0 0">Here is where things stand with Anggie's Digital Edge.</p></div>
+        <label class="gb">Viewing as ${picker('operations', leads, r => r.title.replace(/^Sample Lead:\s*/, ''))}</label>
+      </div>
+      <div class="svc wide">
+        <h3>Where you are</h3>
+        <div class="stepper">${steps.map((s,i) => `<span class="step ${i===idx?'on':(idx>=0&&i<idx?'done':'')}">${esc(s)}</span>`).join('')}</div>
+        ${L.stage === 'Lost' ? `<p style="color:var(--muted)">This one is closed for now.</p>` : ''}
+        ${L.next_step ? `<p class="next"><b>${L.waiting_on==='them' ? 'Your turn' : 'Our turn'}:</b> ${esc(L.next_step)}</p>` : ''}
+      </div>
+      <div class="svc wide space">
+        <h3>${quoted ? 'Your proposal' : L.stage === 'Won' ? 'Welcome' : 'Your inquiry'}</h3>
+        ${previewHtml(L)}
+        <div class="acts" style="justify-content:flex-start;margin-top:10px">
+          ${quoted ? `<button class="btn" data-accept="${esc(L.id)}">Accept proposal</button>` : ''}
+          ${['New inquiry','Contacted'].includes(L.stage) ? `<a class="btn" href="mailto:${MAIL}?subject=I%20would%20like%20to%20book%20a%20discovery%20call">Book a discovery call</a>` : ''}
+          ${L.stage === 'Won' ? `<button class="btn" data-toast="Welcome form opened (demo).">Complete your welcome form</button>` : ''}
+          <button class="btn ghost" data-chat="Question about ${esc(name)}">Ask a question</button>
+        </div>
+      </div>`
+  }
+
+  // ---------- Partners: partner view ----------
+  function partnerView(all){
+    const partners = all.filter(r => r.category === 'partner')
+    if(!partners.length) return `<p class="empty">No partners yet.</p>`
+    const P = pickOf('affiliate', partners)
+    const name = afterColon(P.title)
+    const kv = kvOf(P.preview_body)
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+    const link = 'https://yourbrand.com/?ref=' + slug
+    const due = kv['Commission due'] || '0 pesos'
+    const hasDue = parseInt(String(due).replace(/[^0-9]/g, ''), 10) > 0
+    const assets = all.filter(r => r.category === 'asset')
+    return `
+      <div class="welcome">
+        <div><h2>Welcome, ${esc(name)}</h2>
+          <p class="tagline" style="margin:4px 0 0">Thank you for sharing our work. Here is how it is going.</p></div>
+        <label class="gb">Viewing as ${picker('affiliate', partners, r => afterColon(r.title))}</label>
+      </div>
+      <div class="svc wide">
+        <h3>Your results</h3>
+        <div class="minis">
+          <div class="mini"><b>${esc(parseInt(kv['Referrals'], 10) || 0)}</b><span>Referrals</span></div>
+          <div class="mini"><b>${esc(parseInt(kv['Signed clients'], 10) || 0)}</b><span>Signed clients</span></div>
+          <div class="mini"><b>${esc(due.replace(' pesos',''))}</b><span>Commission due (pesos)</span></div>
+        </div>
+        ${P.next_step ? `<p class="next"><b>${P.waiting_on==='them' ? 'Your turn' : 'Our turn'}:</b> ${esc(P.next_step)}</p>` : ''}
+      </div>
+      <div class="svgrid space">
+        <div class="svc">
+          <h3>Your referral link</h3>
+          <div class="linkbox"><span>${esc(link)}</span><button class="btn small" data-copy="${esc(link)}">Copy my link</button></div>
+          <p style="color:var(--muted);font-size:.88rem">Every signup through this link is tracked to you.</p>
+        </div>
+        <div class="svc">
+          <h3>Your payout</h3>
+          ${P.stage === 'Payout due'
+            ? `<p><span class="pill p-gold">Payout on the way</span></p><p style="color:var(--muted)">${esc(P.next_step || '')}</p>`
+            : `<p style="color:var(--muted)">${hasDue ? 'You have a commission ready to pay out.' : 'No payout is due yet. Keep sharing, and it will show up here.'}</p>
+               <button class="btn small" data-payout="${esc(P.id)}">Request payout</button>`}
+        </div>
+        <div class="svc wide">
+          <h3>Promo kit</h3>
+          ${assets.map(a => a.stage === 'Ready'
+            ? `<div class="row"><button class="titlebtn" data-open="${esc(a.id)}">${esc(a.title)}</button><span class="acts">${['post','email'].includes(a.preview_kind) ? `<button class="btn small" data-copytext="${esc(a.id)}">Copy text</button>` : ''}<button class="btn ghost small" data-open="${esc(a.id)}">Open</button></span></div>`
+            : `<div class="row"><span style="color:var(--muted)">${esc(a.title)}</span><span class="pill p-gray">Coming soon</span></div>`).join('')}
+        </div>
+      </div>`
+  }
+
   // ---------- the "try it" buttons (nothing is saved) ----------
   function titleOf(id){ const r = rows.find(x => x.id === id); return r ? r.title : '' }
   function approve(id){
+    closeDetail()
     sim[id] = {stage:'Approved', waiting_on:'us', next_step:'We will schedule it and let you know.', approved_at:new Date().toISOString()}
     simLog.unshift({item_title:titleOf(id), action:'you approved it (demo)', created_at:new Date().toISOString()})
     render(); toast('Approved. This is a demo, so nothing was saved.')
   }
   function openChange(id){
+    closeDetail()
     chgId = id
     $('chgFor').textContent = titleOf(id)
     $('chgText').value = ''
@@ -403,24 +1052,106 @@
     simLog.unshift({item_title:titleOf(chgId), action:'you asked for changes (demo)', created_at:new Date().toISOString()})
     $('chgDlg').close(); render(); toast('Sent to the team. This is a demo, so nothing was saved.')
   }
+  function logSim(title, action){ simLog.unshift({item_title:title, action, created_at:new Date().toISOString()}) }
+
+  // ---------- sample chat (nothing is saved) ----------
+  function openChat(ctx){
+    closeDetail()
+    $('chatPanel').classList.remove('hide')
+    if(!chatMsgs.length) chatMsgs.push({w:'them', t:`Hi! I'm Anggie. Ask me anything about how a portal like this could work for your business.`})
+    if(ctx) chatMsgs.push({w:'note', t:'About: ' + ctx})
+    drawChat()
+    $('chatIn').focus()
+  }
+  function drawChat(){
+    $('chatBody').innerHTML = chatMsgs.map(m => `<div class="bub ${m.w}">${esc(m.t)}</div>`).join('')
+    $('chatBody').scrollTop = $('chatBody').scrollHeight
+  }
+  $('chatForm').onsubmit = e => {
+    e.preventDefault()
+    const t = $('chatIn').value.trim(); if(!t) return
+    chatMsgs.push({w:'me', t}); $('chatIn').value = ''; drawChat()
+    setTimeout(() => {
+      chatMsgs.push({w:'them', t:`Thank you for your message! In a real portal, this lands in your team's inbox and the reply appears right here. Want a portal like this for your business? Email me at ${MAIL}.`})
+      drawChat()
+    }, 900)
+  }
+
+  // ---------- one click handler for everything ----------
+  const ACTION_SEL = '[data-approve],[data-change],[data-del],[data-open],[data-close],[data-cal],[data-done],[data-toast],[data-chat],[data-chatclose],[data-accept],[data-copy],[data-copytext],[data-payout],[data-book],[data-ask],[data-reset],[data-guide],[data-f],[data-c],[data-m],[data-v],[data-k]'
+  document.addEventListener('click', e => {
+    if(e.target === $('detDlg')) return closeDetail()
+    const t = e.target.closest(ACTION_SEL); if(!t) return
+    const d = t.dataset
+    if('approve' in d) return approve(d.approve)
+    if('change' in d) return openChange(d.change)
+    if('del' in d) return removeRow(d.del)
+    if('open' in d) return openDetail(d.open)
+    if('close' in d) return closeDetail()
+    if('cal' in d){ calOff = d.cal === '0' ? 0 : calOff + parseInt(d.cal, 10); return render() }
+    if('done' in d){
+      doneSet.add(d.done)
+      const L = rows.find(r => r.id === d.done.split(':')[0]), M = rows.find(r => r.id === d.done.split(':')[1])
+      if(L && M) logSim(afterColon(L.title) + ': ' + M.title, 'marked as done (demo)')
+      render(); return toast('Nice work! Your progress just moved up. Nothing is saved.')
+    }
+    if('toast' in d) return toast(d.toast)
+    if('chatclose' in d) return $('chatPanel').classList.add('hide')
+    if('chat' in d) return openChat(d.chat)
+    if('ask' in d) return openChat(titleOf(d.ask))
+    if('accept' in d){
+      sim[d.accept] = {stage:'Won', waiting_on:null, next_step:'We are preparing your welcome form.'}
+      logSim(titleOf(d.accept), 'proposal accepted (demo)'); render()
+      return toast('Proposal accepted. This is a demo, so nothing was saved.')
+    }
+    if('copy' in d) return copyText(d.copy, 'Link copied.')
+    if('copytext' in d){
+      const r = rows.find(x => x.id === d.copytext)
+      const txt = r ? lines(r.preview_body).filter(l => !/^IMAGE:/i.test(l)).map(l => l.replace(/^SUBJECT:\s*/i, '')).join('\n') : ''
+      return copyText(txt, 'Text copied. Paste it anywhere.')
+    }
+    if('payout' in d){
+      const P = rows.find(x => x.id === d.payout)
+      const due = P ? parseInt(String(kvOf(P.preview_body)['Commission due'] || '0').replace(/[^0-9]/g, ''), 10) : 0
+      if(!due) return toast('You do not have a payout due yet. Keep sharing, and it will show up here.')
+      sim[d.payout] = {stage:'Payout due', waiting_on:'us', next_step:'Payout requested. We will send it this week.'}
+      logSim(P.title, 'payout requested (demo)'); render()
+      return toast('Payout requested. This is a demo, so nothing was saved.')
+    }
+    if('book' in d){
+      logSim('Coaching call: ' + d.book, 'call requested (demo)')
+      render(); return toast('Request sent. Your coach will confirm a time (demo).')
+    }
+    if('reset' in d){ sim = {}; simLog = []; doneSet = new Set(); render(); return toast('Demo reset') }
+    if('guide' in d){ guideOff = true; return render() }
+    if('f' in d){ focus = focus === d.f ? 'all' : d.f; return render() }
+    if('c' in d){ cat = d.c; return render() }
+    if('m' in d){ mode = d.m; return render() }
+    if('v' in d){ view = d.v; return render() }
+    if('k' in d){ location.hash = d.k }
+  })
+  document.addEventListener('change', e => {
+    const t = e.target
+    if(t.matches('select.stage')) changeStage(t.dataset.id, t.value)
+    else if(t.matches('select[data-pick]')){ pick[t.dataset.pick] = t.value; render() }
+    else if(t.id === 'gbSel'){ groupBy = t.value; render() }
+  })
 
   // ---------- real changes (owner only, saved to Supabase) ----------
   async function load(){
     $('msg').textContent = ''
     const [a, b] = await Promise.all([
       db.from('portal_items').select('*').eq('profile', current),
-      db.from('portal_activity').select('*').eq('profile', current).order('created_at', {ascending:false}).limit(8)
+      db.from('portal_activity').select('*').eq('profile', current).order('created_at', {ascending:false}).limit(150)
     ])
     if(a.error){ $('msg').textContent = 'Could not load the data: ' + a.error.message; return }
     rows = a.data || []
     activity = b.error ? [] : (b.data || [])
     render()
   }
-
   async function logAction(title, action){
     await db.from('portal_activity').insert({profile: current, item_title: title, action})
   }
-
   async function changeStage(id, stage){
     const r = rows.find(x => x.id === id); if(!r) return
     const patch = {stage, waiting_on: turnFor(stage)}
@@ -430,7 +1161,6 @@
     await logAction(r.title, 'moved to ' + stage)
     load()
   }
-
   async function removeRow(id){
     const r = rows.find(x => x.id === id)
     const {error} = await db.from('portal_items').delete().eq('id', id)
@@ -440,35 +1170,38 @@
   }
 
   $('fCat').onchange = drawStageOptions
-
   $('addForm').onsubmit = async e => {
     e.preventDefault()
     const stage = $('fStage').value
     const title = $('fTitle').value.trim()
-    const {error} = await db.from('portal_items').insert({
+    const row = {
       profile: current, category: $('fCat').value, title,
-      owner: $('fOwner').value.trim() || null, stage, waiting_on: turnFor(stage),
+      owner: $('fOwner').value.trim() || null, platform: $('fPlat').value.trim() || null,
+      stage, waiting_on: turnFor(stage),
       next_step: $('fNext').value.trim() || null, due_date: $('fDue').value || null,
       link: safeUrl($('fLink').value.trim()) || null, notes: $('fNotes').value.trim() || null
-    })
+    }
+    const body = $('fBody').value.trim()
+    if(body){ row.preview_body = body; row.preview_kind = $('fKind').value || 'doc' }
+    const {error} = await db.from('portal_items').insert(row)
     if(error){ $('msg').textContent = 'Could not add: ' + error.message; return }
     await logAction(title, 'added at ' + stage)
     $('addForm').reset()
     load()
   }
-
   $('loginForm').onsubmit = async e => {
     e.preventDefault()
     const {error} = await db.auth.signInWithPassword({email:$('email').value, password:$('pw').value})
     $('loginMsg').textContent = error ? 'Login failed: ' + error.message : ''
     if(!error){ $('loginForm').reset() }
   }
-
-  $('viewSeg').querySelectorAll('button').forEach(b => b.onclick = () => { view = b.dataset.v; render() })
+  $('qBox').addEventListener('input', e => { q = e.target.value; render() })
 
   window.addEventListener('hashchange', () => {
-    current = profileFromHash(); cat = 'all'; focus = 'all'; sim = {}; simLog = []
-    drawTabs(); load()
+    current = profileFromHash(); view = 'team'; cat = 'all'; focus = 'all'; q = ''; $('qBox').value = ''
+    sim = {}; simLog = []; doneSet = new Set(); chatMsgs = []; calOff = 0
+    closeDetail(); $('chatPanel').classList.add('hide'); drawTabs(); render()
+    if(db) load()
   })
 
   async function start(){
