@@ -12,57 +12,107 @@
   :root{
     --bg:#100510; --card:#360D3D; --magenta:#800080; --pink:#B3298D;
     --gold:#d4a347; --blue:#1979DD; --text:#f4eef6; --muted:#b9a9c0;
+    --green:#5fe3a8; --red:#ff7aa8;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:'Red Hat Display',system-ui,sans-serif;color:var(--text);
     background:linear-gradient(160deg,#100510 0%,#360D3D 55%,#0b0004 100%) fixed;min-height:100vh}
-  .wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+  .wrap{max-width:980px;margin:0 auto;padding:20px 16px 56px}
   header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   header img{height:84px;width:auto}
-  h1,h2{font-family:'Merienda',cursive;margin:0;
+  .wordmark{font-family:'Merienda',cursive;color:var(--gold);font-size:1.3rem}
+  h1,h2,h3{font-family:'Merienda',cursive;margin:0;
     background:linear-gradient(#f5d36b,#d4a347);-webkit-background-clip:text;background-clip:text;color:transparent}
   h1{font-size:clamp(1.6rem,4.5vw,2.4rem);margin-top:18px}
-  .lead{color:var(--muted);max-width:620px;line-height:1.6;margin:10px 0 0}
-  nav{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 16px}
-  nav button,.chip{font:inherit;cursor:pointer;border-radius:999px;padding:9px 18px;
+  h2{font-size:1.35rem}
+  h3{font-size:1.05rem}
+  .lead{color:var(--muted);max-width:640px;line-height:1.65;margin:10px 0 0}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 12px}
+  nav button,.chip,.seg button{font:inherit;cursor:pointer;border-radius:999px;padding:9px 18px;
     background:transparent;color:var(--text);border:1px solid rgba(212,163,71,.35)}
-  nav button.on{background:var(--magenta);border-color:var(--gold);font-weight:700}
+  nav button.on,.seg button.on{background:var(--magenta);border-color:var(--gold);font-weight:700}
   .chip{padding:5px 13px;font-size:.85rem;color:var(--muted)}
   .chip.on{background:rgba(212,163,71,.18);color:var(--gold);border-color:var(--gold)}
+  .seg{display:inline-flex;gap:6px}
+  .seg button{padding:7px 16px;font-size:.9rem}
   .card{background:rgba(54,13,61,.6);border:1px solid rgba(212,163,71,.25);border-radius:16px;padding:18px}
-  .tagline{margin:6px 0 14px;color:var(--muted)}
+  .space{margin-top:18px}
+  .tagline{margin:6px 0 14px;color:var(--muted);line-height:1.5}
+  .bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 14px}
+  .demo{background:rgba(212,163,71,.12);border:1px dashed rgba(212,163,71,.5);color:#f1dcae;
+    border-radius:12px;padding:10px 14px;font-size:.92rem;line-height:1.5;margin:0 0 14px}
+  .demo button{font:inherit;background:none;border:0;color:var(--gold);text-decoration:underline;cursor:pointer;padding:0 0 0 6px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}
+  .stat{font:inherit;text-align:left;cursor:pointer;color:var(--text);background:rgba(16,5,16,.55);
+    border:1px solid rgba(212,163,71,.25);border-radius:12px;padding:12px 14px}
+  .stat b{display:block;font-size:1.7rem;font-family:'Merienda',cursive;line-height:1.1}
+  .stat span{font-size:.82rem;color:var(--muted)}
+  .stat.on{border-color:var(--gold);background:rgba(128,0,128,.35)}
+  .stat.bad b{color:var(--red)}
+  .stat.warm b{color:var(--gold)}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-  .scroll{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;min-width:560px}
-  th{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);text-align:left;padding:8px 10px}
-  td{padding:12px 10px;border-top:1px solid rgba(255,255,255,.08);vertical-align:top}
-  td small{display:block;color:var(--muted);margin-top:3px}
-  .pill{display:inline-block;padding:3px 11px;border-radius:999px;font-size:.8rem;font-weight:700}
-  .done{background:rgba(62,207,142,.15);color:#5fe3a8}
-  .in_progress{background:rgba(25,121,221,.2);color:#6db4ff}
-  .waiting{background:rgba(155,143,163,.2);color:#cfc3d6}
-  .cat{color:var(--pink);font-weight:700;font-size:.8rem;text-transform:uppercase}
-  .btn{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:10px;padding:10px 18px;
+  .item{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px 4px;border-top:1px solid rgba(255,255,255,.09)}
+  .item.you{background:rgba(212,163,71,.07);border-radius:12px;padding:14px 12px;margin:4px 0}
+  .item .cat{color:var(--pink);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+  .item .title{font-weight:700;font-size:1.02rem;margin:2px 0 4px;line-height:1.35}
+  .item .meta{color:var(--muted);font-size:.88rem;line-height:1.5}
+  .item .next{margin-top:6px;font-size:.92rem;line-height:1.5}
+  .item .next b{color:var(--gold)}
+  .quote{margin-top:8px;padding:8px 12px;border-left:3px solid var(--pink);background:rgba(179,41,141,.12);
+    border-radius:0 10px 10px 0;font-size:.9rem;line-height:1.5}
+  .side{display:flex;flex-direction:column;align-items:flex-end;gap:7px;min-width:150px;text-align:right}
+  .pill{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.8rem;font-weight:700;white-space:nowrap}
+  .p-green{background:rgba(62,207,142,.15);color:var(--green)}
+  .p-gold{background:rgba(212,163,71,.18);color:#f1c96a}
+  .p-pink{background:rgba(255,122,168,.16);color:var(--red)}
+  .p-blue{background:rgba(25,121,221,.2);color:#6db4ff}
+  .p-gray{background:rgba(155,143,163,.2);color:#cfc3d6}
+  .turn{font-size:.8rem;color:var(--muted)}
+  .turn.them{color:#f1c96a;font-weight:700}
+  .due{font-size:.85rem;color:var(--muted)}
+  .due.late{color:var(--red);font-weight:700}
+  .btn{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:10px;padding:9px 16px;
     background:var(--gold);color:#100510;text-decoration:none;display:inline-block}
   .btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold)}
-  .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:1.1rem}
-  form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:6px}
-  input,select{font:inherit;padding:10px;border-radius:10px;color:var(--text);
+  .btn.small{padding:6px 12px;font-size:.85rem}
+  .btn.link{margin-top:8px}
+  .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:.85rem;text-decoration:underline}
+  form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:8px}
+  input,select,textarea{font:inherit;padding:10px;border-radius:10px;color:var(--text);
     background:#100510;border:1px solid rgba(212,163,71,.35);width:100%}
+  select.stage{padding:5px 8px;font-size:.85rem;width:auto}
+  textarea{min-height:90px;resize:vertical}
   .full{grid-column:1/-1}
   #msg{color:#ffb3d9;min-height:1.2em;margin:8px 0 0}
-  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
   .hide{display:none}
-  .space{margin-top:18px}
-  footer{margin-top:32px;color:var(--muted);font-size:.9rem;line-height:1.6;text-align:center}
+  .empty{color:var(--muted);padding:18px 4px}
+  .log{list-style:none;margin:10px 0 0;padding:0}
+  .log li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:.92rem;line-height:1.45}
+  .log time{color:var(--muted);white-space:nowrap;font-size:.82rem}
+  footer{margin-top:32px;color:var(--muted);font-size:.9rem;line-height:1.7;text-align:center}
   footer a{color:var(--gold)}
+  footer a.btn{color:#100510}
+  dialog{background:#2a0a30;color:var(--text);border:1px solid var(--gold);border-radius:16px;padding:20px;max-width:440px;width:92%}
+  dialog::backdrop{background:rgba(0,0,0,.65)}
+  #toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#2a0a30;border:1px solid var(--gold);
+    color:var(--text);padding:11px 18px;border-radius:12px;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90%;text-align:center;z-index:9}
+  #toast.show{opacity:1}
+  @media(max-width:620px){
+    .item{grid-template-columns:1fr}
+    .side{align-items:flex-start;text-align:left;min-width:0}
+    .acts{justify-content:flex-start}
+    .stats{gap:8px}
+    .stat{padding:10px}
+    .stat b{font-size:1.4rem}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <img src="LOGO.png" alt="Anggie's Digital Edge">
+    <img src="LOGO.png" alt="Anggie's Digital Edge" onerror="this.outerHTML='<span class=wordmark>Anggie&#39;s Digital Edge</span>'">
     <div id="authbar"></div>
   </header>
 
@@ -77,19 +127,34 @@
   </section>
 
   <h1>See where everything stands</h1>
-  <p class="lead">This is a demo portal. Pick a tab to see how it could work for you. No more chasing updates by email, just one calm place where you can see it all.</p>
+  <p class="lead">You should never have to wonder what is happening with your project, or whose turn it is next. This demo shows how one calm page can answer that for you.</p>
+  <p class="lead">Pick a tab, switch between the team view and the client view, and try the buttons. Nothing you click here is saved.</p>
 
   <nav id="tabs"></nav>
 
   <section class="card">
-    <h2 id="ptitle"></h2>
-    <p class="tagline" id="ptag"></p>
+    <div class="bar">
+      <div>
+        <h2 id="ptitle"></h2>
+        <p class="tagline" id="ptag" style="margin-bottom:0"></p>
+      </div>
+      <div class="seg" id="viewSeg">
+        <button data-v="team">Team view</button>
+        <button data-v="client">Client view</button>
+      </div>
+    </div>
+
+    <p class="demo" id="demoNote"></p>
+
+    <div class="stats" id="stats"></div>
     <div class="chips" id="chips"></div>
-    <div class="scroll"><table>
-      <thead><tr><th>Type</th><th>Item</th><th id="ownerH"></th><th>Status</th><th id="dueH"></th><th></th></tr></thead>
-      <tbody id="body"></tbody>
-    </table></div>
+    <div id="list"></div>
     <p id="msg"></p>
+  </section>
+
+  <section class="card space">
+    <h3>Recent activity</h3>
+    <ul class="log" id="log"></ul>
   </section>
 
   <section class="card space hide" id="addCard">
@@ -98,12 +163,10 @@
       <select id="fCat"></select>
       <input id="fTitle" placeholder="Title" required>
       <input id="fOwner" placeholder="Owner or platform">
-      <select id="fStatus">
-        <option value="waiting">Waiting</option>
-        <option value="in_progress">In progress</option>
-        <option value="done">Done</option>
-      </select>
+      <select id="fStage"></select>
+      <input id="fNext" placeholder="Next step">
       <input id="fDue" type="date">
+      <input id="fLink" class="full" placeholder="Link to the draft or document (optional)">
       <input id="fNotes" class="full" placeholder="Notes (optional)">
       <button class="btn full" type="submit">Add item</button>
     </form>
@@ -116,25 +179,82 @@
   </footer>
 </div>
 
+<dialog id="chgDlg">
+  <h3>Request changes</h3>
+  <p class="meta" id="chgFor" style="color:var(--muted);margin:8px 0 10px"></p>
+  <textarea id="chgText" placeholder="Tell us what to change (for example: please use a brighter photo)"></textarea>
+  <div class="acts" style="margin-top:12px">
+    <button class="btn ghost small" type="button" id="chgCancel">Cancel</button>
+    <button class="btn small" type="button" id="chgSend">Send to the team</button>
+  </div>
+</dialog>
+
+<div id="toast"></div>
+
+<!-- Your Supabase settings live in config.js (a separate file). -->
+<script src="config.js"></script>
 <script>
-  // ===== FILL THESE TWO IN (anon key only, never the service_role key) =====
-  const SUPABASE_URL = 'https://wfojyxpgagvtgpgjebfp.supabase.co'
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indmb2p5eHBnYWd2dGdwZ2plYmZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwOTEzODQsImV4cCI6MjEwNzY2NzM4NH0.ZJagwGReb3qnAZK6eAklGkvYFTlH0vJJANwndetciOI'
-  // ========================================================================
+  const CFG = window.PORTAL_CONFIG || {}
+  const SUPABASE_URL = CFG.SUPABASE_URL || ''
+  const SUPABASE_ANON_KEY = CFG.SUPABASE_ANON_KEY || ''
+
+  const STAGES = {
+    project: ['Not started','In progress','Client review','Changes requested','Delivered'],
+    content: ['Draft','Team review','Client review','Changes requested','Approved','Scheduled','Published'],
+    module:  ['Upcoming','Live','Completed'],
+    member:  ['Onboarding','Active','At risk','Completed'],
+    lead:    ['New inquiry','Contacted','Quoted','Follow-up','Won','Lost'],
+    task:    ['To do','In progress','Waiting on','Done'],
+    partner: ['Invited','Active','Payout due','Paid']
+  }
+  const FINISHED = ['Delivered','Published','Completed','Won','Lost','Done','Paid']
+  const THEIR_TURN = ['Client review','Waiting on','Invited','Contacted','Quoted','Onboarding']
 
   const PROFILES = {
-    agency:     {name:'Agency',     title:'Client Portal',        tag:'Every project and every post, with its status, in one place.', owner:'Owner / platform', due:'Due',        cats:['project','content']},
-    cohort:     {name:'Cohort',     title:'Program Tracker',      tag:'See how each learner and each module is moving along.',       owner:'Coach',            due:'Next step',  cats:['module','member']},
-    operations: {name:'Operations', title:'Operations Hub',       tag:'Leads to follow up and tasks to finish, nothing falls through.', owner:'Source / owner', due:'Follow up',  cats:['lead','task']},
-    affiliate:  {name:'Affiliate',  title:'Partner Dashboard',    tag:'Know who is referring you and what is waiting to be paid.',    owner:'Referrals',        due:'Next payout',cats:['partner']}
+    agency:     {name:'Agency',     title:'Client Portal',     tag:'Every project and every post, and exactly whose turn it is.', cats:['project','content']},
+    cohort:     {name:'Cohort',     title:'Program Tracker',   tag:'See who is on track, who needs a nudge, and what comes next.',  cats:['module','member']},
+    operations: {name:'Operations', title:'Operations Hub',    tag:'Every lead has a next step. Every task has an owner.',          cats:['lead','task']},
+    affiliate:  {name:'Affiliate',  title:'Partner Dashboard', tag:'Know who is referring you and which payouts are due.',          cats:['partner']}
   }
-  const LABEL = {in_progress:'In progress', waiting:'Waiting', done:'Done'}
 
   const $ = id => document.getElementById(id)
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+  const safeUrl = u => /^https?:\/\//i.test(String(u||'')) ? String(u) : ''
+  const todayStr = () => new Date().toLocaleDateString('en-CA')
 
-  let db = null, user = null, current = 'agency', cat = 'all', rows = []
+  let db = null, user = null
+  let current = 'agency', view = 'team', cat = 'all', focus = 'all'
+  let rows = [], activity = []
+  let sim = {}, simLog = [], chgId = null
 
+  function isActive(r){ return !FINISHED.includes(r.stage) }
+  function isLate(r){ return isActive(r) && r.due_date && r.due_date < todayStr() }
+  function turnFor(stage){
+    if(FINISHED.includes(stage) || stage === 'Scheduled') return null
+    return THEIR_TURN.includes(stage) ? 'them' : 'us'
+  }
+  function stageClass(s){
+    if(['Approved','Scheduled','Published','Delivered','Completed','Won','Done','Paid','Active'].includes(s)) return 'p-green'
+    if(['Client review','Team review','Quoted','Payout due','Follow-up','Live'].includes(s)) return 'p-gold'
+    if(['Changes requested','At risk','Lost'].includes(s)) return 'p-pink'
+    if(['In progress','Contacted','New inquiry','Onboarding'].includes(s)) return 'p-blue'
+    return 'p-gray'
+  }
+  function ago(iso){
+    const s = (Date.now() - new Date(iso).getTime()) / 1000
+    if(s < 60) return 'just now'
+    if(s < 3600) return Math.floor(s/60) + ' min ago'
+    if(s < 86400) return Math.floor(s/3600) + ' hr ago'
+    return Math.floor(s/86400) + ' day' + (Math.floor(s/86400) > 1 ? 's' : '') + ' ago'
+  }
+  function fmtDate(d){
+    return new Date(d + 'T00:00:00').toLocaleDateString(undefined, {month:'short', day:'numeric'})
+  }
+  function toast(t){
+    const el = $('toast'); el.textContent = t; el.classList.add('show')
+    clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2600)
+  }
+  function viewRows(){ return rows.map(r => Object.assign({}, r, sim[r.id] || {})) }
   function profileFromHash(){
     const h = location.hash.replace('#','')
     return PROFILES[h] ? h : 'agency'
@@ -152,7 +272,7 @@
       : `<button class="btn ghost" id="inBtn">Owner login</button>`
     if(user){ $('outBtn').onclick = () => db.auth.signOut() }
     else { $('inBtn').onclick = () => { $('loginCard').classList.remove('hide'); $('loginCard').scrollIntoView({behavior:'smooth', block:'center'}); $('email').focus() } }
-    $('loginCard').classList.toggle('hide', !!user ? true : $('loginCard').classList.contains('hide'))
+    if(user) $('loginCard').classList.add('hide')
     $('addCard').classList.toggle('hide', !user)
     render()
   }
@@ -161,49 +281,178 @@
     const p = PROFILES[current]
     $('ptitle').textContent = p.title
     $('ptag').textContent = p.tag
-    $('ownerH').textContent = p.owner
-    $('dueH').textContent = p.due
-    $('chips').innerHTML = ['all',...p.cats].map(c =>
+    $('viewSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === view))
+
+    const all = viewRows()
+    const act = all.filter(isActive)
+    const nLate = act.filter(isLate).length
+    const nThem = act.filter(r => r.waiting_on === 'them').length
+    const nUs   = act.filter(r => r.waiting_on === 'us').length
+    const themLabel = view === 'client' ? 'Waiting on you' : 'Waiting on them'
+    const usLabel = view === 'client' ? 'In our hands' : 'Our turn'
+
+    $('demoNote').innerHTML = view === 'client'
+      ? `This is what your client sees. Try it: find an item marked <b>Your turn</b> and click Approve or Request changes. Nothing is saved. <button id="resetSim">Reset the demo</button>`
+      : `This is the team view: the full picture behind the scenes, with owners and next steps. Switch to Client view to see what your clients see. <button id="resetSim">Reset the demo</button>`
+    $('resetSim').onclick = () => { sim = {}; simLog = []; render(); toast('Demo reset') }
+
+    $('stats').innerHTML = `
+      <button class="stat ${focus==='them'?'on':''} warm" data-f="them"><b>${nThem}</b><span>${themLabel}</span></button>
+      <button class="stat ${focus==='us'?'on':''}" data-f="us"><b>${nUs}</b><span>${usLabel}</span></button>
+      <button class="stat ${focus==='late'?'on':''} ${nLate?'bad':''}" data-f="late"><b>${nLate}</b><span>Overdue</span></button>`
+    $('stats').querySelectorAll('button').forEach(b => b.onclick = () => { focus = (focus === b.dataset.f ? 'all' : b.dataset.f); render() })
+
+    $('chips').innerHTML = ['all', ...p.cats].map(c =>
       `<button class="chip ${c===cat?'on':''}" data-c="${c}">${c==='all'?'All':c}</button>`).join('')
     $('chips').querySelectorAll('button').forEach(b => b.onclick = () => { cat = b.dataset.c; render() })
-    $('fCat').innerHTML = p.cats.map(c => `<option value="${c}">${c}</option>`).join('')
 
-    const shown = rows.filter(r => cat==='all' || r.category===cat)
-    $('body').innerHTML = shown.length ? shown.map(r => `
-      <tr>
-        <td class="cat">${esc(r.category)}</td>
-        <td>${esc(r.title)}${r.notes?`<small>${esc(r.notes)}</small>`:''}</td>
-        <td>${esc(r.owner)}</td>
-        <td><span class="pill ${esc(r.status)}">${esc(LABEL[r.status]||r.status)}</span></td>
-        <td>${r.due_date ? new Date(r.due_date+'T00:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}) : ''}</td>
-        <td>${user?`<button class="del" title="Delete" data-id="${esc(r.id)}">&times;</button>`:''}</td>
-      </tr>`).join('') : `<tr><td colspan="6">Nothing here yet.</td></tr>`
-    $('body').querySelectorAll('.del').forEach(b => b.onclick = () => removeRow(b.dataset.id))
+    let shown = all.filter(r => cat === 'all' || r.category === cat)
+    if(focus === 'them') shown = shown.filter(r => isActive(r) && r.waiting_on === 'them')
+    if(focus === 'us')   shown = shown.filter(r => isActive(r) && r.waiting_on === 'us')
+    if(focus === 'late') shown = shown.filter(isLate)
+    shown.sort((a,b) => {
+      if(view === 'client'){
+        const ta = a.waiting_on === 'them' && isActive(a) ? 0 : 1
+        const tb = b.waiting_on === 'them' && isActive(b) ? 0 : 1
+        if(ta !== tb) return ta - tb
+      }
+      const fa = isActive(a) ? 0 : 1, fb = isActive(b) ? 0 : 1
+      if(fa !== fb) return fa - fb
+      return String(a.due_date || '9999').localeCompare(String(b.due_date || '9999'))
+    })
+
+    $('list').innerHTML = shown.length ? shown.map(card).join('') : `<p class="empty">Nothing here. Try another filter.</p>`
+    $('list').querySelectorAll('[data-approve]').forEach(b => b.onclick = () => approve(b.dataset.approve))
+    $('list').querySelectorAll('[data-change]').forEach(b => b.onclick = () => openChange(b.dataset.change))
+    $('list').querySelectorAll('[data-del]').forEach(b => b.onclick = () => removeRow(b.dataset.del))
+    $('list').querySelectorAll('select.stage').forEach(s => s.onchange = () => changeStage(s.dataset.id, s.value))
+
+    // add form lists
+    const prevCat = $('fCat').value
+    $('fCat').innerHTML = p.cats.map(c => `<option value="${c}">${c}</option>`).join('')
+    if(p.cats.includes(prevCat)) $('fCat').value = prevCat
+    drawStageOptions()
+
+    // activity
+    const logs = [...simLog, ...activity].slice(0, 8)
+    $('log').innerHTML = logs.length
+      ? logs.map(a => `<li><span><b>${esc(a.item_title)}</b>: ${esc(a.action)}</span><time>${esc(ago(a.created_at))}</time></li>`).join('')
+      : `<li><span style="color:var(--muted)">Nothing has happened yet.</span></li>`
   }
 
+  function drawStageOptions(){
+    const list = STAGES[$('fCat').value] || []
+    $('fStage').innerHTML = list.map(s => `<option>${esc(s)}</option>`).join('')
+  }
+
+  function card(r){
+    const late = isLate(r)
+    const yourTurn = view === 'client' && isActive(r) && r.waiting_on === 'them'
+    const needsReview = r.stage === 'Client review'
+    const link = safeUrl(r.link)
+    const turnText = !isActive(r) || !r.waiting_on ? ''
+      : (r.waiting_on === 'them'
+          ? (view === 'client' ? 'Your turn' : 'Waiting on them')
+          : (view === 'client' ? 'Our turn' : 'Our turn'))
+    const stageEl = (user && view === 'team')
+      ? `<select class="stage" data-id="${esc(r.id)}">${(STAGES[r.category]||[r.stage]).map(s => `<option ${s===r.stage?'selected':''}>${esc(s)}</option>`).join('')}</select>`
+      : `<span class="pill ${stageClass(r.stage)}">${esc(r.stage)}</span>`
+    const acts = []
+    if(needsReview){
+      acts.push(`<button class="btn small" data-approve="${esc(r.id)}">Approve</button>`)
+      acts.push(`<button class="btn ghost small" data-change="${esc(r.id)}">Request changes</button>`)
+    }
+    if(user && view === 'team') acts.push(`<button class="del" data-del="${esc(r.id)}">Delete</button>`)
+    return `
+    <article class="item ${yourTurn?'you':''}">
+      <div>
+        <span class="cat">${esc(r.category)}</span>
+        <div class="title">${esc(r.title)}</div>
+        ${r.notes ? `<div class="meta">${esc(r.notes)}</div>` : ''}
+        ${view === 'team' && r.owner ? `<div class="meta">Owner: ${esc(r.owner)}</div>` : ''}
+        ${r.next_step ? `<div class="next"><b>Next:</b> ${esc(r.next_step)}</div>` : ''}
+        ${r.client_comment && r.stage === 'Changes requested' ? `<div class="quote">${esc(view==='client'?'You asked':'Client asked')}: ${esc(r.client_comment)}</div>` : ''}
+        ${link ? `<a class="btn ghost small link" href="${esc(link)}" target="_blank" rel="noopener">${r.category==='content' ? 'View draft' : 'View'}</a>` : ''}
+      </div>
+      <div class="side">
+        ${stageEl}
+        ${turnText ? `<span class="turn ${r.waiting_on==='them'?'them':''}">${turnText}</span>` : ''}
+        ${r.due_date ? `<span class="due ${late?'late':''}">${late?'Overdue: ':'Due '}${esc(fmtDate(r.due_date))}</span>` : ''}
+        <div class="acts">${acts.join('')}</div>
+      </div>
+    </article>`
+  }
+
+  // ---------- the "try it" buttons (nothing is saved) ----------
+  function titleOf(id){ const r = rows.find(x => x.id === id); return r ? r.title : '' }
+  function approve(id){
+    sim[id] = {stage:'Approved', waiting_on:'us', next_step:'We will schedule it and let you know.', approved_at:new Date().toISOString()}
+    simLog.unshift({item_title:titleOf(id), action:'you approved it (demo)', created_at:new Date().toISOString()})
+    render(); toast('Approved. This is a demo, so nothing was saved.')
+  }
+  function openChange(id){
+    chgId = id
+    $('chgFor').textContent = titleOf(id)
+    $('chgText').value = ''
+    $('chgDlg').showModal()
+  }
+  $('chgCancel').onclick = () => $('chgDlg').close()
+  $('chgSend').onclick = () => {
+    const text = $('chgText').value.trim() || 'Please take another look.'
+    sim[chgId] = {stage:'Changes requested', waiting_on:'us', client_comment:text, next_step:'We are reviewing your comments and will send a new version.'}
+    simLog.unshift({item_title:titleOf(chgId), action:'you asked for changes (demo)', created_at:new Date().toISOString()})
+    $('chgDlg').close(); render(); toast('Sent to the team. This is a demo, so nothing was saved.')
+  }
+
+  // ---------- real changes (owner only, saved to Supabase) ----------
   async function load(){
     $('msg').textContent = ''
-    const {data, error} = await db.from('portal_items').select('*')
-      .eq('profile', current).order('due_date', {ascending:true})
-    if(error){ $('msg').textContent = 'Could not load the data: ' + error.message; return }
-    rows = data
+    const [a, b] = await Promise.all([
+      db.from('portal_items').select('*').eq('profile', current),
+      db.from('portal_activity').select('*').eq('profile', current).order('created_at', {ascending:false}).limit(8)
+    ])
+    if(a.error){ $('msg').textContent = 'Could not load the data: ' + a.error.message; return }
+    rows = a.data || []
+    activity = b.error ? [] : (b.data || [])
     render()
   }
 
-  async function removeRow(id){
-    const {error} = await db.from('portal_items').delete().eq('id', id)
-    if(error){ $('msg').textContent = 'Could not delete: ' + error.message; return }
+  async function logAction(title, action){
+    await db.from('portal_activity').insert({profile: current, item_title: title, action})
+  }
+
+  async function changeStage(id, stage){
+    const r = rows.find(x => x.id === id); if(!r) return
+    const patch = {stage, waiting_on: turnFor(stage)}
+    if(stage === 'Approved') patch.approved_at = new Date().toISOString()
+    const {error} = await db.from('portal_items').update(patch).eq('id', id)
+    if(error){ $('msg').textContent = 'Could not update: ' + error.message; return }
+    await logAction(r.title, 'moved to ' + stage)
     load()
   }
 
+  async function removeRow(id){
+    const r = rows.find(x => x.id === id)
+    const {error} = await db.from('portal_items').delete().eq('id', id)
+    if(error){ $('msg').textContent = 'Could not delete: ' + error.message; return }
+    if(r) await logAction(r.title, 'removed')
+    load()
+  }
+
+  $('fCat').onchange = drawStageOptions
+
   $('addForm').onsubmit = async e => {
     e.preventDefault()
+    const stage = $('fStage').value
+    const title = $('fTitle').value.trim()
     const {error} = await db.from('portal_items').insert({
-      profile: current, category: $('fCat').value, title: $('fTitle').value.trim(),
-      owner: $('fOwner').value.trim() || null, status: $('fStatus').value,
-      due_date: $('fDue').value || null, notes: $('fNotes').value.trim() || null
+      profile: current, category: $('fCat').value, title,
+      owner: $('fOwner').value.trim() || null, stage, waiting_on: turnFor(stage),
+      next_step: $('fNext').value.trim() || null, due_date: $('fDue').value || null,
+      link: safeUrl($('fLink').value.trim()) || null, notes: $('fNotes').value.trim() || null
     })
     if(error){ $('msg').textContent = 'Could not add: ' + error.message; return }
+    await logAction(title, 'added at ' + stage)
     $('addForm').reset()
     load()
   }
@@ -215,13 +464,19 @@
     if(!error){ $('loginForm').reset() }
   }
 
-  window.addEventListener('hashchange', () => { current = profileFromHash(); cat = 'all'; drawTabs(); load() })
+  $('viewSeg').querySelectorAll('button').forEach(b => b.onclick = () => { view = b.dataset.v; render() })
+
+  window.addEventListener('hashchange', () => {
+    current = profileFromHash(); cat = 'all'; focus = 'all'; sim = {}; simLog = []
+    drawTabs(); load()
+  })
 
   async function start(){
     current = profileFromHash()
     drawTabs()
-    if(SUPABASE_URL.startsWith('PUT') || SUPABASE_ANON_KEY.startsWith('PUT')){
-      $('msg').textContent = 'Almost there: add your Supabase URL and anon key at the top of the script.'
+    render()
+    if(!SUPABASE_URL || !SUPABASE_ANON_KEY || SUPABASE_URL.startsWith('PUT') || SUPABASE_ANON_KEY.startsWith('PUT')){
+      $('msg').textContent = 'Almost there: open config.js and add your Supabase URL and anon key.'
       drawAuth(); return
     }
     db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
