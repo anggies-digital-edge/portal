@@ -300,6 +300,42 @@
     .heroband header img{height:76px}
     .tools input[type=search]{margin-left:0}
   }
+
+  /* ===== SPACING AND LINES (edit these numbers to adjust) ===== */
+  :root{ --line:rgba(255,255,255,.24); --line-soft:rgba(255,255,255,.16); --gap:18px; }
+  .card{border-color:var(--line);padding:26px}
+  .space{margin-top:30px}
+  .item,.bcard{border-color:var(--line);margin-bottom:var(--gap)}
+  .item,.item.you{padding:20px 22px;margin:0 0 var(--gap)}
+  .bcard.you{margin:14px 0 0}
+  .bcard{margin:14px 0 0;padding:15px}
+  .col{border-color:var(--line);padding:14px}
+  .board{gap:18px}
+  .ghead{margin:28px 0 12px}
+  .col .ghead{margin:4px 0 6px}
+  .demo{border-color:var(--line);margin-bottom:20px}
+  .stats{gap:16px;margin-bottom:20px}
+  .stat{border-color:var(--line)}
+  .tools{margin:22px 0 20px;gap:14px}
+  #modesRow{margin:0 0 22px}
+  .chip,.seg button{border-color:rgba(255,255,255,.4)}
+  .tab{border-color:#d34bb0}
+  nav{gap:14px}
+  .bar{margin-bottom:16px}
+  .tagline{margin:8px 0 6px}
+  .bestfor{margin-bottom:18px}
+  .log li{border-top-color:var(--line-soft);padding:13px 0}
+  .row,.kv,.dlog li{border-top-color:var(--line-soft)}
+  .cal .day{border-color:var(--line-soft);gap:5px}
+  .cal{gap:6px}
+  .mini,.svc,.docbox{border-color:var(--line)}
+  .prog span,.bigprog span{background:rgba(255,255,255,.2)}
+  input,select,textarea{border-color:rgba(255,255,255,.35)}
+  @media(max-width:620px){
+    .card{padding:18px}
+    .item{padding:16px}
+    .space{margin-top:22px}
+  }
 </style>
 </head>
 <body>
