@@ -12,7 +12,7 @@
   :root{
     --bg:#100510; --card:#360D3D; --magenta:#800080; --pink:#B3298D;
     --gold:#d4a347; --blue:#1979DD; --text:#f4eef6; --muted:#b9a9c0;
-    --green:#5fe3a8; --red:#ff7aa8; --em:#ffffff;
+    --green:#5fe3a8; --red:#ff7aa8; --em:#d6c9ec;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:'Red Hat Display',system-ui,sans-serif;color:var(--text);
@@ -24,7 +24,7 @@
   .wordmark{font-family:'Merienda',cursive;color:var(--gold);font-size:1.3rem}
   h1,h2,h3,h4{font-family:'Merienda',cursive;margin:0;
     background:linear-gradient(#f5d36b,#d4a347);-webkit-background-clip:text;background-clip:text;color:transparent}
-  h1{font-size:clamp(1.6rem,4.5vw,2.4rem);margin-top:18px 0 45px;line-height:1.25}
+  h1{font-size:clamp(1.6rem,4.5vw,2.4rem);margin-top:18px;line-height:1.25}
   h2{font-size:1.35rem}
   h3{font-size:1.05rem}
   h4{font-size:.98rem;margin:14px 0 4px}
@@ -247,15 +247,73 @@
     .col{flex-basis:78vw}
     .cal .day{min-height:64px}
   }
+
+  /* ===== VERSION 5: calm black-and-purple look ===== */
+  /* Edit these three to recolor the whole page */
+  :root{ --em:#d6c9ec; --btn-grad:linear-gradient(135deg,#2a0a3a 0%,#800080 60%,#B3298D 100%); --gold-soft:#f5d36b; }
+  body{background:linear-gradient(180deg,#1d0a27 0%,#14071c 100%) fixed}
+  .inner{max-width:1280px;margin:0 auto;padding:0 16px}
+  @media(min-width:1100px){.inner{padding-left:28px;padding-right:28px}}
+  .wrap{padding-top:22px}
+  .heroband{background:radial-gradient(ellipse at 50% 0%,rgba(179,41,141,.28),transparent 60%),#000;border-bottom:1px solid rgba(212,163,71,.35);padding:22px 0 38px;text-align:center}
+  .heroband header{justify-content:center}
+  .heroband header img{height:100px}
+  .heroband h1{font-size:clamp(1.9rem,4.8vw,3rem);margin:14px 0 22px;line-height:1.25}
+  .heroband .lead{margin-left:auto;margin-right:auto;text-align:center;max-width:780px}
+  .heroband .lead + .lead{margin-top:14px}
+  nav{margin-top:6px}
+  .card{background:#000;border:1px solid rgba(255,255,255,.1);box-shadow:0 0 18px rgba(255,255,255,.04);padding:22px}
+  .item,.bcard{background:#060206;border:1px solid rgba(255,255,255,.1);border-radius:10px;margin:0 0 10px;padding:16px 18px;box-shadow:0 0 12px rgba(255,255,255,.03)}
+  .bcard{margin:8px 0 0;padding:12px}
+  .item.you,.bcard.you{background:#0a050c;border-color:rgba(179,41,141,.7)}
+  .col{background:#000;border:1px solid rgba(255,255,255,.08)}
+  .demo{background:#060206;border:1px solid rgba(255,255,255,.12);color:#d9cde0;font-size:.9rem;padding:10px 14px}
+  .demo button{color:#d9cde0}
+  .cat{color:#a99bb0}
+  .next b,.bestfor b,.guide .gt{color:#fff}
+  .stat b,.stat.warm b,.mini b,.bigprog b{color:#fff}
+  .tag{background:rgba(255,255,255,.08);color:#d9cde0}
+  .titlebtn:hover{color:var(--em)}
+  .quote{border-left-color:#B3298D}
+  .tab{background:#000;border:1px solid #B3298D}
+  .tab.on,.seg button.on{background:var(--btn-grad);border:1px solid #d4a347;box-shadow:0 0 10px rgba(212,163,71,.15)}
+  .tab.on b,.seg button.on{color:var(--gold-soft)}
+  .seg button.on{font-style:italic}
+  .tab.on small{color:#f3d6ec}
+  .chip,.seg button{border-color:rgba(255,255,255,.25);color:#d9cde0}
+  .chip.on{background:rgba(179,41,141,.28);border-color:#B3298D;color:#fff}
+  .btn:not(.ghost),.fab{background:var(--btn-grad);border:1px solid #d4a347;color:var(--gold-soft);font-style:italic;font-weight:700;box-shadow:0 0 10px rgba(212,163,71,.15)}
+  .btn.ghost{background:transparent;color:#f4eef6;border:1px solid rgba(255,255,255,.35)}
+  .btn.ghost:hover{border-color:#B3298D}
+  footer a.btn{color:var(--gold-soft)}
+  .viewopt{font:inherit;background:none;border:0;color:#d9cde0;text-decoration:underline;cursor:pointer;font-size:.88rem}
+  .tools{gap:12px}
+  .tools .chips{flex:1 1 auto}
+  .tools input[type=search]{margin-left:auto}
+  #modesRow{margin:-2px 0 14px}
+  .inbox{display:none}
+  footer{background:#000;margin:44px 0 0;padding:34px 0 110px;border-top:1px solid rgba(212,163,71,.35)}
+  .chat header{background:var(--btn-grad)}
+  .chat header header{display:block}
+  @media(max-width:620px){
+    .heroband{padding:16px 0 28px}
+    .heroband header img{height:76px}
+    .tools input[type=search]{margin-left:0}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-
+<div class="heroband"><div class="inner">
   <header>
-    <img src="LOGO.png" alt="Anggie's Digital Edge" onerror="this.outerHTML='<span class=wordmark>Anggie&#39;s Digital Edge</span>'">
+    <img src="LOGO.png" alt="Anggie's Digital Edge" onerror="this.outerHTML='<span class=wordmark>Anggie\'s Digital Edge</span>'">
     <div id="authbar"></div>
   </header>
+  <h1>Every step of your project, in <span class="em">plain sight</span></h1>
+  <p class="lead">You trusted someone with your business, so you <span class="em">deserve to see the work as it happens</span>. This demo shows how I keep every project, lesson, lead, and follow-up visible, with a <span class="em">clear owner</span> and a <span class="em">clear next step</span>.</p>
+  <p class="lead">I know waiting for updates can feel uneasy. Not sure which tab fits you? Pick the one closest to your business, open any item to see the real work behind it, and try the buttons. <span class="em">Nothing is saved</span>, so click freely.</p>
+</div></div>
+
+<div class="wrap">
 
   <section class="card space hide" id="loginCard">
     <h2>Owner login</h2>
@@ -267,9 +325,6 @@
     <p id="loginMsg" style="color:#ffb3d9;margin:10px 0 0"></p>
   </section>
 
-  <h1>Every step of your project, in <span class="em">plain sight</span></h1>
-  <p class="lead">You trusted someone with your business, so you <span class="em">deserve to see the work as it happens</span>. This demo shows how I keep every project, lesson, lead, and follow-up visible, with a <span class="em">clear owner</span> and a <span class="em">clear next step</span>.</p>
-  <p class="lead">I know waiting for updates can feel uneasy. Not sure which tab fits you? Pick the one closest to your business, open any item to see the real work behind it, and try the buttons. <span class="em">Nothing is saved</span>, so click freely.</p>
 
   <nav id="tabs"></nav>
 
@@ -294,9 +349,10 @@
 
     <div class="tools" id="tools">
       <div class="chips" id="chips"></div>
+      <button class="viewopt" type="button" data-opts="">View options</button>
       <input type="search" id="qBox" placeholder="Search this portal" aria-label="Search this portal">
     </div>
-    <div class="modesrow" id="modesRow">
+    <div class="modesrow hide" id="modesRow">
       <div class="seg" id="modeSeg">
         <button data-m="grouped">Grouped</button>
         <button data-m="board">Board</button>
@@ -342,14 +398,15 @@
     </form>
   </section>
 
-  <footer>
+</div>
+
+<footer><div class="inner">
     <p>Demo data only. Every name and number here is made up.</p>
     <p><button class="btn" data-chat="">Talk to Anggie about your portal</button></p>
     <p>Prefer email? <a href="mailto:hi.anggiesdigitaledge@gmail.com?subject=I%20would%20like%20a%20portal%20like%20this">hi.anggiesdigitaledge@gmail.com</a></p>
     <p>Built with the <span class="edge">EDGE Method</span>: Evaluate, Develop, Guide, Execute.</p>
     <p>Anggie's Digital Edge &middot; <a href="#" class="ownerlink" id="ownerLink">Owner login</a></p>
-  </footer>
-</div>
+</div></footer>
 
 <button class="fab" id="chatFab" data-chat="">Message us</button>
 
@@ -466,7 +523,7 @@
   const pad = n => String(n).padStart(2,'0')
 
   let db = null, user = null
-  let current = 'agency', view = 'team', cat = 'all', focus = 'all', mode = 'grouped', groupBy = 'status', q = ''
+  let current = 'agency', view = 'client', showOpts = false, cat = 'all', focus = 'all', mode = 'grouped', groupBy = 'status', q = ''
   let rows = [], activity = []
   let sim = {}, simLog = [], chgId = null, doneSet = new Set(), pick = {}, calOff = 0, guideOff = false
   let chatMsgs = []
@@ -617,9 +674,10 @@
     const sideMode = view === 'client' && current !== 'agency'
     ;['stats','tools','modesRow','list','inbox'].forEach(id => $(id).classList.toggle('hide', sideMode))
     $('side').classList.toggle('hide', !sideMode)
+    $('modesRow').classList.toggle('hide', sideMode || !showOpts)
 
     $('demoNote').innerHTML = p.notes[view] + ` <button data-reset>Reset the demo</button>`
-    $('guide').innerHTML = guideOff ? '' : `<div class="guide"><span class="gt">Start here</span><ol>${p.guide.map(s => `<li>${esc(s)}</li>`).join('')}</ol><button class="btn ghost small" data-guide>Got it</button></div>`
+    $('guide').innerHTML = ''
 
     if(sideMode){
       $('side').innerHTML = current === 'cohort' ? learnerView(all) : current === 'operations' ? leadView(all) : partnerView(all)
@@ -642,21 +700,13 @@
 
   function drawWorkspace(all, p){
     const tiles = tilesFor()
+    $('stats').classList.toggle('hide', view === 'client')
     $('stats').innerHTML = tiles.map(t => {
       const n = all.filter(t.fn).length
       return `<button class="stat ${focus===t.k?'on':''} ${t.warm?'warm':''} ${t.bad&&n?'bad':''}" data-f="${t.k}"><b>${n}</b><span>${esc(t.label)}</span></button>`
     }).join('')
 
-    // "Needs your action" inbox (client view of Client Work)
-    if(clientSide()){
-      const themRows = all.filter(r => isActive(r) && r.waiting_on === 'them')
-      $('inbox').innerHTML = themRows.length
-        ? `<div class="inbox"><h3>Needs your action (${themRows.length})</h3><ul>${
-            themRows.slice().sort(byDue).map(r => `<li><span><b>${esc(r.title)}</b><br><span style="color:var(--muted)">${esc(r.next_step || r.stage)}${r.due_date ? ' &middot; due ' + esc(fmtDate(r.due_date)) : ''}</span></span>
-              <button class="btn small" data-open="${esc(r.id)}">Open</button></li>`).join('')
-          }</ul></div>`
-        : `<div class="inbox"><h3>Needs your action (0)</h3><p class="ok">You are all caught up. Thank you for staying on top of it.</p></div>`
-    } else { $('inbox').innerHTML = '' }
+    $('inbox').innerHTML = ''
 
     $('chips').innerHTML = ['all', ...p.cats].map(c =>
       `<button class="chip ${c===cat?'on':''}" data-c="${c}">${c==='all'?'All':esc(CATLABEL[c])}</button>`).join('')
@@ -1078,7 +1128,7 @@
   }
 
   // ---------- one click handler for everything ----------
-  const ACTION_SEL = '[data-approve],[data-change],[data-del],[data-open],[data-close],[data-cal],[data-done],[data-toast],[data-chat],[data-chatclose],[data-accept],[data-copy],[data-copytext],[data-payout],[data-book],[data-ask],[data-reset],[data-guide],[data-f],[data-c],[data-m],[data-v],[data-k]'
+  const ACTION_SEL = '[data-approve],[data-change],[data-del],[data-open],[data-close],[data-cal],[data-done],[data-toast],[data-chat],[data-chatclose],[data-accept],[data-copy],[data-copytext],[data-payout],[data-book],[data-ask],[data-reset],[data-guide],[data-opts],[data-f],[data-c],[data-m],[data-v],[data-k]'
   document.addEventListener('click', e => {
     if(e.target === $('detDlg')) return closeDetail()
     const t = e.target.closest(ACTION_SEL); if(!t) return
@@ -1124,6 +1174,7 @@
     }
     if('reset' in d){ sim = {}; simLog = []; doneSet = new Set(); render(); return toast('Demo reset') }
     if('guide' in d){ guideOff = true; return render() }
+    if('opts' in d){ showOpts = !showOpts; return render() }
     if('f' in d){ focus = focus === d.f ? 'all' : d.f; return render() }
     if('c' in d){ cat = d.c; return render() }
     if('m' in d){ mode = d.m; return render() }
@@ -1198,7 +1249,7 @@
   $('qBox').addEventListener('input', e => { q = e.target.value; render() })
 
   window.addEventListener('hashchange', () => {
-    current = profileFromHash(); view = 'team'; cat = 'all'; focus = 'all'; q = ''; $('qBox').value = ''
+    current = profileFromHash(); view = 'client'; cat = 'all'; focus = 'all'; q = ''; $('qBox').value = ''
     sim = {}; simLog = []; doneSet = new Set(); chatMsgs = []; calOff = 0
     closeDetail(); $('chatPanel').classList.add('hide'); drawTabs(); render()
     if(db) load()
