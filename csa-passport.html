@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSA Passport Team Portal (Sample)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#E2453C; --red-dark:#C2352D; --red-soft:#FCE6E3;
+    --green:#2E9E44; --green-soft:#E3F3E6;
+    --orange:#F28C28; --orange-soft:#FDEBD7;
+    --peach:#FDF0E3; --cream:#FFFAF4; --card:#FFFFFF;
+    --ink:#24211E; --muted:#6B6460; --line:#EADFD3;
+    --shadow:0 1px 2px rgba(60,40,20,.06),0 6px 18px rgba(60,40,20,.07);
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--cream);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.5}
+  a{color:var(--red-dark)}
+  h1,h2,h3{font-family:"Playfair Display",Georgia,serif;margin:0;line-height:1.2}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  /* header */
+  header{background:var(--card);border-bottom:1px solid var(--line)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px}
+  .stamp{width:44px;height:44px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-family:"Playfair Display",serif;font-weight:700;font-size:15px;letter-spacing:.5px;box-shadow:inset 0 0 0 3px #fff,0 0 0 2px var(--red)}
+  .brand h1{font-size:22px}
+  .brand p{margin:0;color:var(--muted);font-size:13px}
+  .who{font-size:13px;color:var(--muted);text-align:right}
+  .who b{color:var(--ink)}
+  .notice{background:var(--peach);border-bottom:1px solid var(--line);font-size:13px;color:#7A4A1E}
+  .notice .wrap{padding:9px 20px}
+
+  nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:12px 0 0;scrollbar-width:none}
+  nav.tabs::-webkit-scrollbar{display:none}
+  .tab{appearance:none;border:0;background:transparent;font:inherit;font-weight:600;color:var(--muted);padding:10px 14px;border-radius:10px 10px 0 0;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--red-dark);border-bottom-color:var(--red)}
+
+  main{padding:28px 0 60px}
+  section.panel{display:none}
+  section.panel.active{display:block}
+  .intro{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .intro h2{font-size:30px}
+  .intro p{margin:6px 0 0;color:var(--muted);max-width:640px}
+
+  /* cards */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+  .grid{display:grid;gap:16px}
+  .kpis{grid-template-columns:repeat(5,1fr)}
+  .kpi .n{font-family:"Playfair Display",serif;font-size:34px;font-weight:700;line-height:1}
+  .kpi .l{color:var(--muted);font-size:13px;margin-top:8px}
+  .kpi.red .n{color:var(--red)} .kpi.green .n{color:var(--green)} .kpi.orange .n{color:#C96A10}
+  .two{grid-template-columns:1.4fr 1fr;margin-top:16px}
+  .card h3{font-size:19px;margin-bottom:12px}
+  .list{list-style:none;margin:0;padding:0}
+  .list li{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+  .list li .pill{flex-shrink:0;margin-top:2px}
+  .list li:first-child{border-top:0}
+  .muted{color:var(--muted)}
+  .small{font-size:13px}
+
+  /* pills */
+  .pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .p-red{background:var(--red-soft);color:var(--red-dark)}
+  .p-green{background:var(--green-soft);color:#1F7232}
+  .p-orange{background:var(--orange-soft);color:#A3540B}
+  .p-gray{background:#F1ECE6;color:#5E5650}
+  .p-ink{background:#2B2623;color:#fff}
+
+  /* controls */
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .chip{appearance:none;border:1px solid var(--line);background:var(--card);font:inherit;font-size:13px;font-weight:600;color:var(--muted);padding:7px 12px;border-radius:999px;cursor:pointer}
+  .chip[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+  .btn{appearance:none;border:0;font:inherit;font-size:13px;font-weight:600;padding:7px 12px;border-radius:999px;cursor:pointer}
+  .btn-green{background:var(--green);color:#fff}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .btn:hover,.chip:hover{filter:brightness(.97)}
+
+  /* board */
+  .board{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px;overflow-x:auto;padding-bottom:6px}
+  .col{background:var(--peach);border:1px solid var(--line);border-radius:var(--radius);padding:12px;min-height:200px}
+  .col-h{display:flex;justify-content:space-between;align-items:center;margin:2px 4px 10px;font-weight:700;font-size:14px}
+  .count{font-size:12px;color:var(--muted);font-weight:600}
+  .task{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;box-shadow:0 1px 2px rgba(60,40,20,.05);transition:transform .15s ease,box-shadow .15s ease}
+  .task:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+  .task .t{font-weight:600;margin-bottom:8px}
+  .task .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+  .task .file{display:block;margin-top:8px;font-size:12px}
+  .task .acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .flag{margin-top:8px;font-size:12px;color:#A3540B}
+
+  /* tables */
+  .tbl{width:100%;border-collapse:collapse;font-size:14px}
+  .tbl th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--line)}
+  .tbl td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+  .tbl tr:last-child td{border-bottom:0}
+  .scroll{overflow-x:auto}
+  .stages{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:16px}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .stage .n{font-family:"Playfair Display",serif;font-size:26px;font-weight:700}
+  .stage .l{font-size:12px;color:var(--muted)}
+
+  /* reports */
+  .reports{grid-template-columns:260px 1fr}
+  .rep-item{display:block;width:100%;text-align:left;appearance:none;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px;margin-bottom:10px;font:inherit;cursor:pointer}
+  .rep-item[aria-pressed="true"]{border-color:var(--red);box-shadow:0 0 0 2px var(--red-soft)}
+  .rep-item b{display:block}
+  .rep h3{font-size:24px;margin-bottom:4px}
+  .rep h4{font-family:"Playfair Display",serif;font-size:17px;margin:20px 0 8px;color:var(--red-dark)}
+  .rep ul,.rep ol{margin:0;padding-left:20px}
+  .rep li{margin:4px 0}
+
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  footer .wrap{padding:18px 20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+  /* login */
+  body.locked header,body.locked .notice,body.locked main,body.locked footer{display:none}
+  #login{display:none;min-height:100vh;place-items:center;padding:24px;background:radial-gradient(circle at 20% 10%,var(--peach),var(--cream) 60%)}
+  body.locked #login{display:grid}
+  .login-card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:32px 28px}
+  .login-card .stamp{margin:0 auto 14px}
+  .login-card h2{text-align:center;font-size:26px}
+  .login-card .sub{text-align:center;color:var(--muted);margin:6px 0 22px;font-size:14px}
+  .field{display:block;margin-bottom:14px}
+  .field span{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+  .field input{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--cream)}
+  .field input:focus{outline:2px solid var(--red-soft);border-color:var(--red)}
+  .btn-red{background:var(--red);color:#fff;width:100%;padding:12px;font-size:15px;border-radius:10px}
+  .btn-red:hover{background:var(--red-dark)}
+  .err{color:var(--red-dark);font-size:13px;min-height:18px;margin:-4px 0 10px}
+  .hint{margin-top:18px;background:var(--peach);border:1px dashed #E8C9A8;border-radius:12px;padding:12px 14px;font-size:13px;color:#7A4A1E}
+  .hint b{color:var(--ink)}
+  .logout{appearance:none;border:1px solid var(--line);background:var(--card);font:inherit;font-size:12px;font-weight:600;color:var(--muted);padding:5px 10px;border-radius:999px;cursor:pointer;margin-top:6px}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:all .25s ease;pointer-events:none;z-index:10}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:900px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .two,.reports{grid-template-columns:1fr}
+    .stages{grid-template-columns:repeat(4,1fr)}
+    .who{text-align:left}
+  }
+  @media (max-width:560px){
+    .intro h2{font-size:24px}
+    .stages{grid-template-columns:repeat(2,1fr)}
+    .board{grid-template-columns:repeat(4,260px)}
+  }
+</style>
+</head>
+<body class="locked">
+
+<div id="login">
+  <form class="login-card" id="login-form" autocomplete="off">
+    <div class="stamp" aria-hidden="true">CSA</div>
+    <h2>CSA Passport Team Portal</h2>
+    <p class="sub">Sign in to see this week's tasks, farms and reports.</p>
+    <label class="field"><span>Username</span><input id="u" name="u" type="text" required></label>
+    <label class="field"><span>Password</span><input id="pw" name="pw" type="password" required></label>
+    <div class="err" id="login-err" role="alert"></div>
+    <button class="btn btn-red" type="submit">Sign in</button>
+    <div class="hint"><b>Demo login</b><br>Username: <b>nadine</b> &nbsp;·&nbsp; Password: <b>passport2026</b><br>This is a sample portal with example data.</div>
+  </form>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="stamp" aria-hidden="true">CSA</div>
+        <div>
+          <h1>CSA Passport Team Portal</h1>
+          <p>Global Local Gourmet · Farm Partnerships</p>
+        </div>
+      </div>
+      <div class="who">Signed in as <b>Chef Nadine Nelson</b><br>Week of Nov 9 to 13, 2026<br><button class="logout" id="logout" type="button">Sign out</button></div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Portal sections">
+      <button class="tab" role="tab" aria-selected="true" data-tab="overview">Overview</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="tasks">Tasks</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="pipeline">Farm Pipeline</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="partners">Partners</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="reports">Weekly Reports</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="team">Team</button>
+    </nav>
+  </div>
+</header>
+<div class="notice"><div class="wrap">Sample portal with example data, built to show how the CSA Passport team would work. Try the buttons: nothing is saved.</div></div>
+
+<main class="wrap">
+
+  <!-- OVERVIEW -->
+  <section class="panel active" id="overview">
+    <div class="intro">
+      <div>
+        <h2>Good morning, Chef Nadine</h2>
+        <p>Everything that matters this week on one screen. The details live in the tabs above.</p>
+      </div>
+    </div>
+    <div class="grid kpis">
+      <div class="card kpi red"><div class="n">4</div><div class="l">Farms contacted</div></div>
+      <div class="card kpi"><div class="n">75%</div><div class="l">Reply rate (3 replies)</div></div>
+      <div class="card kpi green"><div class="n">2</div><div class="l">Strategy calls booked</div></div>
+      <div class="card kpi orange"><div class="n">1</div><div class="l">Affiliate farm started</div></div>
+      <div class="card kpi"><div class="n">0</div><div class="l">License upgrades</div></div>
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <h3>Waiting for your approval</h3>
+        <ul class="list" id="ov-review"></ul>
+        <p class="small muted" style="margin:12px 0 0">Approve or request changes in the <a href="#" data-goto="tasks">Tasks</a> tab.</p>
+      </div>
+      <div class="card">
+        <h3>What I need from you</h3>
+        <ul class="list">
+          <li><span>Confirm current pricing (website per-season vs. April doc monthly tiers)</span><span class="pill p-red">10 days</span></li>
+          <li><span>Pick a past class recording for the demo video</span><span class="pill p-orange">3 days</span></li>
+          <li><span>Flodesk access to restore the four free guides</span><span class="pill p-orange">2 days</span></li>
+        </ul>
+        <p class="small muted" style="margin:12px 0 0">Every item shows who decides and how long it has been open.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASKS -->
+  <section class="panel" id="tasks">
+    <div class="intro">
+      <div>
+        <h2>Tasks</h2>
+        <p>Every deliverable has one owner, a due date and a link to its file in Google Drive. Nothing goes out before review.</p>
+      </div>
+      <div class="controls" id="owner-filter" aria-label="Filter by owner">
+        <button class="chip" aria-pressed="true" data-owner="All">All</button>
+        <button class="chip" aria-pressed="false" data-owner="Anggie">Anggie</button>
+        <button class="chip" aria-pressed="false" data-owner="Data VA">Data VA</button>
+        <button class="chip" aria-pressed="false" data-owner="Outreach VA">Outreach VA</button>
+        <button class="chip" aria-pressed="false" data-owner="Content VA">Content VA</button>
+      </div>
+    </div>
+    <div class="board" id="board"></div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section class="panel" id="pipeline">
+    <div class="intro">
+      <div>
+        <h2>Farm Pipeline</h2>
+        <p>A snapshot of where each farm stands. The full list lives in the Farm Pipeline Tracker in Google Sheets, where the team updates it daily.</p>
+      </div>
+    </div>
+    <div class="stages" id="stages"></div>
+    <div class="card scroll">
+      <table class="tbl">
+        <thead><tr><th>Farm</th><th>Members</th><th>Priority</th><th>Stage</th><th>Next step</th><th>Next touch</th></tr></thead>
+        <tbody id="farm-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="panel" id="partners">
+    <div class="intro">
+      <div>
+        <h2>Partners</h2>
+        <p>Farms that have joined CSA Passport, how many members they've brought in, and what they've earned.</p>
+      </div>
+    </div>
+    <div class="card scroll">
+      <table class="tbl">
+        <thead><tr><th>Farm</th><th>Plan</th><th>Season</th><th>Members joined</th><th>Farm earnings</th><th>Partner kit</th></tr></thead>
+        <tbody>
+          <tr><td><b>Calypso Farm and Ecology Center</b><br><span class="small muted">Alaska · 70 members</span></td><td><span class="pill p-orange">Affiliate</span></td><td>Winter (starts Dec 1)</td><td>0 so far</td><td>$0 ($17 per member)</td><td><span class="pill p-green">Sent</span></td></tr>
+          <tr><td><b>Your next partner farm</b><br><span class="small muted">From the strategy calls this week</span></td><td><span class="pill p-gray">Affiliate or Pilot</span></td><td>Winter</td><td>–</td><td>–</td><td><span class="pill p-gray">Not yet</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted" style="margin-top:12px">After one season, affiliates who see strong member engagement are invited to upgrade to a license.</p>
+  </section>
+
+  <!-- REPORTS -->
+  <section class="panel" id="reports">
+    <div class="intro">
+      <div>
+        <h2>Weekly Reports</h2>
+        <p>One page every Friday, right here next to the tasks. Prefer Google Docs? The same report can go there instead.</p>
+      </div>
+    </div>
+    <div class="grid reports">
+      <div id="rep-list"></div>
+      <div class="card rep" id="rep-view"></div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="panel" id="team">
+    <div class="intro">
+      <div>
+        <h2>Team</h2>
+        <p>One owner per workstream, a short how-to for every repeat task, and one clear rhythm.</p>
+      </div>
+    </div>
+    <div class="grid kpis" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+      <div class="card"><span class="pill p-red">Lead</span><h3 style="margin-top:10px">Anggie</h3><p class="small muted" style="margin:0">Strategy, priorities, final review, weekly report</p></div>
+      <div class="card"><span class="pill p-gray">Data VA</span><h3 style="margin-top:10px">Farm data</h3><p class="small muted" style="margin:0">Cleans, verifies and segments the farm database</p></div>
+      <div class="card"><span class="pill p-green">Outreach VA</span><h3 style="margin-top:10px">Farm outreach</h3><p class="small muted" style="margin:0">Sends emails and follow-ups, logs replies, books calls</p></div>
+      <div class="card"><span class="pill p-orange">Content VA</span><h3 style="margin-top:10px">Content</h3><p class="small muted" style="margin:0">Starter Guide, social toolkit, demo video, guide covers</p></div>
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <h3>Our rhythm</h3>
+        <ul class="list">
+          <li><span>Daily check-in: Done / Doing / Blocked</span><span class="pill p-gray">By 10 AM</span></li>
+          <li><span>Weekly sync: last week's numbers and this week's top three</span><span class="pill p-gray">Mondays, 15 min</span></li>
+          <li><span>Every message acknowledged</span><span class="pill p-red">Within 24 hours</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Where things live</h3>
+        <ul class="list">
+          <li><span>Files and drafts</span><span class="muted small">Shared Google Drive</span></li>
+          <li><span>Farm pipeline</span><span class="muted small">Google Sheets</span></li>
+          <li><span>Tasks and approvals</span><span class="muted small">This portal</span></li>
+          <li><span>Weekly reports</span><span class="muted small">This portal or Google Docs</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Sample built by Anggie's Digital Edge for Chef Nadine Nelson</span>
+    <span>CSA Passport · Explore globally. Shop locally. Cook confidently.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  // ---------- sample data ----------
+  var tasks = [
+    {id:1, t:"Fix the bottom homepage button so it opens For Farms & Markets", owner:"Anggie", status:"In Review", due:"Nov 12", file:"Website fixes"},
+    {id:2, t:"Swap hero buttons: Book a Strategy Call becomes the filled one", owner:"Anggie", status:"In Review", due:"Nov 12", file:"Website fixes"},
+    {id:3, t:"Add an “As featured in” press bar near pricing", owner:"Content VA", status:"In Review", due:"Nov 13", file:"01 Brand / Drafts"},
+    {id:4, t:"Season Starter Guide: first draft", owner:"Content VA", status:"In Progress", due:"Nov 18", file:"03 Content / Drafts"},
+    {id:5, t:"2-minute class demo video from a past recording", owner:"Content VA", status:"In Progress", due:"Nov 20", file:"03 Content / Drafts", flag:"Waiting on Chef Nadine to pick a recording"},
+    {id:6, t:"Clean and verify farm database, batch 2", owner:"Data VA", status:"In Progress", due:"Nov 16", file:"Farm Pipeline Tracker"},
+    {id:7, t:"Outreach batch 2: 20 Priority A farms", owner:"Outreach VA", status:"Not Started", due:"Nov 16", file:"02 Sales / Final"},
+    {id:8, t:"Restore the four free guide sign-up pages", owner:"Anggie", status:"Not Started", due:"Nov 14", file:"Flodesk", flag:"Waiting on Flodesk access"},
+    {id:9, t:"Cover images for the four free guides", owner:"Content VA", status:"Not Started", due:"Nov 21", file:"03 Content / Drafts"},
+    {id:10, t:"Farm Email 1 and Email 2: final copy", owner:"Anggie", status:"Done", due:"Nov 10", file:"02 Sales / Final"},
+    {id:11, t:"Outreach batch 1: first 4 farms", owner:"Outreach VA", status:"Done", due:"Nov 10", file:"Farm Pipeline Tracker"},
+    {id:12, t:"Weekly report, Nov 13", owner:"Anggie", status:"Done", due:"Nov 13", file:"Weekly Reports"}
+  ];
+  var cols = ["Not Started","In Progress","In Review","Done"];
+  var ownerPill = {"Anggie":"p-red","Data VA":"p-gray","Outreach VA":"p-green","Content VA":"p-orange"};
+
+  var farms = [
+    {f:"63rd St. Farm", m:150, p:"A", s:"Call Booked", n:"15-min strategy call", d:"Nov 16"},
+    {f:"Arctic Organics", m:113, p:"A", s:"Replied", n:"Send free sample class", d:"Nov 13"},
+    {f:"Calypso Farm and Ecology Center", m:70, p:"A", s:"Affiliate", n:"Send affiliate link + Starter Guide", d:"Nov 18"},
+    {f:"3 Winds Farm", m:20, p:"C", s:"Contacted", n:"Day 4 follow-up", d:"Nov 14"},
+    {f:"Example Valley CSA", m:85, p:"A", s:"New", n:"Day 1 email, next batch", d:"Nov 16"},
+    {f:"4P Foods", m:500, p:"Separate", s:"New", n:"Separate pitch for delivery services", d:"Nov 20"},
+    {f:"Alaskans Own Seafood", m:104, p:"Separate", s:"Not Now", n:"Revisit later", d:"Feb 1"}
+  ];
+  var stageOrder = ["New","Contacted","Replied","Call Booked","Affiliate","License","Not Now"];
+  var stagePill = {"New":"p-gray","Contacted":"p-gray","Replied":"p-orange","Call Booked":"p-green","Affiliate":"p-orange","License":"p-red","Not Now":"p-gray"};
+
+  var reports = [
+    {id:"nov13", date:"Nov 13, 2026", label:"Week of Nov 9 to 13", html:
+      '<h3>Week of November 9 to 13</h3><p class="small muted">Prepared by Anggie · Friday, Nov 13</p>'+
+      '<h4>What went out</h4><ul><li>Day 1 emails to the first 4 farms</li><li>Day 4 follow-up to 63rd St. Farm</li><li>Homepage button fix and Winter Season wording, sent for your approval</li></ul>'+
+      '<h4>What’s in progress</h4><ul><li>Season Starter Guide first draft (Content VA, due Nov 18)</li><li>2-minute class demo video (Content VA, due Nov 20)</li><li>Farm database cleanup, batch 2 (Data VA, due Nov 16)</li></ul>'+
+      '<h4>What we learned</h4><ul><li>Farms asked to see a class before booking a call, so the free sample class matters more than expected.</li><li>Subject line test: too early to call. It continues next week.</li></ul>'+
+      '<h4>What I need from you</h4><ul><li>Confirm current pricing <span class="pill p-red">You decide · 10 days open</span></li><li>Pick a past class recording <span class="pill p-orange">You decide · 3 days open</span></li><li>Approve the homepage fixes <span class="pill p-orange">You decide · 2 days open</span></li></ul>'+
+      '<h4>The numbers</h4><ul><li>4 farms contacted · 3 replies (75%)</li><li>2 strategy calls booked</li><li>1 affiliate farm started · 0 license upgrades</li></ul>'+
+      '<h4>Next week’s top three</h4><ol><li>Outreach batch 2: 20 Priority A farms</li><li>Finish and review the Season Starter Guide</li><li>Run the two booked strategy calls</li></ol>'},
+    {id:"nov20", date:"Nov 20, 2026", label:"Week of Nov 16 to 20", html:
+      '<h3>Week of November 16 to 20</h3><p class="small muted">Due Friday, Nov 20</p><p class="muted">This week’s report appears here on Friday.</p>'}
+  ];
+
+  // ---------- helpers ----------
+  var $ = function(s,el){return (el||document).querySelector(s)};
+  var $$ = function(s,el){return Array.prototype.slice.call((el||document).querySelectorAll(s))};
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  var toastTimer;
+  function toast(msg){var t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove("show")},2200)}
+
+  // ---------- tabs ----------
+  function showTab(name){
+    $$(".tab").forEach(function(b){b.setAttribute("aria-selected", b.dataset.tab===name ? "true":"false")});
+    $$("section.panel").forEach(function(p){p.classList.toggle("active", p.id===name)});
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  $$(".tab").forEach(function(b){b.addEventListener("click",function(){showTab(b.dataset.tab)})});
+  document.addEventListener("click",function(e){var g=e.target.closest("[data-goto]");if(g){e.preventDefault();showTab(g.dataset.goto)}});
+
+  // ---------- tasks ----------
+  var owner = "All";
+  function renderBoard(){
+    var board = $("#board"); board.innerHTML = "";
+    cols.forEach(function(c){
+      var list = tasks.filter(function(t){return t.status===c && (owner==="All"||t.owner===owner)});
+      var col = document.createElement("div"); col.className="col";
+      col.innerHTML = '<div class="col-h"><span>'+c+'</span><span class="count">'+list.length+'</span></div>';
+      list.forEach(function(t){
+        var el = document.createElement("div"); el.className="task";
+        var html = '<div class="t">'+esc(t.t)+'</div>'+
+          '<div class="meta"><span class="pill '+ownerPill[t.owner]+'">'+esc(t.owner)+'</span><span>Due '+esc(t.due)+'</span>'+(t.changes?'<span class="pill p-red">Changes requested</span>':'')+(t.approved?'<span class="pill p-green">Approved</span>':'')+'</div>'+
+          '<span class="file small muted">File: '+esc(t.file)+'</span>';
+        if(t.flag) html += '<div class="flag">'+esc(t.flag)+'</div>';
+        if(t.status==="In Review") html += '<div class="acts"><button class="btn btn-green" data-act="approve" data-id="'+t.id+'">Approve</button><button class="btn btn-ghost" data-act="changes" data-id="'+t.id+'">Request changes</button></div>';
+        el.innerHTML = html; col.appendChild(el);
+      });
+      board.appendChild(col);
+    });
+    renderReview();
+  }
+  function renderReview(){
+    var ul = $("#ov-review"); ul.innerHTML="";
+    var r = tasks.filter(function(t){return t.status==="In Review"});
+    if(!r.length){ul.innerHTML='<li><span class="muted">Nothing waiting. You’re all caught up.</span></li>';return}
+    r.forEach(function(t){var li=document.createElement("li");li.innerHTML='<span>'+esc(t.t)+'</span><span class="pill '+ownerPill[t.owner]+'">'+esc(t.owner)+'</span>';ul.appendChild(li)});
+  }
+  $("#board").addEventListener("click",function(e){
+    var b=e.target.closest("[data-act]"); if(!b) return;
+    var t=tasks.filter(function(x){return x.id===+b.dataset.id})[0]; if(!t) return;
+    if(b.dataset.act==="approve"){t.status="Done";t.approved=true;t.changes=false;toast("Approved. It moves to Done.")}
+    else{t.status="In Progress";t.changes=true;toast("Sent back with your notes. It moves to In Progress.")}
+    renderBoard();
+  });
+  $$("#owner-filter .chip").forEach(function(c){c.addEventListener("click",function(){
+    owner=c.dataset.owner;
+    $$("#owner-filter .chip").forEach(function(x){x.setAttribute("aria-pressed", x===c?"true":"false")});
+    renderBoard();
+  })});
+
+  // ---------- pipeline ----------
+  function renderPipeline(){
+    $("#stages").innerHTML = stageOrder.map(function(s){
+      var n = farms.filter(function(f){return f.s===s}).length;
+      return '<div class="stage"><div class="n">'+n+'</div><div class="l">'+s+'</div></div>';
+    }).join("");
+    $("#farm-rows").innerHTML = farms.map(function(f){
+      return '<tr><td><b>'+esc(f.f)+'</b></td><td>'+f.m+'</td><td>'+esc(f.p)+'</td><td><span class="pill '+stagePill[f.s]+'">'+esc(f.s)+'</span></td><td>'+esc(f.n)+'</td><td>'+esc(f.d)+'</td></tr>';
+    }).join("");
+  }
+
+  // ---------- reports ----------
+  function renderReports(active){
+    $("#rep-list").innerHTML = reports.map(function(r){
+      return '<button class="rep-item" aria-pressed="'+(r.id===active)+'" data-rep="'+r.id+'"><b>'+r.label+'</b><span class="small muted">'+r.date+'</span></button>';
+    }).join("");
+    $("#rep-view").innerHTML = reports.filter(function(r){return r.id===active})[0].html;
+  }
+  $("#rep-list").addEventListener("click",function(e){var b=e.target.closest("[data-rep]");if(b) renderReports(b.dataset.rep)});
+
+  // ---------- demo login (for show only: a sample page has no real security) ----------
+  $("#login-form").addEventListener("submit",function(e){
+    e.preventDefault();
+    var u=$("#u").value.trim().toLowerCase(), p=$("#pw").value;
+    if(u==="nadine" && p==="passport2026"){
+      $("#login-err").textContent="";
+      document.body.classList.remove("locked");
+      showTab("overview");
+      toast("Welcome back, Chef Nadine");
+    } else {
+      $("#login-err").textContent="That username or password doesn’t match. Use the demo login below.";
+    }
+  });
+  $("#logout").addEventListener("click",function(){
+    document.body.classList.add("locked");
+    $("#pw").value="";
+    window.scrollTo(0,0);
+  });
+
+  renderBoard(); renderPipeline(); renderReports("nov13");
+})();
+</script>
+</body>
+</html>
