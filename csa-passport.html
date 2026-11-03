@@ -116,6 +116,9 @@
   .rep-item{display:block;width:100%;text-align:left;appearance:none;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px;margin-bottom:10px;font:inherit;cursor:pointer}
   .rep-item[aria-pressed="true"]{border-color:var(--red);box-shadow:0 0 0 2px var(--red-soft)}
   .rep-item b{display:block}
+  .rep-month{margin:6px 0 10px}
+  .rep-month summary{cursor:pointer;font-weight:700;font-size:14px;padding:6px 2px;color:var(--ink)}
+  .rep-month[open] summary{margin-bottom:6px}
   .rep h3{font-size:24px;margin-bottom:4px}
   .rep h4{font-family:"Playfair Display",serif;font-size:17px;margin:20px 0 8px;color:var(--red-dark)}
   .rep ul,.rep ol{margin:0;padding-left:20px}
@@ -294,9 +297,17 @@
         <span class="src" data-src>Loading farm data…</span>
         <button class="btn btn-ghost" type="button" id="refresh">Refresh</button>
         <a class="btn btn-ghost" id="open-sheet" target="_blank" rel="noopener">Open the tracker</a>
-        <a class="btn btn-red-sm" id="add-farm" target="_blank" rel="noopener">+ Add a farm</a>
+        <button class="btn btn-red-sm" type="button" id="add-farm">+ Add a farm</button>
       </div>
     </div>
+    <form class="newtask" id="farmform">
+      <label class="grow">Farm name<input id="ff-name" type="text" placeholder="e.g. Green Acres CSA" required></label>
+      <label>State<input id="ff-state" type="text" placeholder="e.g. Vermont"></label>
+      <label># Members<input id="ff-m" type="number" min="0" placeholder="80" style="width:90px"></label>
+      <label>Priority<select id="ff-p"><option>A</option><option>B</option><option>C</option><option>Separate</option></select></label>
+      <label>Owner<select id="ff-owner"><option>Outreach VA</option><option>Data VA</option><option>Anggie (Lead)</option></select></label>
+      <button class="btn btn-red-sm" type="submit">Add farm</button>
+    </form>
     <div class="stages" id="stages"></div>
     <div class="card scroll">
       <table class="tbl">
@@ -304,7 +315,7 @@
         <tbody id="farm-rows"></tbody>
       </table>
     </div>
-    <p class="note" style="margin-top:10px">To add a farm or change a stage, open the tracker, edit the row, then press Refresh here.</p>
+    <p class="note" style="margin-top:10px" data-write-note></p>
   </section>
 
   <!-- PARTNERS -->
@@ -314,8 +325,18 @@
         <h2>Partners</h2>
         <p>Farms that have joined CSA Passport, how many members they've brought in, and what they've earned. Pulled from the same tracker.</p>
       </div>
-      <span class="src" data-src>Loading farm data…</span>
+      <div class="actions">
+        <span class="src" data-src>Loading farm data…</span>
+        <button class="btn btn-ghost" type="button" data-refresh>Refresh</button>
+        <button class="btn btn-red-sm" type="button" id="add-partner">+ Add or update a partner</button>
+      </div>
     </div>
+    <form class="newtask" id="partnerform">
+      <label class="grow">Farm<select id="pf-farm"></select></label>
+      <label>Plan<select id="pf-plan"><option>Affiliate</option><option>Pilot</option><option>License</option></select></label>
+      <label>Members joined<input id="pf-joined" type="number" min="0" value="0" style="width:110px"></label>
+      <button class="btn btn-red-sm" type="submit">Save partner</button>
+    </form>
     <div class="grid kpis" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
       <div class="card kpi orange"><div class="n" id="p-count">–</div><div class="l">Partner farms</div></div>
       <div class="card kpi green"><div class="n" id="p-members">–</div><div class="l">Members joined through partners</div></div>
@@ -323,11 +344,12 @@
     </div>
     <div class="card scroll">
       <table class="tbl">
-        <thead><tr><th>Farm</th><th>Plan</th><th>Members joined</th><th>Farm earnings</th><th>Next step</th></tr></thead>
+        <thead><tr><th>Farm</th><th>Plan</th><th>Members joined</th><th>Farm earnings</th><th>Next step</th><th></th></tr></thead>
         <tbody id="partner-rows"></tbody>
       </table>
     </div>
     <p class="small muted" style="margin-top:12px">After one season, affiliates who see strong member engagement are invited to upgrade to a license.</p>
+    <p class="note" style="margin-top:6px" data-write-note></p>
   </section>
 
   <!-- REPORTS -->
@@ -427,7 +449,20 @@
     {f:"4P Foods",state:"District of Columbia",m:500,p:"Separate",owner:"Anggie (Lead)",s:"New",contacted:"",touches:0,next:"Send Day 1 email",due:"",note:"Needs a separate pitch for delivery services",replied:"",call:"",plan:"",joined:0},
     {f:"Alaskans Own Seafood",state:"Alaska",m:104,p:"Separate",owner:"Anggie (Lead)",s:"Not Now",contacted:"",touches:0,next:"Revisit later",due:"",note:"Seafood share; revisit Feb 1",replied:"",call:"",plan:"",joined:0}
   ];
-  var farms = SNAPSHOT.slice();
+  // Optional: paste the Apps Script web app URL here and the portal's forms save straight into the sheet
+  var WRITE_URL = "";
+  var EDITS_KEY = "csa-sample-farm-edits";
+  var farmEdits = (function(){ try{ return JSON.parse(localStorage.getItem(EDITS_KEY)||"[]") }catch(_){ return [] } })();
+  function clone(x){ return JSON.parse(JSON.stringify(x)) }
+  function applyEdits(list){
+    if(WRITE_URL) return list; // the sheet is the record once writing is connected
+    farmEdits.forEach(function(e){
+      var hit=list.filter(function(f){return f.f.toLowerCase()===e.f.toLowerCase()})[0];
+      if(hit) Object.assign(hit,e); else list.push(Object.assign({state:"",m:0,p:"",owner:"",s:"New",contacted:"",touches:0,next:"",due:"",note:"",replied:"",call:"",plan:"",joined:0},e));
+    });
+    return list;
+  }
+  var farms = applyEdits(clone(SNAPSHOT));
   var dataLive = false;
   var stageOrder = ["New","Contacted","Replied","Call Booked","Affiliate or Pilot","License","Not Now"];
   var stageLabel = {"Affiliate or Pilot":"Affiliate / Pilot"};
@@ -473,11 +508,11 @@
       .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.text() })
       .then(function(t){
         var list=toFarms(parseCSV(t)); if(!list.length) throw new Error("No farms found");
-        farms=list; dataLive=true;
+        farms=applyEdits(list); dataLive=true;
         setSource(true, new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}));
         if(showToast) toast("Refreshed from Google Sheets");
       })
-      .catch(function(){ farms=SNAPSHOT.slice(); dataLive=false; setSource(false); if(showToast) toast("Couldn’t reach the sheet, showing the snapshot") })
+      .catch(function(){ farms=applyEdits(clone(SNAPSHOT)); dataLive=false; setSource(false); if(showToast) toast("Couldn’t reach the sheet, showing the snapshot") })
       .then(function(){ clearTimeout(timer); renderData() });
   }
   function stats(){
@@ -494,7 +529,28 @@
   }
   function isLicense(f){ return f.s==="License" || /license/i.test(f.plan) }
   function earnText(f){ return isLicense(f) ? '<span class="muted small">Licensed (no commission)</span>' : '$'+(f.joined*17).toLocaleString() }
-  function _unused(){
+  // save a farm change: to the sheet when WRITE_URL is set, otherwise to this browser (sample mode)
+  function saveFarm(edit, msg){
+    var hit=farms.filter(function(f){return f.f.toLowerCase()===edit.f.toLowerCase()})[0];
+    if(hit) Object.assign(hit,edit); else farms.push(Object.assign({state:"",m:0,p:"",owner:"",s:"New",contacted:"",touches:0,next:"",due:"",note:"",replied:"",call:"",plan:"",joined:0},edit));
+    renderData();
+    if(WRITE_URL){
+      fetch(WRITE_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(edit)})
+        .then(function(){ toast(msg+" Saved to the tracker."); setTimeout(function(){loadFarms(false)},2500) })
+        .catch(function(){ toast("Couldn’t reach the tracker. Try again in a moment.") });
+    } else {
+      var old=farmEdits.filter(function(e){return e.f.toLowerCase()===edit.f.toLowerCase()})[0];
+      if(old) Object.assign(old,edit); else farmEdits.push(edit);
+      try{ localStorage.setItem(EDITS_KEY, JSON.stringify(farmEdits)) }catch(_){}
+      toast(msg);
+    }
+  }
+  function renderWriteNotes(){
+    $$("[data-write-note]").forEach(function(p){
+      p.innerHTML = WRITE_URL
+        ? 'Anything you add here saves straight to the <a href="'+SHEET_URL+'" target="_blank" rel="noopener">Farm Pipeline Tracker</a>. Next steps and due dates are worked out by the sheet.'
+        : 'Sample mode: farms and partners you add here stay in this browser. In the live setup they save straight to the <a href="'+SHEET_URL+'" target="_blank" rel="noopener">Farm Pipeline Tracker</a>, which the team can also edit directly.';
+    });
   }
   function renderData(){ renderKpis(); renderPipeline(); renderPartners(); renderReports(currentReport) }
   function renderKpis(){
@@ -508,12 +564,12 @@
     $("#p-count").textContent=s.partners.length; $("#p-members").textContent=s.joined; $("#p-earn").textContent="$"+s.earn.toLocaleString();
     $("#partner-rows").innerHTML = s.partners.length ? s.partners.map(function(f){
       var plan=f.plan||(f.s==="License"?"License":"Affiliate or Pilot");
-      return '<tr><td><b>'+esc(f.f)+'</b><br><span class="small muted">'+esc(f.state)+' · '+f.m+' members</span></td><td><span class="pill '+(plan==="License"?"p-red":"p-orange")+'">'+esc(plan)+'</span></td><td>'+f.joined+'</td><td>'+earnText(f)+'</td><td>'+esc(f.next||"")+(f.due?' <span class="muted small">· '+esc(f.due)+'</span>':'')+'</td></tr>';
-    }).join("") : '<tr><td colspan="5" class="muted">No partner farms yet. They appear here as soon as a farm’s Stage changes to Affiliate or Pilot in the tracker.</td></tr>';
+      return '<tr><td><b>'+esc(f.f)+'</b><br><span class="small muted">'+esc(f.state)+' · '+f.m+' members</span></td><td><span class="pill '+(plan==="License"?"p-red":"p-orange")+'">'+esc(plan)+'</span></td><td>'+f.joined+'</td><td>'+earnText(f)+'</td><td>'+esc(f.next||"")+(f.due?' <span class="muted small">· '+esc(f.due)+'</span>':'')+'</td><td><button class="btn btn-ghost" type="button" data-upd="'+esc(f.f)+'">Update</button></td></tr>';
+    }).join("") : '<tr><td colspan="6" class="muted">No partner farms yet. They appear here as soon as a farm’s Stage changes to Affiliate or Pilot in the tracker.</td></tr>';
   }
 
   var reports = [
-    {id:"nov13", date:"Nov 13, 2026", label:"Week of Nov 9 to 13", html:
+    {id:"nov13", when:"2026-11-13", date:"Nov 13, 2026", label:"Week of Nov 9 to 13", html:
       '<h3>Week of November 9 to 13</h3><p class="small muted">Prepared by Anggie · Friday, Nov 13</p>'+
       '<h4>What went out</h4><ul><li>Day 1 emails to the first 4 farms</li><li>Day 4 follow-up to 63rd St. Farm</li><li>Homepage button fix and Winter Season wording, sent for your approval</li></ul>'+
       '<h4>What’s in progress</h4><ul><li>Season Starter Guide first draft (Content VA, due Nov 18)</li><li>2-minute class demo video (Content VA, due Nov 20)</li><li>Farm database cleanup, batch 2 (Data VA, due Nov 16)</li></ul>'+
@@ -664,8 +720,40 @@
     }).join("");
   }
   $("#open-sheet").href = SHEET_URL;
-  $("#add-farm").href = SHEET_URL;
   $("#refresh").addEventListener("click",function(){ loadFarms(true) });
+  $$("[data-refresh]").forEach(function(b){ b.addEventListener("click",function(){ loadFarms(true) }) });
+  renderWriteNotes();
+
+  // add a farm
+  $("#add-farm").addEventListener("click",function(){ $("#farmform").classList.toggle("open"); if($("#farmform").classList.contains("open")) $("#ff-name").focus() });
+  $("#farmform").addEventListener("submit",function(e){
+    e.preventDefault();
+    var name=$("#ff-name").value.trim(); if(!name) return;
+    if(farms.some(function(f){return f.f.toLowerCase()===name.toLowerCase()})){ toast("That farm is already in the tracker."); return }
+    saveFarm({f:name,state:$("#ff-state").value.trim(),m:+$("#ff-m").value||0,p:$("#ff-p").value,owner:$("#ff-owner").value,s:"New",next:"Send Day 1 email",note:"Added from the portal"},"Farm added as New.");
+    e.target.reset(); e.target.classList.remove("open");
+  });
+
+  // add or update a partner
+  function fillPartnerForm(name){
+    $("#pf-farm").innerHTML = farms.map(function(f){return '<option'+(f.f===name?' selected':'')+'>'+esc(f.f)+'</option>'}).join("");
+    var f=farms.filter(function(x){return x.f===$("#pf-farm").value})[0];
+    if(f){ $("#pf-plan").value = isLicense(f)?"License":(/pilot/i.test(f.plan)?"Pilot":"Affiliate"); $("#pf-joined").value=f.joined||0 }
+  }
+  $("#add-partner").addEventListener("click",function(){ var form=$("#partnerform"); form.classList.toggle("open"); if(form.classList.contains("open")) fillPartnerForm() });
+  $("#pf-farm").addEventListener("change",function(){ fillPartnerForm(this.value) });
+  $("#partner-rows").addEventListener("click",function(e){
+    var b=e.target.closest("[data-upd]"); if(!b) return;
+    $("#partnerform").classList.add("open"); fillPartnerForm(b.dataset.upd);
+    $("#partnerform").scrollIntoView({behavior:"smooth",block:"center"}); $("#pf-joined").focus({preventScroll:true});
+  });
+  $("#partnerform").addEventListener("submit",function(e){
+    e.preventDefault();
+    var plan=$("#pf-plan").value, lic=plan==="License";
+    saveFarm({f:$("#pf-farm").value,plan:plan,s:lic?"License":"Affiliate or Pilot",joined:Math.max(0,+$("#pf-joined").value||0),
+      next:lic?"Set up license onboarding":"Send partner kit and check in after 2 weeks"},"Partner saved.");
+    e.target.classList.remove("open");
+  });
 
   // ---------- new task ----------
   $("#nt-toggle").addEventListener("click",function(){ $("#newtask").classList.toggle("open"); if($("#newtask").classList.contains("open")) $("#nt-title").focus() });
@@ -680,10 +768,18 @@
   });
 
   // ---------- reports ----------
+  // newest first, grouped by month; the latest month stays open and older months fold away
   function renderReports(active){
     currentReport = active;
-    $("#rep-list").innerHTML = reports.map(function(r){
-      return '<button class="rep-item" aria-pressed="'+(r.id===active)+'" data-rep="'+r.id+'"><b>'+r.label+'</b><span class="small muted">'+r.date+'</span></button>';
+    var item=function(r){return '<button class="rep-item" aria-pressed="'+(r.id===active)+'" data-rep="'+r.id+'"><b>'+esc(r.label)+'</b><span class="small muted">'+esc(r.date)+'</span></button>'};
+    var draft=reports.filter(function(r){return r.id==="draft"})[0];
+    var done=reports.filter(function(r){return r.id!=="draft"}).sort(function(a,b){return (b.when||"").localeCompare(a.when||"")});
+    var groups=[],byKey={};
+    done.forEach(function(r){var k=(r.when||"").slice(0,7); if(!byKey[k]){byKey[k]=[];groups.push(k)} byKey[k].push(r)});
+    var activeKey=((reports.filter(function(r){return r.id===active})[0]||{}).when||"").slice(0,7);
+    $("#rep-list").innerHTML = item(draft) + groups.map(function(k,i){
+      var d=new Date(k+"-01T12:00:00"), name=d.toLocaleDateString("en-US",{month:"long",year:"numeric"});
+      return '<details class="rep-month"'+(i===0||k===activeKey?' open':'')+'><summary>'+name+' <span class="muted small">· '+byKey[k].length+' report'+(byKey[k].length>1?'s':'')+'</span></summary>'+byKey[k].map(item).join("")+'</details>';
     }).join("");
     var rep = reports.filter(function(r){return r.id===active})[0];
     $("#rep-view").innerHTML = rep.id==="draft" ? draftHTML() : rep.html;
@@ -700,14 +796,14 @@
   var SAVED_KEY="csa-sample-reports";
   function loadSaved(){ try{ return JSON.parse(localStorage.getItem(SAVED_KEY)||"[]") }catch(_){ return [] } }
   function saveSaved(list){ try{ localStorage.setItem(SAVED_KEY, JSON.stringify(list)) }catch(_){} }
-  loadSaved().forEach(function(r){ reports.splice(reports.length-1,0,r) });
+  loadSaved().forEach(function(r){ if(!r.when) r.when=new Date(+String(r.id).slice(3)||Date.now()).toISOString().slice(0,10); reports.push(r) });
   $("#rep-view").addEventListener("submit",function(e){
     if(e.target.id!=="repform") return; e.preventDefault();
     if(!repDraft.learned.trim() && !repDraft.need.trim() && !repDraft.top.trim()){ toast("Add at least one line before publishing."); return }
     var d=new Date(), label=d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
     var title="Week of "+label, id="pub"+d.getTime();
-    var rep={id:id, date:"Published "+label, label:title, html:finalHTML(title,repDraft)};
-    reports.splice(reports.length-1,0,rep);
+    var rep={id:id, when:d.toISOString().slice(0,10), date:"Published "+label, label:title, html:finalHTML(title,repDraft)};
+    reports.push(rep);
     var saved=loadSaved(); saved.push(rep); saveSaved(saved);
     repDraft={learned:"",need:"",top:""};
     renderReports(id); toast("Published. Chef Nadine sees it in Weekly Reports.");
