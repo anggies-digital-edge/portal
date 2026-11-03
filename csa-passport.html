@@ -139,6 +139,10 @@
   .newtask label{display:flex;flex-direction:column;font-size:12px;font-weight:600;gap:4px}
   .newtask input,.newtask select{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--cream)}
   .newtask .grow{flex:1;min-width:200px}
+  .repform{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:12px}
+  .repform label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700}
+  .repform textarea{font:inherit;font-size:14px;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--cream);min-height:70px;resize:vertical}
+  .repform .acts{display:flex;gap:8px;flex-wrap:wrap}
   .note{font-size:12px;color:var(--muted)}
 
   /* login */
@@ -333,6 +337,7 @@
         <h2>Weekly Reports</h2>
         <p>One page every Friday, right here next to the tasks. Prefer Google Docs? The same report can go there instead.</p>
       </div>
+      <button class="btn btn-red-sm" type="button" id="new-report">+ Write this week’s report</button>
     </div>
     <div class="grid reports">
       <div id="rep-list"></div>
@@ -520,6 +525,24 @@
   ];
   var currentReport = "nov13";
   // the draft fills its own numbers from the tracker and its lists from the task board
+  function linesToList(txt,tag){
+    var items=String(txt||"").split(/\n+/).map(function(x){return x.replace(/^\s*[-*•\d.)]+\s*/,"").trim()}).filter(Boolean);
+    return items.length?'<'+tag+'>'+items.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</'+tag+'>':'<p class="muted">Nothing added.</p>';
+  }
+  // the finished report: auto parts plus Anggie's own words, frozen at publish time
+  function finalHTML(title,w){
+    var s=stats();
+    var done=tasks.filter(function(t){return t.status==="Done"||t.status==="Approved"});
+    var prog=tasks.filter(function(t){return t.status==="In Progress"});
+    var li=function(arr,fmt){return arr.length?arr.map(fmt).join(""):'<li class="muted">Nothing this week</li>'};
+    return '<h3>'+esc(title)+'</h3>'+
+      '<h4>What went out</h4><ul>'+li(done,function(t){return '<li>'+esc(t.t)+'</li>'})+'</ul>'+
+      '<h4>What’s next</h4><ul>'+li(prog,function(t){return '<li>'+esc(t.t)+' <span class="muted small">(due '+esc(t.due)+')</span></li>'})+'</ul>'+
+      '<h4>What we learned</h4>'+linesToList(w.learned,"ul")+
+      '<h4>What I need from you</h4>'+linesToList(w.need,"ul")+
+      '<h4>The numbers</h4><ul><li>'+s.contacted+' farms contacted · '+s.replies+' replies ('+s.rate+'%)</li><li>'+s.calls+' strategy calls booked</li><li>'+s.aff+' affiliates / pilots · '+s.lic+' license upgrades</li><li>'+s.joined+' members joined through partners · $'+s.earn.toLocaleString()+' earned by affiliate farms</li></ul>'+
+      '<h4>Next week’s top three</h4>'+linesToList(w.top,"ol");
+  }
   function draftHTML(){
     var s=stats();
     var li=function(arr,fmt){return arr.length?arr.map(fmt).join(""):'<li class="muted">Nothing yet</li>'};
@@ -537,8 +560,16 @@
         '<li>'+s.contacted+' farms contacted · '+s.replies+' replies ('+s.rate+'%)</li>'+
         '<li>'+s.calls+' strategy calls booked</li>'+
         '<li>'+s.aff+' affiliates / pilots · '+s.lic+' license upgrades</li>'+
-        '<li>'+s.joined+' members joined through partners · $'+s.earn.toLocaleString()+' earned by affiliate farms</li></ul>';
+        '<li>'+s.joined+' members joined through partners · $'+s.earn.toLocaleString()+' earned by affiliate farms</li></ul>'+
+      '<form class="repform" id="repform">'+
+        '<p class="small muted">Everything above fills itself in. Add your own words below, then publish. Write one point per line.</p>'+
+        '<label>What we learned<textarea id="rf-learned" placeholder="e.g. Farms want to see a class before they book a call">'+esc(repDraft.learned)+'</textarea></label>'+
+        '<label>What I need from you<textarea id="rf-need" placeholder="e.g. Confirm current pricing">'+esc(repDraft.need)+'</textarea></label>'+
+        '<label>Next week’s top three<textarea id="rf-top" placeholder="One per line">'+esc(repDraft.top)+'</textarea></label>'+
+        '<div class="acts"><button class="btn btn-red-sm" type="submit">Publish report</button><button class="btn btn-ghost" type="button" id="rf-copy">Copy for Google Docs</button></div>'+
+      '</form>';
   }
+  var repDraft={learned:"",need:"",top:""};
 
   // ---------- helpers ----------
   var $ = function(s,el){return (el||document).querySelector(s)};
@@ -658,6 +689,37 @@
     $("#rep-view").innerHTML = rep.id==="draft" ? draftHTML() : rep.html;
   }
   $("#rep-list").addEventListener("click",function(e){var b=e.target.closest("[data-rep]");if(b) renderReports(b.dataset.rep)});
+  $("#new-report").addEventListener("click",function(){ renderReports("draft"); var t=$("#rf-learned"); if(t){ t.scrollIntoView({behavior:"smooth",block:"center"}); t.focus({preventScroll:true}) } });
+  // keep what's typed if the draft re-renders (e.g. a task moves)
+  $("#rep-view").addEventListener("input",function(e){
+    if(e.target.id==="rf-learned") repDraft.learned=e.target.value;
+    if(e.target.id==="rf-need") repDraft.need=e.target.value;
+    if(e.target.id==="rf-top") repDraft.top=e.target.value;
+  });
+  // published reports stay in this browser for the sample; the real portal saves them to the database so Chef Nadine sees them too
+  var SAVED_KEY="csa-sample-reports";
+  function loadSaved(){ try{ return JSON.parse(localStorage.getItem(SAVED_KEY)||"[]") }catch(_){ return [] } }
+  function saveSaved(list){ try{ localStorage.setItem(SAVED_KEY, JSON.stringify(list)) }catch(_){} }
+  loadSaved().forEach(function(r){ reports.splice(reports.length-1,0,r) });
+  $("#rep-view").addEventListener("submit",function(e){
+    if(e.target.id!=="repform") return; e.preventDefault();
+    if(!repDraft.learned.trim() && !repDraft.need.trim() && !repDraft.top.trim()){ toast("Add at least one line before publishing."); return }
+    var d=new Date(), label=d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+    var title="Week of "+label, id="pub"+d.getTime();
+    var rep={id:id, date:"Published "+label, label:title, html:finalHTML(title,repDraft)};
+    reports.splice(reports.length-1,0,rep);
+    var saved=loadSaved(); saved.push(rep); saveSaved(saved);
+    repDraft={learned:"",need:"",top:""};
+    renderReports(id); toast("Published. Chef Nadine sees it in Weekly Reports.");
+  });
+  $("#rep-view").addEventListener("click",function(e){
+    if(!e.target.closest("#rf-copy")) return;
+    var tmp=document.createElement("div"); tmp.innerHTML=finalHTML("Weekly report",repDraft);
+    var text=tmp.innerText||tmp.textContent;
+    var done=function(){toast("Copied. Paste it into a new Google Doc in 05 Reports.")};
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done,function(){toast("Couldn't copy here. Select the report text instead.")}) }
+    else toast("Couldn't copy here. Select the report text instead.");
+  });
 
   // ---------- demo login (for show only: a sample page has no real security) ----------
   $("#login-form").addEventListener("submit",function(e){
