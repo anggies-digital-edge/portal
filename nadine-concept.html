@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Nadine Nelson | Concept 3D Site, Option 2 (Red)</title>
+<meta name="description" content="A concept 3D globe website for Chef Nadine Nelson, the Green Queen of Cuisine. Designed by Anggie's Digital Edge as a sample.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12040a; --bg2:#3b0b17; --gold:#ff5a6a; --coral:#d3112a; --teal:#ffffff;
+    --cream:#f6efe0; --muted:#e6c9cd; --card:rgba(20,4,9,.72); --line:rgba(246,239,224,.2);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:var(--cream);line-height:1.65;
+    background:radial-gradient(ellipse at 50% 30%,var(--bg2) 0%,var(--bg) 65%) fixed;overflow-x:hidden}
+  #scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+  .no-webgl #scene{display:none}
+  a{color:var(--gold)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--cream);color:var(--bg);padding:8px 14px;border-radius:8px;z-index:100}
+  .skip:focus{left:8px}
+
+  .concept{position:relative;z-index:20;background:#000;text-align:center;font-size:.82rem;padding:7px 12px;border-bottom:1px solid var(--line)}
+  header.top{position:sticky;top:0;z-index:15;display:flex;justify-content:space-between;align-items:center;gap:14px;
+    padding:12px clamp(16px,4vw,40px);background:linear-gradient(rgba(18,4,10,.92),rgba(18,4,10,0))}
+  .brand{font-family:'Playfair Display',Georgia,system-ui,sans-serif;font-weight:700;font-size:1.15rem;color:var(--cream);text-decoration:none}
+  nav a{color:var(--cream);text-decoration:none;margin-left:20px;font-size:.92rem;opacity:.85}
+  nav a:hover{opacity:1;color:var(--gold)}
+  @media(max-width:760px){nav a:not(.cta-link){display:none}}
+
+  #places{position:fixed;right:clamp(10px,2vw,26px);top:50%;transform:translateY(-50%);z-index:12;display:flex;flex-direction:column;gap:12px}
+  #places a{display:flex;align-items:center;justify-content:flex-end;gap:10px;text-decoration:none;color:var(--muted);font-size:.78rem}
+  #places a span{opacity:0;transition:opacity .25s}
+  #places a:hover span,#places a.on span{opacity:1}
+  #places a i{width:10px;height:10px;border-radius:50%;border:2px solid var(--muted);display:block}
+  #places a.on{color:var(--gold)}
+  #places a.on i{background:var(--gold);border-color:var(--gold)}
+  @media(max-width:900px){#places{display:none}}
+
+  main{position:relative;z-index:5}
+  .panel{min-height:100vh;display:flex;align-items:center;padding:90px clamp(16px,6vw,90px)}
+  .panel.right{justify-content:flex-end}
+  .panel.center{justify-content:center;text-align:center}
+  .card{max-width:520px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3.2vw,36px);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  .card.wide{max-width:700px}
+  .place{display:inline-block;font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.76rem;color:#fff;
+    background:linear-gradient(135deg,var(--gold),var(--coral));padding:4px 12px;border-radius:999px;margin:0 0 14px}
+  h1,h2,h3{font-family:'Playfair Display',Georgia,system-ui,sans-serif;line-height:1.12;margin:0 0 14px;color:var(--cream)}
+  h1{font-size:clamp(2.5rem,6.4vw,4.6rem)}
+  h1 span{background:linear-gradient(135deg,var(--gold),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  h2{font-size:clamp(1.7rem,3.5vw,2.4rem)}
+  h3{font-size:1.15rem;margin-bottom:6px}
+  p{margin:0 0 14px}
+  .portrait{display:block;width:132px;height:132px;object-fit:cover;object-position:50% 20%;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 4px var(--coral),0 10px 30px rgba(0,0,0,.45);margin:0 0 16px}
+  .center .portrait{margin-left:auto;margin-right:auto}
+  .portrait.sm{width:96px;height:96px}
+  .lead{font-size:1.1rem;color:var(--muted)}
+  .tagline{color:var(--gold);font-style:italic;font-size:1.1rem}
+  .btn{display:inline-block;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;border-radius:999px;padding:12px 24px;
+    background:linear-gradient(135deg,var(--gold),var(--coral));color:#fff;border:0;margin:6px 10px 6px 0;transition:transform .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.ghost{background:transparent;color:var(--cream);border:1px solid var(--cream)}
+  .cue{margin-top:20px;color:var(--muted);font-size:.88rem}
+  ul.clean{list-style:none;margin:0;padding:0}
+  ul.clean li{padding:9px 0;border-top:1px solid var(--line)}
+  ul.clean li:first-child{border-top:0}
+  ul.clean b{color:var(--gold)}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+  .mini{border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(255,255,255,.04)}
+  .mini p{color:var(--muted);margin:0;font-size:.93rem}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{border:1px solid var(--teal);color:var(--cream);border-radius:999px;padding:5px 14px;font-size:.88rem;background:rgba(255,255,255,.08)}
+  .chip.star{border-color:var(--gold);background:rgba(211,17,42,.35);font-weight:700}
+  blockquote{margin:6px 0 10px;padding:4px 0 4px 18px;border-left:3px solid var(--gold);font-size:1.2rem;line-height:1.45;font-family:'Playfair Display',Georgia,system-ui,sans-serif}
+  .source{color:var(--muted);font-size:.84rem}
+  @media(max-width:700px){
+    .grid{grid-template-columns:1fr}
+    .panel.right{justify-content:flex-start}
+    .panel{padding-top:72px;align-items:flex-end;padding-bottom:36px}
+    .card{background:rgba(18,4,10,.86)}
+  }
+  footer{position:relative;z-index:5;background:#000;border-top:1px solid var(--line);padding:30px clamp(16px,5vw,64px) 40px;color:var(--muted);font-size:.9rem;text-align:center}
+  footer p{margin:6px 0}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+    .btn,#places a span{transition:none}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#top">Skip to content</a>
+<div class="concept">Concept sample (option 2) designed by <a href="mailto:hi.anggiesdigitaledge@gmail.com">Anggie's Digital Edge</a>. This is not Nadine Nelson's official website.</div>
+
+<header class="top">
+  <a class="brand" href="#top">Nadine Nelson</a>
+  <nav aria-label="Main">
+    <a href="#toronto">Roots</a>
+    <a href="#paris">Training</a>
+    <a href="#newyork">Kitchen</a>
+    <a href="#newhaven">Projects</a>
+    <a href="#tobago">Clients</a>
+    <a class="cta-link" href="#contact">Contact</a>
+  </nav>
+</header>
+
+<canvas id="scene" aria-hidden="true"></canvas>
+<div id="places" aria-label="Journey stops"></div>
+
+<main>
+  <section class="panel" id="top" data-stop="world">
+    <div class="card reveal">
+      <img class="portrait" src="nadine.jpg" alt="Nadine Nelson" width="132" height="132" onerror="this.remove()">
+      <p class="place">Global Local Gourmet</p>
+      <h1>Chef <span>Nadine Nelson</span></h1>
+      <p class="lead">The Green Queen of Cuisine: an eco chef and social entrepreneur who runs a roving, community-supported kitchen.</p>
+      <p class="tagline">Far from expected yet close to home.</p>
+      <a class="btn" href="#toronto">Follow the journey</a>
+      <a class="btn ghost" href="#contact">Start a conversation</a>
+      <p class="cue">Scroll and the globe will travel with her story.</p>
+    </div>
+  </section>
+
+  <section class="panel right" id="toronto" data-stop="toronto">
+    <div class="card reveal">
+      <p class="place">Toronto and Jamaica</p>
+      <h2>Where the story begins</h2>
+      <p>Nadine was born in Toronto, Canada, to a family of Jamaican heritage. Food has been her way of connecting both places, and everyone she cooks with.</p>
+      <p>Today she calls New York home and describes herself as a chef, cooking instructor, writer, recipe developer, food consultant, and culinary artist.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="paris" data-stop="paris">
+    <div class="card reveal">
+      <p class="place">Paris</p>
+      <h2>Trained in the kitchens of France</h2>
+      <p>She studied culinary arts at Ritz Escoffier in Paris, then brought that craft home to cook with seasonal, adventurous ingredients.</p>
+      <p>Her aim is simple: to help you cook adventurous meals at home.</p>
+    </div>
+  </section>
+
+  <section class="panel right" id="newyork" data-stop="newyork">
+    <div class="card wide reveal">
+      <p class="place">New York</p>
+      <h2>Home base for the roving kitchen</h2>
+      <div class="grid">
+        <div class="mini"><h3>Cooking classes</h3><p>Hands-on classes and culinary team building.</p></div>
+        <div class="mini"><h3>Wellness workshops</h3><p>Workshops and culinary tours.</p></div>
+        <div class="mini"><h3>Event planning</h3><p>Epicurean event planning and production.</p></div>
+        <div class="mini"><h3>Recipes and consulting</h3><p>Recipe development, testing, and food consulting.</p></div>
+      </div>
+      <h3 style="margin-top:18px">More learning along the way</h3>
+      <ul class="clean">
+        <li><b>The New School:</b> food styling certificate</li>
+        <li><b>New York University:</b> fundraising and philanthropy certificate</li>
+        <li><b>Tufts University:</b> teaching degree</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="panel" id="newhaven" data-stop="newhaven">
+    <div class="card reveal">
+      <p class="place">New Haven</p>
+      <h2>Food and art you can join</h2>
+      <h3>Harvest Mandalas</h3>
+      <p>A food and art intervention by Nadine. Read the story in the New Haven Independent.</p>
+      <a class="btn ghost" href="https://www.newhavenindependent.org/2016/10/26/do_play_with_your_food/" target="_blank" rel="noopener">Read the story</a>
+      <h3 style="margin-top:14px">Public Kitchen</h3>
+      <p>A second food and art intervention, shown on video.</p>
+      <a class="btn ghost" href="https://www.youtube.com/watch?v=UJLOolBffA0" target="_blank" rel="noopener">Watch the video</a>
+      <blockquote style="margin-top:18px">"I have never seen people having the community come together and cook their meal together."</blockquote>
+      <p class="source">Will Allen, MacArthur Genius and executive director of Growing Power, on Nadine's New Haven community cooking event. Quoted as shown on her about.me page.</p>
+    </div>
+  </section>
+
+  <section class="panel right" id="tobago" data-stop="tobago">
+    <div class="card wide reveal">
+      <p class="place">Tobago and beyond</p>
+      <h2>Organizations that have cooked with her</h2>
+      <div class="chips">
+        <span class="chip star">Tobago Jazz Festival</span>
+        <span class="chip">Harvard University</span>
+        <span class="chip">The Apollo Theater</span>
+        <span class="chip">City of New Haven</span>
+        <span class="chip">Boston Office of Conventions and Tourism</span>
+        <span class="chip">National Park Service</span>
+        <span class="chip">The Food Project</span>
+        <span class="chip">Disney</span>
+        <span class="chip">Bain and Company</span>
+        <span class="chip">Columbia University</span>
+        <span class="chip">International Association of Culinary Professionals</span>
+      </div>
+      <p class="source" style="margin-top:12px">Client names are listed as they appear on Nadine's about.me page.</p>
+    </div>
+  </section>
+
+  <section class="panel center" id="contact" data-stop="world">
+    <div class="card reveal">
+      <img class="portrait sm" src="nadine.jpg" alt="Nadine Nelson" width="132" height="132" onerror="this.remove()">
+      <p class="place">Your table</p>
+      <h2>Bring Global Local Gourmet to your city</h2>
+      <p class="lead">Tell Nadine what you are planning, and let her turn it into a meal your people will remember.</p>
+      <a class="btn" href="https://thegloballocalgourmet.com" target="_blank" rel="noopener">Visit Global Local Gourmet</a>
+      <a class="btn ghost" href="https://www.yumpu.com/en/document/view/55997524/global-local-gourmet-media-kit" target="_blank" rel="noopener">Read the media kit</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/nadine-nelson-6042b219/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+      <p class="source" style="margin-top:12px">Email and phone details will be added once Nadine confirms them.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Concept sample (option 2) designed by Anggie's Digital Edge to show what a 3D website could look like for Chef Nadine Nelson.</p>
+  <p>Not an official website. Content is drawn from Nadine's public about.me page and media kit. Questions? <a href="mailto:hi.anggiesdigitaledge@gmail.com">hi.anggiesdigitaledge@gmail.com</a></p>
+</footer>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three'
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+const small = matchMedia('(max-width: 700px)').matches
+
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('in') }), { threshold: .15 })
+document.querySelectorAll('.reveal').forEach(el => reduce ? el.classList.add('in') : io.observe(el))
+
+// Journey stops: where the globe turns for each section
+const PLACES = {
+  toronto: { name: 'Toronto',  lat: 43.65, lon: -79.38 },
+  paris:   { name: 'Paris',    lat: 48.86, lon: 2.35 },
+  newyork: { name: 'New York', lat: 40.71, lon: -74.0 },
+  newhaven:{ name: 'New Haven',lat: 41.31, lon: -72.92 },
+  tobago:  { name: 'Tobago',   lat: 11.2,  lon: -60.7 },
+  jamaica: { name: 'Jamaica',  lat: 18.1,  lon: -77.3 }
+}
+const ROUTE = ['toronto', 'paris', 'newyork', 'newhaven', 'tobago']
+
+// Little dots in the side rail
+const rail = document.getElementById('places')
+;[['top', 'Start'], ['toronto', 'Toronto'], ['paris', 'Paris'], ['newyork', 'New York'], ['newhaven', 'New Haven'], ['tobago', 'Tobago'], ['contact', 'Contact']]
+  .forEach(([id, label]) => { rail.insertAdjacentHTML('beforeend', `<a href="#${id}" data-id="${id}" aria-label="${label}"><span>${label}</span><i></i></a>`) })
+
+const canvas = document.getElementById('scene')
+let renderer
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: !small, alpha: true }) }
+catch (err) { document.body.classList.add('no-webgl') }
+
+if (renderer) {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, small ? 1.5 : 2))
+  renderer.setClearColor(0x000000, 0)
+  const scene = new THREE.Scene()
+  const camera = new THREE.PerspectiveCamera(45, 1, .1, 200)
+  camera.position.set(0, 0, 15)
+
+  const R = 5
+  const ll = (lat, lon, r = R) => {
+    const a = lat * Math.PI / 180, b = lon * Math.PI / 180
+    return new THREE.Vector3(r * Math.cos(a) * Math.sin(b), r * Math.sin(a), r * Math.cos(a) * Math.cos(b))
+  }
+
+  const globe = new THREE.Group()
+  scene.add(globe)
+
+  // Ocean
+  globe.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R * .985, 64, 48),
+    new THREE.MeshBasicMaterial({ color: 0x2a0910 })
+  ))
+
+  // Land as dots
+  const LAND = '000000000000000000000000000000000000000000000|000000000000000000000000000000000000000000000|000000000000000000000000000000000000000000000|0000000000007f800ffe0000000000000000000000000|000000000017ff3fffffe000000000000040000000000|00000000061df0ffffff0000f8000000003c000000000|000000030027c3ffffff8000200000000006000000000|0000000038afc007ffff00000000030007ffc001d8000|0000000e88b7b003fffe000000000c003ffffec000000|80180009fc33fc00fffa00000380041dffffffeffc801|00fffbfe725d8f00fff800001ff000edfffffffffffdf|e0ffffffffff87c1ff8000007ffebffdfffffffffffff|31fffffffffd1f80fc01e000f9ebfffffffffffffffff|00fffffffff8034078000003e7fffffffffffffffffff|01fdffffffe01e0038000007e7ffffffffffffffff2f0|007807ffffe01e4000000007e3ffffffffffffff82200|001001fffff80fe000000182c7fffffffffffffe00f00|0080007fffff9ff8000003820ffffffffffffffc00e00|0000007fffff9ffc000006cfffffffffffffffffc0800|0000003ffffffffc000000dfffffffffffffffff40000|00000017ffffff460000007fffffffffffffffff40000|0000000fffffffc10000007ffffffffffffffffe40000|0000000fffffff600000007f7f97cffffffffffc00000|0000000ffffffe00000007f19f03cffffffffff8c0000|0000000ffffffc00000003c26f7fe7ffffffffe080000|0000000ffffff000000007c02dffe7fffffff84080000|00000007fffff0000000018740ffe7fffffffe6300000|00000003fffff000000001fe022ffffffffffc4f00000|00000001ffffc000000003ff000ffffffffffc1800000|00000000ffff8000000007ffef7ffffffffffe0000000|000000003fc04000000007ffffffdffffffffe0000000|000000005f80400000001fffffefe7fffffffc0000000|000000002f80000000001fffffe7f41ffffffc0000000|000000000780c00000003ffffff7ff07fffff20000000|000000000786100000007ffffffbfe07fcff000000000|0000000003cc020000003ffffff9fe03f07e800000000|0000000000fc000000003ffffff9f801e07f020000000|00000000000f000000007ffffffde001c01f020000000|000000000003000000003ffffffe8001c01f820000000|0000000000010f0000003fffffff3000c013008000000|000000000000aff000001fffffffe000a012000000000|0000000000001ff800000fffffffe0002000008000000|0000000000001fff00000687ffffc000002c180000000|0000000000001fff80000001ffff80000014380000000|0000000000003fff80000001ffff000000187a0000000|0000000000003fffe0000003fffe0000000c781800000|0000000000003ffffc000001fffc00000006762b80000|0000000000007fffff000000fffc000000020101e0000|0000000000003fffff800000fffc00000001c001f0800|0000000000001fffff000000fffc000000000880d0200|0000000000001ffffe0000007ffc00000000000000000|0000000000000ffffe000000fffc20000000001c40000|0000000000000ffffe000000fffc2000000000fc60040|00000000000003fffc000000fff8e000000001fe60000|00000000000001fffc000000fff0e000000001ffe0000|00000000000001fffc0000007ff0c00000000ffff8080|00000000000001fff00000007ff0c00000001ffff8000|00000000000001ffc00000007fe0800000001ffffc000|00000000000001ffc00000003fc0000000001ffffe000|00000000000003ff800000003fc0000000001ffffe000|00000000000003ff800000001f80000000000ffffe000|00000000000003ff000000001f00000000000f07fc000|00000000000003f8000000000000000000000801f8008|00000000000007fc000000000000000000000000f8004|00000000000007e000000000000000000000000000006|00000000000007a00000000000000000000000003000c|00000000000003c000000000000000000000000010018|000000000000078000000000000000000000000000030|000000000000078000000000000000000000000000000|0000000000000f0000000000000000080000000000000|0000000000000e0000000000000000000000000000000|000000000000070000000000000000000000000000000|000000000000030000000000000000000000000000000|000000000000000000000000000000000000000000000|000000000000000000000000000000000000000000000|000000000000000000000000000000000000000000000|000000000000000000000000000000000000000000000|000000000000002000000000000000000000000000000|00000000000000c00000000000001e00020ff9ffe0000|00000000000000c0000000000013fff87fffffffff000|00000000000003e00000001ffffffff3fffffffffffc0|00000000038400f000001ffffffffffffffffffffffe0|00000ffff4ffffc000007ffffffffffffffffffffff80|0001ffffffffe000001ffffffffffffffffffffffff00|004fffffffffe00070fffffffffffffffffffffffff00|0000fffffffffe0080ffffffffffffffffffffffffc00|0007fffffffffffffffffffffffffffffffffffffff80|ff803ffffffffffffffffffffffffffffffffffffffff|fffffffffffffffffffffffffffffffffffffffffffff|fffffffffffffffffffffffffffffffffffffffffffff'.split('|')
+  const COLS = 180, ROWS = 90
+  const pts = [], cols = []
+  const cLand = new THREE.Color(0xffe4e4), cWarm = new THREE.Color(0xff9aa5)
+  for (let r = 0; r < ROWS; r++) {
+    const hex = LAND[r]
+    for (let c = 0; c < COLS; c++) {
+      const nib = parseInt(hex[c >> 2], 16)
+      if (nib & (8 >> (c & 3))) {
+        const lat = 90 - (r + .5) * (180 / ROWS), lon = -180 + (c + .5) * (360 / COLS)
+        if (small && (r + c) % 2) continue
+        const v = ll(lat, lon, R * 1.002)
+        pts.push(v.x, v.y, v.z)
+        const k = Math.random() * .35
+        const col = cLand.clone().lerp(cWarm, k)
+        cols.push(col.r, col.g, col.b)
+      }
+    }
+  }
+  const landGeo = new THREE.BufferGeometry()
+  landGeo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3))
+  landGeo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3))
+  globe.add(new THREE.Points(landGeo, new THREE.PointsMaterial({ size: .055, vertexColors: true, sizeAttenuation: true })))
+
+  // Glow around the globe
+  const glow = new THREE.Mesh(
+    new THREE.SphereGeometry(R * 1.14, 48, 32),
+    new THREE.ShaderMaterial({
+      transparent: true, side: THREE.BackSide, depthWrite: false, blending: THREE.AdditiveBlending,
+      vertexShader: 'varying vec3 n; void main(){ n = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'varying vec3 n; void main(){ float i = pow(.72 - dot(n, vec3(0.,0.,1.)), 3.0); gl_FragColor = vec4(.9,.1,.2,1.) * i * 1.3; }'
+    })
+  )
+  scene.add(glow)
+  glow.position.z = -.2
+
+  // Pins and the route of the roving kitchen
+  const pinMat = new THREE.MeshBasicMaterial({ color: 0xff5a6a })
+  const pins = {}
+  Object.entries(PLACES).forEach(([id, p]) => {
+    const g = new THREE.Group()
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(id === 'jamaica' ? .05 : .075, 16, 12), pinMat)
+    const ring = new THREE.Mesh(new THREE.RingGeometry(.1, .13, 32), new THREE.MeshBasicMaterial({ color: id === 'jamaica' ? 0xffffff : 0xffffff, side: THREE.DoubleSide, transparent: true }))
+    g.add(dot, ring)
+    const pos = ll(p.lat, p.lon, R * 1.012)
+    g.position.copy(pos)
+    g.lookAt(pos.clone().multiplyScalar(2))
+    globe.add(g)
+    pins[id] = { g, ring }
+  })
+
+  const arcCurve = (a, b) => {
+    const A = ll(PLACES[a].lat, PLACES[a].lon, R * 1.012), B = ll(PLACES[b].lat, PLACES[b].lon, R * 1.012)
+    const mid = A.clone().add(B).multiplyScalar(.5)
+    const lift = R + A.distanceTo(B) * .38
+    mid.setLength(lift)
+    return new THREE.QuadraticBezierCurve3(A, mid, B)
+  }
+  const legs = []
+  for (let i = 0; i < ROUTE.length - 1; i++) {
+    const curve = arcCurve(ROUTE[i], ROUTE[i + 1])
+    const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 48, .012, 6, false), new THREE.MeshBasicMaterial({ color: 0xff4b5c, transparent: true, opacity: .85 }))
+    globe.add(tube)
+    legs.push({ curve, tube, count: tube.geometry.index.count })
+  }
+  // Jamaica link to Toronto
+  {
+    const curve = arcCurve('jamaica', 'toronto')
+    const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 36, .009, 6, false), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .55 }))
+    globe.add(tube)
+  }
+  // The roving kitchen: a little glowing dot that travels the route
+  const kitchen = new THREE.Mesh(new THREE.SphereGeometry(.1, 20, 16), new THREE.MeshBasicMaterial({ color: 0xffffff }))
+  globe.add(kitchen)
+  // Her portrait rides the route as the roving kitchen (only if nadine.jpg is present)
+  let face = null
+  const faceImg = new Image()
+  faceImg.onload = () => {
+    const S = 256, c = document.createElement('canvas'); c.width = c.height = S
+    const x = c.getContext('2d'), m = Math.min(faceImg.width, faceImg.height)
+    x.beginPath(); x.arc(S / 2, S / 2, S / 2 - 14, 0, Math.PI * 2); x.save(); x.clip()
+    x.drawImage(faceImg, (faceImg.width - m) / 2, 0, m, m * 1.0, 0, 0, S, S); x.restore()
+    x.lineWidth = 12; x.strokeStyle = '#fff'; x.beginPath(); x.arc(S / 2, S / 2, S / 2 - 14, 0, Math.PI * 2); x.stroke()
+    x.lineWidth = 8; x.strokeStyle = '#d3112a'; x.beginPath(); x.arc(S / 2, S / 2, S / 2 - 4, 0, Math.PI * 2); x.stroke()
+    const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace
+    face = new THREE.Sprite(new THREE.SpriteMaterial({ map: tx, transparent: true, depthWrite: false }))
+    face.scale.setScalar(small ? .7 : .85)
+    face.renderOrder = 5
+    globe.add(face); kitchen.visible = false
+    placeKitchen()
+    if (reduce) frame(0)
+  }
+  faceImg.src = 'nadine.jpg'
+
+  // Floating ingredients that orbit each stop
+  const FOODS = {
+    jamaica: ['🌶️', '🥭'], toronto: ['🍁', '🥕'], paris: ['🥖', '🧀'],
+    newyork: ['🍎', '🥬'], newhaven: ['🥕', '🌽'], tobago: ['🥥', '🍍']
+  }
+  const foodTex = {}
+  const emojiTex = (ch) => {
+    if (foodTex[ch]) return foodTex[ch]
+    const c = document.createElement('canvas'); c.width = c.height = 128
+    const x = c.getContext('2d'); x.font = '96px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif'
+    x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(ch, 64, 70)
+    const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace
+    return (foodTex[ch] = tx)
+  }
+  const foodSprites = []
+  Object.entries(FOODS).forEach(([id, list]) => {
+    const p = PLACES[id], base = ll(p.lat, p.lon, R * 1.012)
+    const up = base.clone().normalize()
+    const side = new THREE.Vector3().crossVectors(up, new THREE.Vector3(0, 1, 0)).normalize()
+    const fwd = new THREE.Vector3().crossVectors(side, up).normalize()
+    list.forEach((ch, k) => {
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: emojiTex(ch), transparent: true, depthWrite: false }))
+      sp.scale.setScalar(id === 'jamaica' ? .42 : .55)
+      globe.add(sp)
+      foodSprites.push({ sp, base, up, side, fwd, ph: k * Math.PI + id.length })
+    })
+  })
+  const placeFood = (t) => {
+    foodSprites.forEach(f => {
+      const a = t * .5 + f.ph
+      f.sp.position.copy(f.base).addScaledVector(f.up, .45 + .06 * Math.sin(t * 1.6 + f.ph))
+        .addScaledVector(f.side, Math.cos(a) * .42).addScaledVector(f.fwd, Math.sin(a) * .42)
+    })
+  }
+
+  // Stars
+  const sN = small ? 220 : 520, sp = new Float32Array(sN * 3)
+  for (let i = 0; i < sN; i++) {
+    const v = new THREE.Vector3().randomDirection().multiplyScalar(40 + Math.random() * 40)
+    sp.set([v.x, v.y, v.z], i * 3)
+  }
+  const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(sp, 3))
+  scene.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xf6efe0, size: .16, transparent: true, opacity: .7, sizeAttenuation: true })))
+
+  // Stops: orientation, zoom, and sideways shift for each section
+  const qFor = (lat, lon) => new THREE.Quaternion()
+    .setFromAxisAngle(new THREE.Vector3(1, 0, 0), lat * Math.PI / 180)
+    .multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -lon * Math.PI / 180))
+  const sections = [...document.querySelectorAll('.panel')]
+  const stops = sections.map(el => {
+    const key = el.dataset.stop
+    const side = el.classList.contains('right') ? -1 : el.classList.contains('center') ? 0 : 1
+    if (key === 'world') {
+      return { el, q: qFor(25, -50), z: 18.5, x: small ? 0 : side * 3.6, y: small ? 2.2 : 0, key }
+    }
+    const p = PLACES[key]
+    return { el, q: qFor(p.lat - 4, p.lon), z: 14, x: small ? 0 : side * 3.4, y: small ? 2.4 : 0, key }
+  })
+
+  let routeT = 0
+  const tmpQ = new THREE.Quaternion(), tmpP = new THREE.Vector3()
+  const ease = t => t * t * (3 - 2 * t)
+  let sc = 0 // smoothed scroll
+
+  function applyScroll(sY) {
+    const mid = sY + innerHeight / 2
+    const centers = stops.map(s => s.el.offsetTop + s.el.offsetHeight / 2)
+    let i = 0
+    while (i < stops.length - 2 && mid > centers[i + 1]) i++
+    const a = stops[i], b = stops[i + 1]
+    let t = (mid - centers[i]) / (centers[i + 1] - centers[i])
+    t = ease(Math.min(Math.max(t, 0), 1))
+    tmpQ.copy(a.q).slerp(b.q, t)
+    globe.quaternion.copy(tmpQ)
+    const z = a.z + (b.z - a.z) * t
+    camera.position.z = z
+    globe.position.x = a.x + (b.x - a.x) * t
+    globe.position.y = a.y + (b.y - a.y) * t
+    glow.position.x = globe.position.x; glow.position.y = globe.position.y
+    // Progress of the route follows the sections
+    const routeIdx = stops.map(s => ROUTE.indexOf(s.key))
+    const ra = routeIdx[i] < 0 ? (i === 0 ? 0 : ROUTE.length - 1) : routeIdx[i]
+    const rb = routeIdx[i + 1] < 0 ? (i + 1 === stops.length - 1 ? ROUTE.length - 1 : 0) : routeIdx[i + 1]
+    routeT = (ra + (rb - ra) * t) / (ROUTE.length - 1)
+    // Rail
+    const near = t < .5 ? a : b
+    rail.querySelectorAll('a').forEach(l => l.classList.toggle('on', l.dataset.id === (near.el.id)))
+  }
+
+  function placeKitchen() {
+    const f = routeT * (ROUTE.length - 1)
+    const i = Math.min(Math.floor(f), ROUTE.length - 2)
+    const t = f - i
+    legs[i].curve.getPoint(t, tmpP)
+    kitchen.position.copy(tmpP)
+    if (face) face.position.copy(tmpP)
+    legs.forEach((l, k) => { l.tube.geometry.setDrawRange(0, Math.floor(l.count * Math.min(Math.max(f - k + .08, 0), 1) / 3) * 3) })
+  }
+
+  const resize = () => {
+    renderer.setSize(innerWidth, innerHeight, false)
+    camera.aspect = innerWidth / innerHeight
+    camera.fov = innerWidth < 700 ? 58 : 45
+    camera.updateProjectionMatrix()
+    sc = scrollY; applyScroll(sc); placeKitchen(); placeFood(0)
+    if (reduce) frame(0)
+  }
+  addEventListener('resize', resize)
+  addEventListener('scroll', () => { if (reduce) { sc = scrollY; frame(0) } }, { passive: true })
+
+  function frame(t) {
+    sc += (scrollY - sc) * (reduce ? 1 : .08)
+    applyScroll(sc)
+    placeKitchen(); placeFood(reduce ? 0 : t)
+    if (!reduce) {
+      Object.values(pins).forEach((p, k) => {
+        const s = 1 + .35 * Math.sin(t * 2 + k)
+        p.ring.scale.setScalar(s); p.ring.material.opacity = .85 - .4 * Math.abs(Math.sin(t * 2 + k))
+      })
+      globe.rotation.y += 0 // orientation is driven by scroll
+    }
+    renderer.render(scene, camera)
+  }
+  function loop(ms) { frame(ms / 1000); requestAnimationFrame(loop) }
+  resize()
+  if (reduce) frame(0); else requestAnimationFrame(loop)
+}
+</script>
+</body>
+</html>
