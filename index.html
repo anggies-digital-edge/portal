@@ -341,7 +341,7 @@
   /* ===== VERSION 6: 3D WELCOME GATE ===== */
   /* The floating pieces and the login box that greet every visitor */
   body.gated{overflow:hidden}
-  #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;overflow:hidden;
+  #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;overflow-x:hidden;overflow-y:auto;
     background:radial-gradient(ellipse at 50% 45%,rgba(128,0,128,.38),rgba(20,7,28,.84) 58%,rgba(6,1,9,.95));
     -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);perspective:1100px;
     transition:opacity .7s ease, transform .9s cubic-bezier(.6,0,.3,1)}
@@ -356,6 +356,8 @@
   .pc{width:var(--w,250px);background:rgba(0,0,0,.88);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:14px 15px;
     box-shadow:0 18px 50px rgba(0,0,0,.55),0 0 22px rgba(179,41,141,.18);color:#e9dff0;font-size:.78rem;
     animation:bob 7s ease-in-out infinite;animation-delay:calc(var(--i) * -1.3s)}
+  @keyframes bobm{0%,100%{transform:translateY(0) rotateZ(-1deg)}50%{transform:translateY(-22px) rotateZ(1.5deg)}}
+  @keyframes sway{0%,100%{transform:rotateY(-9deg) rotateX(4deg)}50%{transform:rotateY(9deg) rotateX(-4deg)}}
   @keyframes bob{0%,100%{transform:translateY(0) rotateZ(0)}50%{transform:translateY(-16px) rotateZ(.6deg)}}
   .pc h5{margin:0 0 9px;font-family:'Merienda',cursive;font-size:.86rem;background:linear-gradient(#f5d36b,#d4a347);-webkit-background-clip:text;background-clip:text;color:transparent}
   .pc .mrow{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
@@ -383,7 +385,7 @@
   .pc .bub.me{background:#800080;border-radius:12px 12px 3px 12px;margin-left:30px}
 
   form.gatecard{display:block;margin:0}
-  .gatecard{position:relative;z-index:5;width:min(410px,calc(100vw - 32px));text-align:center;
+  .gatecard{position:relative;z-index:5;width:min(410px,calc(100vw - 32px));text-align:center;margin:16px 0 !important;
     background:rgba(8,2,12,.78);border:1px solid rgba(212,163,71,.7);border-radius:22px;padding:30px 28px 24px;
     -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
     box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 40px rgba(179,41,141,.25);transition:opacity .45s, transform .55s cubic-bezier(.6,0,.3,1)}
@@ -397,7 +399,7 @@
   .gatecard input:focus{outline:2px solid #B3298D;outline-offset:1px;border-color:#B3298D}
   .gatecard .btn{width:100%;padding:12px;font-size:1rem;margin-top:4px}
   .gatecard .err{color:#ff9cc2;font-size:.86rem;min-height:1.2em;margin:8px 0 0;line-height:1.45}
-  .gatehint{display:block;width:100%;font:inherit;cursor:pointer;margin-top:14px;padding:12px;border-radius:12px;
+  .gatehint{display:block;width:100%;font:inherit;cursor:pointer;margin:0 0 16px;padding:12px;border-radius:12px;
     background:rgba(212,163,71,.1);border:1px dashed rgba(212,163,71,.7);color:#f1dcae;font-size:.86rem;line-height:1.6}
   .gatehint:hover{background:rgba(212,163,71,.18)}
   .gatehint b{color:#fff}
@@ -410,13 +412,30 @@
   .whoami{color:#d9cde0;font-size:.85rem;margin-right:8px}
   #authbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
 
+  /* shorter laptop screens: a slimmer login box so everything fits */
+  @media(max-height:880px) and (min-width:761px){
+    .gatecard{padding:22px 26px 18px}
+    .gatecard img{height:54px}
+    .gatecard .eyebrow{margin:2px 0 6px}
+    .gatecard h2{font-size:1.4rem}
+    .gatecard .sub{font-size:.9rem;margin:6px 0 14px}
+    .gatecard input{padding:9px 12px;margin-bottom:10px}
+    .gatehint{padding:9px;margin-bottom:12px}
+    .gatecard .fine{margin-top:8px}
+    .piece{--s:.88}
+  }
+
   /* mobile: smaller pieces that peek above and below the login box */
   @media(max-width:760px){
-    .piece{--s:.62}
-    .piece.p1{--x:-24vw !important;--y:-39vh !important}
-    .piece.p2{--x:26vw !important;--y:-38vh !important}
-    .piece.p3{--x:-26vw !important;--y:39vh !important}
-    .piece.p4{--x:25vw !important;--y:40vh !important}
+    .piece{--s:.72}
+    .pc{animation-name:bobm;animation-duration:5s}
+    .scene{animation:sway 10s ease-in-out infinite}
+    #gate.snap .scene{animation:none}
+    .gatecard{background:rgba(8,2,12,.66)}
+    .piece.p1{--x:-22vw !important;--y:-40vh !important}
+    .piece.p2{--x:24vw !important;--y:-39vh !important}
+    .piece.p3{--x:-24vw !important;--y:40vh !important}
+    .piece.p4{--x:23vw !important;--y:41vh !important}
     .piece.p5,.piece.p6{display:none}
     .piece.p1,.piece.p3{--tx:-82px !important}
     .piece.p2,.piece.p4{--tx:82px !important}
@@ -436,6 +455,7 @@
     .pc{animation:none}
     .piece{transition:none}
     #gate{transition:opacity .3s}
+    .scene{animation:none !important}
     #gate.open{transform:none}
   }
 
@@ -510,7 +530,7 @@
 <div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
   <div class="scene" id="scene" aria-hidden="true">
 
-    <div class="piece p1" style="--i:0;--x:-31vw;--y:-21vh;--z:-120px;--ry:20deg;--rx:4deg;--tx:-275px;--ty:-112px">
+    <div class="piece p1" style="--i:0;--x:-29vw;--y:-27vh;--z:-80px;--ry:20deg;--rx:4deg;--tx:-275px;--ty:-112px">
       <div class="pc" style="--w:270px">
         <h5>Sequence board</h5>
         <div class="mrow">
@@ -521,7 +541,7 @@
       </div>
     </div>
 
-    <div class="piece p2" style="--i:1;--x:31vw;--y:-20vh;--z:-60px;--ry:-22deg;--rx:3deg;--tx:275px;--ty:-112px">
+    <div class="piece p2" style="--i:1;--x:29vw;--y:-27vh;--z:-60px;--ry:-22deg;--rx:3deg;--tx:275px;--ty:-112px">
       <div class="pc" style="--w:240px">
         <h5>Weekly report</h5>
         <div class="bars"><b style="height:38%"></b><b style="height:55%"></b><b style="height:47%"></b><b style="height:72%"></b><b class="g" style="height:92%"></b></div>
@@ -529,7 +549,7 @@
       </div>
     </div>
 
-    <div class="piece p3" style="--i:2;--x:-32vw;--y:23vh;--z:40px;--ry:16deg;--rx:-4deg;--tx:-275px;--ty:112px">
+    <div class="piece p3" style="--i:2;--x:-29vw;--y:27vh;--z:0px;--ry:16deg;--rx:-4deg;--tx:-275px;--ty:112px">
       <div class="pc" style="--w:240px">
         <span class="mp p-gold">Your turn</span>
         <h5 style="margin-top:8px">Spring launch email</h5>
@@ -538,7 +558,7 @@
       </div>
     </div>
 
-    <div class="piece p4" style="--i:3;--x:30vw;--y:24vh;--z:-30px;--ry:-17deg;--rx:-3deg;--tx:275px;--ty:112px">
+    <div class="piece p4" style="--i:3;--x:29vw;--y:28vh;--z:-30px;--ry:-17deg;--rx:-3deg;--tx:275px;--ty:112px">
       <div class="pc" style="--w:230px">
         <h5>November</h5>
         <div class="mcal">
@@ -549,14 +569,14 @@
       </div>
     </div>
 
-    <div class="piece p5" style="--i:4;--x:-40vw;--y:1vh;--z:-240px;--ry:24deg;--tx:0px;--ty:-112px">
+    <div class="piece p5" style="--i:4;--x:-44vw;--y:0vh;--z:-200px;--ry:26deg;--tx:0px;--ty:-112px">
       <div class="pc" style="--w:230px">
         <h5>At a glance</h5>
         <div class="mtiles"><div><b>3</b>Waiting on you</div><div><b>0</b>Overdue</div></div>
       </div>
     </div>
 
-    <div class="piece p6" style="--i:5;--x:40vw;--y:2vh;--z:-220px;--ry:-24deg;--tx:0px;--ty:112px">
+    <div class="piece p6" style="--i:5;--x:44vw;--y:1vh;--z:-200px;--ry:-26deg;--tx:0px;--ty:112px">
       <div class="pc" style="--w:230px">
         <h5>Messages</h5>
         <div class="bub">Your new draft is ready. Take a look whenever you can.</div>
@@ -571,16 +591,16 @@
     <div><span class="eyebrow">Demo portal</span></div>
     <h2 id="gateTitle">Step inside your portal</h2>
     <p class="sub">You deserve to see your project moving, not wonder about it. Log in with the demo details below and look around.</p>
+    <button class="gatehint" type="button" id="gateFill">
+      Demo login<br>Username: <b>demo</b> &nbsp;&middot;&nbsp; Password: <b>edge2026</b>
+      <small>Tap here and I'll fill it in for you</small>
+    </button>
     <label for="gUser">Username</label>
     <input id="gUser" autocomplete="off" autocapitalize="none" spellcheck="false">
     <label for="gPass">Password</label>
     <input id="gPass" type="password" autocomplete="off">
     <button class="btn" type="submit">Open my portal</button>
     <p class="err" id="gateErr" role="alert"></p>
-    <button class="gatehint" type="button" id="gateFill">
-      Demo login<br>Username: <b>demo</b> &nbsp;&middot;&nbsp; Password: <b>edge2026</b>
-      <small>Tap here and I'll fill it in for you</small>
-    </button>
     <p class="fine">Sample portal. Every name and number inside is made up.</p>
   </form>
 </div>
