@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Anggie's Digital Edge | Demo Portal</title>
+<!-- Version 6: 3D welcome gate, sequence board, report view -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@500;700&family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
@@ -336,9 +337,258 @@
     .item{padding:16px}
     .space{margin-top:22px}
   }
+
+  /* ===== VERSION 6: 3D WELCOME GATE ===== */
+  /* The floating pieces and the login box that greet every visitor */
+  body.gated{overflow:hidden}
+  #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;overflow:hidden;
+    background:radial-gradient(ellipse at 50% 45%,rgba(128,0,128,.38),rgba(20,7,28,.84) 58%,rgba(6,1,9,.95));
+    -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);perspective:1100px;
+    transition:opacity .7s ease, transform .9s cubic-bezier(.6,0,.3,1)}
+  body:not(.gated) #gate{display:none}
+  #gate.open{opacity:0;transform:scale(1.35);pointer-events:none}
+  .scene{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .35s ease-out}
+  .piece{--s:1;position:absolute;left:50%;top:50%;transform-style:preserve-3d;
+    transform:translate(-50%,-50%) translate3d(var(--x),var(--y),var(--z)) rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg)) scale(var(--s));
+    transition:transform 1.05s cubic-bezier(.7,0,.25,1) calc(var(--i) * 70ms), opacity .6s}
+  #gate.snap .piece{transform:translate(-50%,-50%) translate3d(var(--tx),var(--ty),0) rotateY(0) rotateX(0) scale(calc(var(--s) * .9))}
+  #gate.snap .pc{animation:none}
+  .pc{width:var(--w,250px);background:rgba(0,0,0,.88);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:14px 15px;
+    box-shadow:0 18px 50px rgba(0,0,0,.55),0 0 22px rgba(179,41,141,.18);color:#e9dff0;font-size:.78rem;
+    animation:bob 7s ease-in-out infinite;animation-delay:calc(var(--i) * -1.3s)}
+  @keyframes bob{0%,100%{transform:translateY(0) rotateZ(0)}50%{transform:translateY(-16px) rotateZ(.6deg)}}
+  .pc h5{margin:0 0 9px;font-family:'Merienda',cursive;font-size:.86rem;background:linear-gradient(#f5d36b,#d4a347);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pc .mrow{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .pc .mcol{background:#0c040f;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px}
+  .pc .mcol i{display:block;font-style:normal;font-size:.62rem;font-weight:700;margin-bottom:5px;color:#cfc3d6}
+  .pc .mcard{background:#1a0a22;border-radius:5px;padding:5px;margin-top:4px;font-size:.62rem;line-height:1.3}
+  .pc .mcard.gold{border:1px solid rgba(212,163,71,.6)}
+  .pc .bars{display:flex;align-items:flex-end;gap:7px;height:76px;margin:4px 0 8px;border-bottom:1px solid rgba(255,255,255,.18)}
+  .pc .bars b{flex:1;border-radius:5px 5px 0 0;background:linear-gradient(#B3298D,#800080)}
+  .pc .bars b.g{background:linear-gradient(#f5d36b,#d4a347)}
+  .pc .big{font-family:'Merienda',cursive;font-size:1.3rem;color:#fff}
+  .pc .mp{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.62rem;font-weight:700}
+  .pc .mbtns{display:flex;gap:6px;margin-top:9px}
+  .pc .mbtns span{flex:1;text-align:center;padding:6px;border-radius:7px;font-size:.66rem;font-weight:700}
+  .pc .mbtns .a{background:var(--btn-grad);border:1px solid #d4a347;color:#f5d36b;font-style:italic}
+  .pc .mbtns .b{border:1px solid rgba(255,255,255,.35)}
+  .pc .mcal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .pc .mcal u{text-decoration:none;aspect-ratio:1;border-radius:4px;background:#140818;font-size:.55rem;display:grid;place-items:center;color:#8f7f99}
+  .pc .mcal u.on{background:#800080;color:#fff}
+  .pc .mcal u.gd{background:rgba(212,163,71,.35);color:#fff}
+  .pc .mtiles{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .pc .mtiles div{background:#0c040f;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px}
+  .pc .mtiles b{display:block;font-family:'Merienda',cursive;font-size:1.15rem;color:#fff}
+  .pc .bub{background:#1a0a22;border-radius:12px 12px 12px 3px;padding:8px 10px;margin-top:6px;line-height:1.4}
+  .pc .bub.me{background:#800080;border-radius:12px 12px 3px 12px;margin-left:30px}
+
+  form.gatecard{display:block;margin:0}
+  .gatecard{position:relative;z-index:5;width:min(410px,calc(100vw - 32px));text-align:center;
+    background:rgba(8,2,12,.78);border:1px solid rgba(212,163,71,.7);border-radius:22px;padding:30px 28px 24px;
+    -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+    box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 40px rgba(179,41,141,.25);transition:opacity .45s, transform .55s cubic-bezier(.6,0,.3,1)}
+  #gate.snap .gatecard{opacity:0;transform:translateY(24px) scale(.92)}
+  .gatecard img{height:74px;width:auto}
+  .gatecard .eyebrow{display:inline-block;margin:6px 0 10px;padding:4px 12px;border-radius:999px;border:1px solid #B3298D;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#f3d6ec}
+  .gatecard h2{font-size:1.55rem;line-height:1.3}
+  .gatecard .sub{color:#d9cde0;line-height:1.55;font-size:.95rem;margin:10px 0 18px}
+  .gatecard label{display:block;text-align:left;font-size:.82rem;color:#d9cde0;margin:0 0 5px}
+  .gatecard input{width:100%;font:inherit;color:#fff;background:#0c040f;border:1px solid rgba(255,255,255,.35);border-radius:10px;padding:11px 13px;margin:0 0 12px}
+  .gatecard input:focus{outline:2px solid #B3298D;outline-offset:1px;border-color:#B3298D}
+  .gatecard .btn{width:100%;padding:12px;font-size:1rem;margin-top:4px}
+  .gatecard .err{color:#ff9cc2;font-size:.86rem;min-height:1.2em;margin:8px 0 0;line-height:1.45}
+  .gatehint{display:block;width:100%;font:inherit;cursor:pointer;margin-top:14px;padding:12px;border-radius:12px;
+    background:rgba(212,163,71,.1);border:1px dashed rgba(212,163,71,.7);color:#f1dcae;font-size:.86rem;line-height:1.6}
+  .gatehint:hover{background:rgba(212,163,71,.18)}
+  .gatehint b{color:#fff}
+  .gatehint small{display:block;color:#d9cde0;font-size:.76rem}
+  .gatecard .fine{color:#a99bb0;font-size:.76rem;margin:12px 0 0}
+  .gatecard.shake{animation:shake .4s}
+  @keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+  .lockbtn{font:inherit;font-size:.85rem;cursor:pointer;background:transparent;color:#d9cde0;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 14px}
+  .lockbtn:hover{border-color:#B3298D;color:#fff}
+  .whoami{color:#d9cde0;font-size:.85rem;margin-right:8px}
+  #authbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+
+  /* mobile: smaller pieces that peek above and below the login box */
+  @media(max-width:760px){
+    .piece{--s:.62}
+    .piece.p1{--x:-24vw !important;--y:-39vh !important}
+    .piece.p2{--x:26vw !important;--y:-38vh !important}
+    .piece.p3{--x:-26vw !important;--y:39vh !important}
+    .piece.p4{--x:25vw !important;--y:40vh !important}
+    .piece.p5,.piece.p6{display:none}
+    .piece.p1,.piece.p3{--tx:-82px !important}
+    .piece.p2,.piece.p4{--tx:82px !important}
+    .piece.p1,.piece.p2{--ty:-92px !important}
+    .piece.p3,.piece.p4{--ty:92px !important}
+    .gatecard{padding:20px 18px 16px}
+    .gatecard img{height:48px}
+    .gatecard .eyebrow{margin:4px 0 6px}
+    .gatecard h2{font-size:1.3rem}
+    .gatecard .sub{font-size:.88rem;margin:6px 0 12px}
+    .gatecard input{padding:9px 12px;margin-bottom:9px}
+    .gatecard .btn{padding:10px}
+    .gatehint{margin-top:10px;padding:9px;font-size:.82rem}
+    .gatecard .fine{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pc{animation:none}
+    .piece{transition:none}
+    #gate{transition:opacity .3s}
+    #gate.open{transform:none}
+  }
+
+  /* ===== VERSION 6: SEQUENCE BOARD ===== */
+  .flow{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:16px;overflow-x:auto;padding-bottom:10px;align-items:start}
+  .flow .col{min-width:0;transition:border-color .2s, background .2s}
+  .flow .col.over{border-color:#d4a347;background:#0c040f}
+  .flow .col.c-appr{background:#03120c;border-color:rgba(95,227,168,.35)}
+  .flow .col.c-wait{border-color:rgba(212,163,71,.55)}
+  .flow .colnote{color:#a99bb0;font-size:.8rem;line-height:1.45;margin:0 0 4px}
+  .flow .seqstep{color:#a99bb0;font-size:.72rem;font-weight:700;letter-spacing:.05em}
+  .flow .bcard[draggable=true]{cursor:grab}
+  .flow .bcard.dragging{opacity:.45}
+  .flow .bcard .acts{display:flex;flex-wrap:wrap;gap:6px}
+  .flow .bcard .waiting{color:#f1c96a;font-size:.8rem;margin-top:8px}
+  .flow .quote{font-size:.8rem;margin-top:8px}
+  .seqhint{color:#a99bb0;font-size:.85rem;margin:0 0 14px}
+  @media(max-width:620px){ .flow{grid-template-columns:repeat(5,78vw)} }
+
+  /* ===== VERSION 6: REPORT VIEW ===== */
+  .report h3{margin-bottom:6px}
+  .rhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+  .rhead p{margin:4px 0 0;color:#d9cde0;line-height:1.55}
+  .rhead .acts{display:flex;gap:8px;flex-wrap:wrap}
+  .rtiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+  .rtile{background:#060206;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .rtile b{display:block;font-family:'Merienda',cursive;font-size:1.7rem;color:#fff;line-height:1.15}
+  .rtile span{color:#a99bb0;font-size:.84rem}
+  .rtile.bad b{color:var(--red)}
+  .rtile.warm b{color:#f5d36b}
+  .rsum{background:#060206;border:1px solid var(--line);border-left:3px solid #B3298D;border-radius:10px;padding:14px 16px;line-height:1.6;margin-bottom:22px;color:#efe6f3}
+  .rgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+  .rbox{background:#060206;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .rbox h4{margin:0 0 12px}
+  .stack{display:flex;height:16px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.08);margin:4px 0 12px}
+  .stack i{display:block;height:100%}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.84rem;color:#d9cde0}
+  .legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--c);vertical-align:-1px}
+  .hbar{margin:0 0 12px}
+  .hbar .lab{display:flex;justify-content:space-between;font-size:.86rem;color:#d9cde0;margin-bottom:5px}
+  .hbar .trk{height:9px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+  .hbar .trk i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#800080,#B3298D)}
+  .rlist{list-style:none;margin:0;padding:0}
+  .rlist li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line-soft);font-size:.9rem}
+  .rlist li:first-child{border-top:0}
+  .rlist li span:last-child{color:#a99bb0;white-space:nowrap}
+  .rlist .none{color:#a99bb0}
+  .compose textarea{width:100%;min-height:90px;font:inherit;color:#fff;background:#0c040f;border:1px solid rgba(255,255,255,.35);border-radius:10px;padding:11px 13px;margin:6px 0 12px}
+  .compose .acts{display:flex;gap:8px;flex-wrap:wrap}
+  .pubrep{border-top:1px solid var(--line-soft);padding:14px 0 4px}
+  .pubrep:first-of-type{border-top:0}
+  .pubrep .when{color:#a99bb0;font-size:.8rem}
+  .pubrep p{margin:6px 0 0;line-height:1.6;color:#efe6f3}
+  .note-from{font-family:'Merienda',cursive;color:#f5d36b;font-size:.9rem;margin-top:8px}
+  @media(max-width:860px){ .rtiles{grid-template-columns:1fr 1fr} .rgrid{grid-template-columns:1fr} }
+
+  /* printing a report: clean, white, just the report */
+  @media print{
+    body{background:#fff !important;color:#111}
+    body *{visibility:hidden}
+    #list,#list *{visibility:visible}
+    #list{position:absolute;left:0;top:0;width:100%}
+    .report *{color:#111 !important;-webkit-text-fill-color:#111 !important;background:transparent !important;box-shadow:none !important}
+    .report .rtile,.report .rbox,.report .rsum{border:1px solid #bbb !important}
+    .report .acts,.report .compose{display:none !important}
+    .report .stack i,.report .hbar .trk i{-webkit-print-color-adjust:exact;print-color-adjust:exact;background:var(--c,#800080) !important}
+  }
 </style>
 </head>
-<body>
+<body class="gated">
+<!-- ===== VERSION 6: 3D WELCOME GATE (shows before the portal) ===== -->
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="scene" id="scene" aria-hidden="true">
+
+    <div class="piece p1" style="--i:0;--x:-31vw;--y:-21vh;--z:-120px;--ry:20deg;--rx:4deg;--tx:-275px;--ty:-112px">
+      <div class="pc" style="--w:270px">
+        <h5>Sequence board</h5>
+        <div class="mrow">
+          <div class="mcol"><i>In progress</i><div class="mcard">Spring launch email</div><div class="mcard">About page copy</div></div>
+          <div class="mcol"><i>For approval</i><div class="mcard gold">Instagram carousel</div></div>
+          <div class="mcol"><i>Done</i><div class="mcard">Sales page</div><div class="mcard">Lead magnet</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piece p2" style="--i:1;--x:31vw;--y:-20vh;--z:-60px;--ry:-22deg;--rx:3deg;--tx:275px;--ty:-112px">
+      <div class="pc" style="--w:240px">
+        <h5>Weekly report</h5>
+        <div class="bars"><b style="height:38%"></b><b style="height:55%"></b><b style="height:47%"></b><b style="height:72%"></b><b class="g" style="height:92%"></b></div>
+        <span class="big">12</span> things finished this week
+      </div>
+    </div>
+
+    <div class="piece p3" style="--i:2;--x:-32vw;--y:23vh;--z:40px;--ry:16deg;--rx:-4deg;--tx:-275px;--ty:112px">
+      <div class="pc" style="--w:240px">
+        <span class="mp p-gold">Your turn</span>
+        <h5 style="margin-top:8px">Spring launch email</h5>
+        <div style="color:#b9a9c0">Draft 2 is ready for you to review.</div>
+        <div class="mbtns"><span class="a">Approve</span><span class="b">Request changes</span></div>
+      </div>
+    </div>
+
+    <div class="piece p4" style="--i:3;--x:30vw;--y:24vh;--z:-30px;--ry:-17deg;--rx:-3deg;--tx:275px;--ty:112px">
+      <div class="pc" style="--w:230px">
+        <h5>November</h5>
+        <div class="mcal">
+          <u>2</u><u>3</u><u class="on">4</u><u>5</u><u class="gd">6</u><u>7</u><u>8</u>
+          <u>9</u><u class="on">10</u><u>11</u><u>12</u><u class="gd">13</u><u>14</u><u>15</u>
+          <u>16</u><u>17</u><u class="on">18</u><u>19</u><u class="gd">20</u><u>21</u><u>22</u>
+        </div>
+      </div>
+    </div>
+
+    <div class="piece p5" style="--i:4;--x:-40vw;--y:1vh;--z:-240px;--ry:24deg;--tx:0px;--ty:-112px">
+      <div class="pc" style="--w:230px">
+        <h5>At a glance</h5>
+        <div class="mtiles"><div><b>3</b>Waiting on you</div><div><b>0</b>Overdue</div></div>
+      </div>
+    </div>
+
+    <div class="piece p6" style="--i:5;--x:40vw;--y:2vh;--z:-220px;--ry:-24deg;--tx:0px;--ty:112px">
+      <div class="pc" style="--w:230px">
+        <h5>Messages</h5>
+        <div class="bub">Your new draft is ready. Take a look whenever you can.</div>
+        <div class="bub me">Love it! Approving now.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <form class="gatecard" id="gateForm" autocomplete="off" novalidate>
+    <img src="LOGO.png" alt="Anggie's Digital Edge" onerror="this.outerHTML='<span class=wordmark>Anggie\'s Digital Edge</span>'">
+    <div><span class="eyebrow">Demo portal</span></div>
+    <h2 id="gateTitle">Step inside your portal</h2>
+    <p class="sub">You deserve to see your project moving, not wonder about it. Log in with the demo details below and look around.</p>
+    <label for="gUser">Username</label>
+    <input id="gUser" autocomplete="off" autocapitalize="none" spellcheck="false">
+    <label for="gPass">Password</label>
+    <input id="gPass" type="password" autocomplete="off">
+    <button class="btn" type="submit">Open my portal</button>
+    <p class="err" id="gateErr" role="alert"></p>
+    <button class="gatehint" type="button" id="gateFill">
+      Demo login<br>Username: <b>demo</b> &nbsp;&middot;&nbsp; Password: <b>edge2026</b>
+      <small>Tap here and I'll fill it in for you</small>
+    </button>
+    <p class="fine">Sample portal. Every name and number inside is made up.</p>
+  </form>
+</div>
+<script>
+  // Skip the welcome if this visitor already logged in during this browser session
+  try{ if(sessionStorage.getItem('ade_demo_in') === '1') document.body.classList.remove('gated') }catch(e){}
+</script>
+
 <div class="heroband"><div class="inner">
   <header>
     <img src="LOGO.png" alt="Anggie's Digital Edge" onerror="this.outerHTML='<span class=wordmark>Anggie\'s Digital Edge</span>'">
@@ -390,8 +640,9 @@
     </div>
     <div class="modesrow hide" id="modesRow">
       <div class="seg" id="modeSeg">
+        <button data-m="flow">Sequence board</button>
+        <button data-m="report">Report</button>
         <button data-m="grouped">Grouped</button>
-        <button data-m="board">Board</button>
         <button data-m="calendar">Calendar</button>
         <button data-m="list">List</button>
       </div>
@@ -516,8 +767,8 @@
       best:'Freelancers, studios, and agencies who deliver work for clients and want approvals without long email threads.',
       cats:['project','content'], views:['Team view','Client view'], chat:'Message your project team',
       notes:{
-        team:'This is the team view: the full picture behind the scenes, with owners and next steps. Switch to Client view to see what your clients see.',
-        client:'This is what your client sees. Try it: open an item marked <b>Your turn</b>, then click Approve or Request changes. Nothing is saved.'},
+        team:'This is the team view: the full picture behind the scenes. Move a card along the sequence board, then open <b>Report</b> to see the weekly summary your client gets.',
+        client:'This is what your client sees. Find a card in <b>For approval</b>, then click Approve or Request changes. Nothing is saved.'},
       guide:['Switch between Team view and Client view above.','Open any item to see the real draft behind it.','In Client view, click Approve or Request changes.']
     },
     cohort: {
@@ -559,7 +810,7 @@
   const pad = n => String(n).padStart(2,'0')
 
   let db = null, user = null
-  let current = 'agency', view = 'client', showOpts = false, cat = 'all', focus = 'all', mode = 'grouped', groupBy = 'status', q = ''
+  let current = 'agency', view = 'client', showOpts = true, cat = 'all', focus = 'all', mode = 'flow', groupBy = 'status', q = ''
   let rows = [], activity = []
   let sim = {}, simLog = [], chgId = null, doneSet = new Set(), pick = {}, calOff = 0, guideOff = false
   let chatMsgs = []
@@ -662,7 +913,8 @@
       `<button class="tab ${k===current?'on':''}" data-k="${k}"><b>${esc(PROFILES[k].name)}</b><small>${esc(PROFILES[k].sub)}</small></button>`).join('')
   }
   function drawAuth(){
-    $('authbar').innerHTML = user ? `<button class="btn ghost" id="outBtn">Log out</button>` : ''
+    $('authbar').innerHTML = `<span class="whoami">Signed in as <b>Demo guest</b></span><button class="lockbtn" id="lockBtn" type="button">Lock portal</button>` + (user ? `<button class="btn ghost" id="outBtn">Owner log out</button>` : '')
+    $('lockBtn').onclick = lockPortal
     if(user) $('outBtn').onclick = () => db.auth.signOut()
     $('ownerLink').classList.toggle('hide', !!user)
     if(user) $('loginCard').classList.add('hide')
@@ -712,7 +964,8 @@
     $('side').classList.toggle('hide', !sideMode)
     $('modesRow').classList.toggle('hide', sideMode || !showOpts)
 
-    $('demoNote').innerHTML = p.notes[view] + ` <button data-reset>Reset the demo</button>`
+    $('demoNote').innerHTML = p.notes[view] + (view === 'team' && current !== 'agency' ? ' Open the <b>Report</b> view for a ready-to-send summary.' : '') + ` <button data-reset>Reset the demo</button>`
+    const ob = document.querySelector('[data-opts]'); if(ob) ob.textContent = showOpts ? 'Hide view options' : 'View options'
     $('guide').innerHTML = ''
 
     if(sideMode){
@@ -736,7 +989,7 @@
 
   function drawWorkspace(all, p){
     const tiles = tilesFor()
-    $('stats').classList.toggle('hide', view === 'client')
+    $('stats').classList.toggle('hide', view === 'client' || mode === 'report')
     $('stats').innerHTML = tiles.map(t => {
       const n = all.filter(t.fn).length
       return `<button class="stat ${focus===t.k?'on':''} ${t.warm?'warm':''} ${t.bad&&n?'bad':''}" data-f="${t.k}"><b>${n}</b><span>${esc(t.label)}</span></button>`
@@ -757,7 +1010,9 @@
     const needle = q.trim().toLowerCase()
     if(needle) shown = shown.filter(r => [r.title, r.notes, r.owner, r.platform, r.next_step, r.stage, r.category].join(' ').toLowerCase().includes(needle))
 
-    if(mode === 'calendar') $('list').innerHTML = calHtml(shown)
+    if(mode === 'report') $('list').innerHTML = reportHtml(shown)
+    else if(mode === 'flow') $('list').innerHTML = flowHtml(shown)
+    else if(mode === 'calendar') $('list').innerHTML = calHtml(shown)
     else if(mode === 'board') $('list').innerHTML = boardHtml(shown)
     else if(!shown.length) $('list').innerHTML = `<p class="empty">Nothing here. Try another filter.</p>`
     else if(mode === 'list'){
@@ -1164,11 +1419,15 @@
   }
 
   // ---------- one click handler for everything ----------
-  const ACTION_SEL = '[data-approve],[data-change],[data-del],[data-open],[data-close],[data-cal],[data-done],[data-toast],[data-chat],[data-chatclose],[data-accept],[data-copy],[data-copytext],[data-payout],[data-book],[data-ask],[data-reset],[data-guide],[data-opts],[data-f],[data-c],[data-m],[data-v],[data-k]'
+  const ACTION_SEL = '[data-seq],[data-pub],[data-copyrep],[data-print],[data-approve],[data-change],[data-del],[data-open],[data-close],[data-cal],[data-done],[data-toast],[data-chat],[data-chatclose],[data-accept],[data-copy],[data-copytext],[data-payout],[data-book],[data-ask],[data-reset],[data-guide],[data-opts],[data-f],[data-c],[data-m],[data-v],[data-k]'
   document.addEventListener('click', e => {
     if(e.target === $('detDlg')) return closeDetail()
     const t = e.target.closest(ACTION_SEL); if(!t) return
     const d = t.dataset
+    if('seq' in d){ const parts = d.seq.split('|'); return seqMove(parts[0], parts[1]) }
+    if('pub' in d) return publishReport()
+    if('copyrep' in d) return copyText(reportText(reportShown()), 'Report copied. Paste it into Google Docs.')
+    if('print' in d) return window.print()
     if('approve' in d) return approve(d.approve)
     if('change' in d) return openChange(d.change)
     if('del' in d) return removeRow(d.del)
@@ -1290,6 +1549,261 @@
     closeDetail(); $('chatPanel').classList.add('hide'); drawTabs(); render()
     if(db) load()
   })
+
+
+  // ======================================================
+  // VERSION 6: 3D WELCOME GATE
+  // The demo login lives here. Change these two to update it.
+  // ======================================================
+  const DEMO_USER = 'demo', DEMO_PASS = 'edge2026'
+  const gatedParts = () => [document.querySelector('.heroband'), document.querySelector('.wrap'), document.querySelector('footer'), $('chatFab')]
+  function setInert(on){ gatedParts().forEach(el => { if(el){ if(on) el.setAttribute('inert',''); else el.removeAttribute('inert') } }) }
+  function isGated(){ return document.body.classList.contains('gated') }
+  function lockPortal(){
+    try{ sessionStorage.removeItem('ade_demo_in') }catch(e){}
+    $('gate').classList.remove('snap','open')
+    $('gateForm').reset(); $('gateErr').textContent = ''
+    $('chatPanel').classList.add('hide'); closeDetail()
+    document.body.classList.add('gated'); setInert(true)
+    window.scrollTo(0, 0)
+    setTimeout(() => $('gUser').focus(), 60)
+  }
+  function unlockPortal(){
+    try{ sessionStorage.setItem('ade_demo_in', '1') }catch(e){}
+    const g = $('gate'), still = matchMedia('(prefers-reduced-motion: reduce)').matches
+    $('scene').style.transform = ''
+    g.classList.add('snap')
+    setTimeout(() => g.classList.add('open'), still ? 50 : 1350)
+    setTimeout(() => {
+      document.body.classList.remove('gated'); setInert(false); g.classList.remove('snap','open')
+      toast('Welcome in! Click anything you like. Nothing is saved.')
+    }, still ? 400 : 2200)
+  }
+  $('gateForm').onsubmit = e => {
+    e.preventDefault()
+    const u = $('gUser').value.trim().toLowerCase(), p = $('gPass').value.trim()
+    if(u === DEMO_USER && p === DEMO_PASS){ $('gateErr').textContent = ''; return unlockPortal() }
+    $('gateErr').textContent = "Hmm, that doesn't match the demo login. Tap the box below and I'll fill it in for you."
+    const c = $('gateForm'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake')
+  }
+  $('gateFill').onclick = () => {
+    $('gUser').value = DEMO_USER; $('gPass').value = DEMO_PASS; $('gateErr').textContent = ''
+    $('gateForm').querySelector('.btn').focus()
+  }
+  // the floating pieces lean toward your mouse
+  $('gate').addEventListener('mousemove', e => {
+    if(!isGated() || $('gate').classList.contains('snap')) return
+    const dx = e.clientX / innerWidth - .5, dy = e.clientY / innerHeight - .5
+    $('scene').style.transform = `rotateY(${(dx * 10).toFixed(2)}deg) rotateX(${(-dy * 8).toFixed(2)}deg)`
+  })
+  $('gate').addEventListener('mouseleave', () => { $('scene').style.transform = '' })
+  if(isGated()){ setInert(true); setTimeout(() => { try{ $('gUser').focus() }catch(e){} }, 300) }
+
+  // ======================================================
+  // VERSION 6: SEQUENCE BOARD
+  // Not started > In progress > For approval > Approved > Done
+  // Your existing stages are sorted into these five steps,
+  // so nothing needs to change in Supabase.
+  // ======================================================
+  const SEQ = ['Not started','In progress','For approval','Approved','Done']
+  const SEQ_OF = {
+    'Not started':'Not started','Draft':'Not started','To do':'Not started','New inquiry':'Not started','Requested':'Not started','Invited':'Not started','Upcoming':'Not started',
+    'In progress':'In progress','Team review':'In progress','Changes requested':'In progress','Contacted':'In progress','Follow-up':'In progress','Waiting on':'In progress','Onboarding':'In progress','Live':'In progress','Active':'In progress','At risk':'In progress',
+    'Client review':'For approval','Quoted':'For approval','Payout due':'For approval',
+    'Approved':'Approved','Scheduled':'Approved','Booked':'Approved',
+    'Delivered':'Done','Published':'Done','Completed':'Done','Done':'Done','Won':'Done','Paid':'Done','Lost':'Done','Ready':'Done'
+  }
+  const SEQ_FALLBACK = {'Not started':'Not started','In progress':'In progress','For approval':'Client review','Approved':'Approved','Done':'Done'}
+  const SEQ_CLS = {'Not started':'p-gray','In progress':'p-blue','For approval':'p-gold','Approved':'p-green','Done':'p-green'}
+  const SEQ_COLOR = {'Not started':'#7d6d88','In progress':'#1979DD','For approval':'#d4a347','Approved':'#9be7c4','Done':'#3ecf8e'}
+  const APPROVER = {agency:'the client', cohort:'the coach', operations:'the client', affiliate:'the admin'}
+  const NEXT_FOR = {'Not started':'Ready to start.','In progress':'The team is working on it.','For approval':'Waiting for approval.','Approved':'The team is making it live.','Done':'Live and finished.'}
+  const MOVE_MSG = {'Not started':'Moved back to Not started.','In progress':'Started! It moved to In progress.','For approval':'Sent for approval.','Approved':'Approved. The team will make it live next.','Done':'Live and finished. It moved to Done.'}
+
+  function seqOf(r){ return SEQ_OF[r.stage] || (isActive(r) ? 'In progress' : 'Done') }
+  function seqTarget(r, col){ return (STAGES[r.category] || []).find(s => SEQ_OF[s] === col) || SEQ_FALLBACK[col] }
+  function approverIsViewer(){ return clientSide() || (view === 'team' && (current === 'cohort' || current === 'affiliate')) }
+  function colNote(col){
+    if(col === 'Not started') return 'Lined up and ready to begin'
+    if(col === 'In progress') return 'Being worked on right now'
+    if(col === 'For approval') return clientSide() ? 'Waiting for you. Approve it or ask for changes.' : approverIsViewer() ? 'Waiting for your yes' : `Waiting for ${APPROVER[current]} to approve`
+    if(col === 'Approved') return 'Approved. Now we make it live.'
+    return 'Live and finished'
+  }
+  function flowHtml(shown){
+    const team = view === 'team'
+    const canDrag = team && matchMedia('(pointer:fine)').matches
+    const hint = team
+      ? `<p class="seqhint">Move a card with its button${canDrag ? ', or drag it into another column' : ''}. Nothing is saved, so play around.</p>`
+      : `<p class="seqhint">Every piece of work moves from left to right. When something lands in <b>For approval</b>, it's your turn.</p>`
+    return hint + `<div class="flow">` + SEQ.map((col, i) => {
+      const items = shown.filter(r => seqOf(r) === col).sort(byDue)
+      const cls = col === 'Approved' ? 'c-appr' : (col === 'For approval' && items.length) ? 'c-wait' : ''
+      return `<div class="col ${cls}" data-col="${col}">
+        <div class="seqstep">STEP ${i + 1}</div>
+        <div class="ghead"><span class="pill ${SEQ_CLS[col]}">${col}</span><span class="count">${items.length}</span></div>
+        <p class="colnote">${esc(colNote(col))}</p>
+        ${items.length ? items.map(r => fcard(r, canDrag)).join('') : `<div class="colempty">Nothing here right now.</div>`}
+      </div>`
+    }).join('') + `</div>`
+  }
+  function fcard(r, canDrag){
+    const col = seqOf(r), late = isLate(r), team = view === 'team', id = esc(r.id)
+    const mine = col === 'For approval' && approverIsViewer()
+    const acts = []
+    if(mine){
+      acts.push(`<button class="btn small" data-approve="${id}">Approve</button>`)
+      acts.push(`<button class="btn ghost small" data-change="${id}">Request changes</button>`)
+    }
+    if(team && col === 'Not started') acts.push(`<button class="btn ghost small" data-seq="${id}|In progress">Start</button>`)
+    if(team && col === 'In progress') acts.push(`<button class="btn ghost small" data-seq="${id}|For approval">Send for approval</button>`)
+    if(team && col === 'Approved') acts.push(`<button class="btn ghost small" data-seq="${id}|Done">Mark as done</button>`)
+    if(team && col === 'For approval' && !mine) acts.push(`<button class="btn ghost small" data-toast="Reminder sent to ${esc(APPROVER[current])}. This is a demo, so nothing was sent.">Send a reminder</button>`)
+    const waiting = col === 'For approval' && !mine ? `<div class="waiting">Waiting on ${esc(clientSide() ? 'you' : APPROVER[current])}</div>` : ''
+    return `<div class="bcard ${mine ? 'you' : ''}" ${canDrag ? `draggable="true" data-drag="${id}"` : ''}>
+      <span class="cat">${esc(CATLABEL[r.category] || r.category)}${r.platform ? `<span class="tag">${esc(r.platform)}</span>` : ''}</span>
+      <button class="titlebtn" data-open="${id}">${esc(r.title)}</button>
+      ${r.stage !== col ? `<div class="meta" style="margin-top:6px"><span class="pill ${stageClass(r.stage)}">${esc(r.stage)}</span></div>` : ''}
+      ${team && r.owner ? `<div class="meta">${esc(r.owner)}</div>` : ''}
+      ${r.due_date ? `<div class="meta due ${late ? 'late' : ''}">${late ? 'Overdue: ' : 'Due '}${esc(fmtDate(r.due_date))}</div>` : ''}
+      ${r.client_comment && r.stage === 'Changes requested' ? `<div class="quote">${esc(clientSide() ? 'You asked' : 'Client asked')}: ${esc(r.client_comment)}</div>` : ''}
+      ${waiting}
+      ${acts.length ? `<div class="acts">${acts.join('')}</div>` : ''}
+    </div>`
+  }
+  function seqMove(id, col){
+    const r = viewRows().find(x => x.id === id); if(!r || !SEQ.includes(col) || seqOf(r) === col) return
+    const stage = seqTarget(r, col)
+    sim[id] = {stage, waiting_on: col === 'For approval' ? 'them' : turnFor(stage), next_step: NEXT_FOR[col], client_comment: null}
+    logSim(r.title, 'moved to ' + col + ' (demo)')
+    render(); toast(MOVE_MSG[col] + ' Nothing is saved.')
+  }
+  // drag and drop between columns (team view, desktop)
+  document.addEventListener('dragstart', e => {
+    const c = e.target.closest && e.target.closest('[data-drag]'); if(!c) return
+    e.dataTransfer.setData('text/plain', c.dataset.drag); e.dataTransfer.effectAllowed = 'move'; c.classList.add('dragging')
+  })
+  document.addEventListener('dragend', () => document.querySelectorAll('.dragging,.over').forEach(x => x.classList.remove('dragging','over')))
+  document.addEventListener('dragover', e => {
+    const col = e.target.closest && e.target.closest('.flow .col'); if(!col) return
+    e.preventDefault()
+    document.querySelectorAll('.flow .col.over').forEach(x => { if(x !== col) x.classList.remove('over') })
+    col.classList.add('over')
+  })
+  document.addEventListener('drop', e => {
+    const col = e.target.closest && e.target.closest('.flow .col'); if(!col) return
+    e.preventDefault(); col.classList.remove('over')
+    seqMove(e.dataTransfer.getData('text/plain'), col.dataset.col)
+  })
+
+  // ======================================================
+  // VERSION 6: REPORT VIEW (on every tab)
+  // ======================================================
+  const REPORT_NAME = {agency:'Weekly client report', cohort:'Program progress report', operations:'Sales and task report', affiliate:'Partner and payout report'}
+  let published = {}   // reports published during this visit, per tab (nothing is saved)
+  function weekLabel(){
+    const d = new Date(), day = d.getDay() || 7
+    const mon = new Date(d); mon.setDate(d.getDate() - day + 1)
+    const fri = new Date(mon); fri.setDate(mon.getDate() + 4)
+    const f = x => x.toLocaleDateString(undefined, {month:'short', day:'numeric'})
+    return `Week of ${f(mon)} to ${f(fri)}`
+  }
+  function dueWithin(r, n){
+    if(!r.due_date || !isActive(r)) return false
+    const lim = new Date(); lim.setDate(lim.getDate() + n)
+    return r.due_date >= todayStr() && r.due_date <= lim.toLocaleDateString('en-CA')
+  }
+  function reportData(shown){
+    const by = {}; SEQ.forEach(s => by[s] = shown.filter(r => seqOf(r) === s).sort(byDue))
+    return {by, total: shown.length, late: shown.filter(isLate).sort(byDue), soon: shown.filter(r => dueWithin(r, 7)).sort(byDue)}
+  }
+  function autoSummary(d){
+    const who = clientSide() ? 'you' : APPROVER[current]
+    const late = d.late.length ? `${d.late.length} ${d.late.length > 1 ? 'items are' : 'item is'} overdue, and ${d.late.length > 1 ? 'they are' : 'it is'} at the top of the list.` : 'Nothing is overdue.'
+    return `${d.by['Done'].length} finished, ${d.by['In progress'].length} in progress, and ${d.by['For approval'].length} waiting on ${who}. ${late}`
+  }
+  function rlist(arr, empty){
+    if(!arr.length) return `<ul class="rlist"><li class="none">${esc(empty)}</li></ul>`
+    return `<ul class="rlist">${arr.slice(0, 6).map(r => `<li><span><button class="titlebtn" data-open="${esc(r.id)}">${esc(r.title)}</button></span><span>${r.due_date ? esc(fmtDate(r.due_date)) : 'No date'}</span></li>`).join('')}${arr.length > 6 ? `<li class="none">and ${arr.length - 6} more</li>` : ''}</ul>`
+  }
+  function reportHtml(shown){
+    const d = reportData(shown), p = PROFILES[current], team = view === 'team'
+    const tiles = [
+      ['Finished', d.by['Done'].length, ''],
+      ['In progress', d.by['In progress'].length, ''],
+      [clientSide() ? 'Waiting on you' : 'Waiting for approval', d.by['For approval'].length, 'warm'],
+      ['Overdue', d.late.length, d.late.length ? 'bad' : '']
+    ]
+    const tot = d.total || 1
+    const stack = SEQ.map(s => d.by[s].length ? `<i style="width:${(d.by[s].length / tot * 100).toFixed(2)}%;background:${SEQ_COLOR[s]};--c:${SEQ_COLOR[s]}" title="${s}: ${d.by[s].length}"></i>` : '').join('')
+    const legend = SEQ.map(s => `<span style="--c:${SEQ_COLOR[s]}">${s} <b>${d.by[s].length}</b></span>`).join('')
+    const cats = p.cats.map(c => {
+      const all = shown.filter(r => r.category === c); if(!all.length) return ''
+      const done = all.filter(r => seqOf(r) === 'Done').length
+      return `<div class="hbar"><div class="lab"><span>${esc(CATLABEL[c])}</span><span>${done} of ${all.length} finished</span></div><div class="trk"><i style="width:${(done / all.length * 100).toFixed(1)}%"></i></div></div>`
+    }).join('') || `<p class="colnote">Nothing to show yet.</p>`
+    const pubs = published[current] || []
+    const latest = pubs[0]
+    const clientNote = latest && latest.note ? latest.note
+      : "Here's where everything stands this week. Anything waiting on you sits in For approval, and the rest is moving along. I'm one message away if you have questions."
+
+    const head = `<div class="rhead">
+      <div><h3>${esc(clientSide() ? 'Your weekly report' : REPORT_NAME[current])}</h3><p>${esc(BRAND)} &middot; ${esc(weekLabel())}</p></div>
+      <div class="acts">${team ? `<button class="btn ghost small" data-copyrep>Copy for Google Docs</button>` : ''}<button class="btn ghost small" data-print>Print or save as PDF</button></div>
+    </div>`
+    const compose = team ? `<div class="rbox compose" style="margin-top:18px">
+        <h4>Send this week's report</h4>
+        <p class="colnote">The numbers above fill themselves in. Add a personal note, then publish it so ${esc(APPROVER[current])} sees it here.</p>
+        <textarea id="repNote" placeholder="For example: Great week! The new sales page is live, and the launch email just needs your yes."></textarea>
+        <div class="acts"><button class="btn small" data-pub>Publish report</button><button class="btn ghost small" data-copyrep>Copy for Google Docs</button></div>
+        ${pubs.length ? `<div style="margin-top:16px">${pubs.map(x => `<div class="pubrep"><div class="when">Published ${esc(ago(x.when))}</div><p>${esc(x.summary)}</p>${x.note ? `<p>${esc(x.note)}</p>` : ''}</div>`).join('')}</div>` : ''}
+      </div>` : ''
+    const note = !team ? `<div class="rbox" style="margin-bottom:18px"><h4>A note from your team</h4><p style="margin:0;line-height:1.65;color:#efe6f3">${esc(clientNote)}</p><div class="note-from">Anggie</div></div>` : ''
+
+    return `<div class="report">
+      ${head}
+      <div class="rtiles">${tiles.map(t => `<div class="rtile ${t[2]}"><b>${t[1]}</b><span>${esc(t[0])}</span></div>`).join('')}</div>
+      <div class="rsum"><b>This week in one line:</b> ${esc(autoSummary(d))}</div>
+      ${note}
+      <div class="rgrid">
+        <div class="rbox"><h4>Where everything stands</h4><div class="stack">${stack}</div><div class="legend">${legend}</div></div>
+        <div class="rbox"><h4>Progress by area</h4>${cats}</div>
+      </div>
+      <div class="rgrid">
+        <div class="rbox"><h4>${clientSide() ? 'Waiting for your yes' : 'Waiting for approval'}</h4>${rlist(d.by['For approval'], 'Nothing is waiting. Lovely.')}</div>
+        <div class="rbox"><h4>Due in the next 7 days</h4>${rlist(d.soon, 'Nothing due this coming week.')}</div>
+      </div>
+      ${d.late.length ? `<div class="rbox"><h4>Overdue</h4>${rlist(d.late, '')}</div>` : ''}
+      ${compose}
+    </div>`
+  }
+  function reportText(shown){
+    const d = reportData(shown), L = []
+    L.push(`${REPORT_NAME[current]} | ${BRAND}`, weekLabel(), '', autoSummary(d), '')
+    const sec = (h, arr) => {
+      L.push(h)
+      if(!arr.length) L.push('  Nothing right now')
+      arr.slice(0, 10).forEach(r => L.push(`  * ${r.title}${r.due_date ? ' (due ' + fmtDate(r.due_date) + ')' : ''}`))
+      L.push('')
+    }
+    sec('Finished', d.by['Done']); sec('Waiting for approval', d.by['For approval']); sec('In progress', d.by['In progress']); sec('Due in the next 7 days', d.soon)
+    const note = ($('repNote') && $('repNote').value.trim()) || ''
+    if(note) L.push('A note from the team', note)
+    return L.join('\n')
+  }
+  function reportShown(){
+    let shown = viewRows().filter(r => cat === 'all' || r.category === cat)
+    const needle = q.trim().toLowerCase()
+    if(needle) shown = shown.filter(r => [r.title, r.notes, r.owner, r.platform, r.next_step, r.stage, r.category].join(' ').toLowerCase().includes(needle))
+    return shown
+  }
+  function publishReport(){
+    const d = reportData(reportShown())
+    const note = ($('repNote') && $('repNote').value.trim()) || ''
+    ;(published[current] = published[current] || []).unshift({when: new Date().toISOString(), summary: autoSummary(d), note})
+    logSim(REPORT_NAME[current], 'report published (demo)')
+    render(); toast(current === 'agency' ? 'Report published. Switch to Client view to see it the way your client does. Nothing is saved.' : 'Report published. Nothing is saved.')
+  }
 
   async function start(){
     current = profileFromHash()
